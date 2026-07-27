@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import "react-toastify/dist/ReactToastify.css";
+
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  header, footer, nav, .print\:hidden {
+    display: none !important;
+  }
+  .printable-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+  }
+}
+

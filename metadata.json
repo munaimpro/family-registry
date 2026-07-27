@@ -1,0 +1,6 @@
+{
+  "name": "অলি মিয়া সমাজ কল্যাণ পরিষদ - পারিবারিক তথ্য সিস্টেম",
+  "description": "পটিয়া, চট্টগ্রামের অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল পারিবারিক তথ্য ইনপুট, সন্ধান, অ্যাডমিন ড্যাশবোর্ড ও ফরম প্রিন্ট পোর্টাল।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
