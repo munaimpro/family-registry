@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useApp } from '@/lib/AppContext';
-import { AdminDashboard } from '@/components/AdminDashboard';
+import { useApp } from '../../lib/AppContext';
+import { AdminDashboard } from '../../components/AdminDashboard';
 
 export default function AdminPage() {
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function AdminPage() {
   } = useApp();
 
   const handleEdit = (record) => {
-    router.push(`/new-form?edit=${record.id}`);
+    router.push(`/new-form/${record.id}`);
   };
 
   const handleAddNew = () => {

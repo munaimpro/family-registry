@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { AppProvider, useApp } from '@/lib/AppContext';
-import { Navbar } from '@/components/Navbar';
-import { PrintableForm } from '@/components/PrintableForm';
-import { ImportModal } from '@/components/ImportModal';
+import { AppProvider, useApp } from '../lib/AppContext';
+import { Navbar } from './Navbar';
+import { PrintableForm } from './PrintableForm';
+import { ImportModal } from './ImportModal';
 import { ToastContainer } from 'react-toastify';
 import { HeartHandshake } from 'lucide-react';
 
@@ -43,11 +43,11 @@ function ShellContent({ children }) {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 pb-16">
+      <main className="flex-1 pb-20 md:pb-8">
         {/* Printable Modal View Overlay */}
         {printingRecord && (
-          <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 p-4 md:p-8 flex items-start justify-center backdrop-blur-xs">
-            <div className="w-full max-w-4xl bg-white rounded-2xl border border-slate-300 p-2 shadow-2xl relative my-8">
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 p-2 sm:p-4 md:p-8 flex items-start justify-center backdrop-blur-xs">
+            <div className="w-full max-w-4xl bg-white rounded-2xl border border-slate-300 p-2 shadow-2xl relative my-4 sm:my-8">
               <PrintableForm
                 record={printingRecord}
                 onClose={() => setPrintingRecord(null)}
@@ -69,7 +69,7 @@ function ShellContent({ children }) {
       />
 
       {/* Footer */}
-      <footer className="bg-[#0F2C59] border-t-2 border-[#1B8A44] py-6 text-center text-xs text-slate-200 print:hidden">
+      <footer className="bg-[#0F2C59] border-t-2 border-[#1B8A44] py-6 text-center text-xs text-slate-200 print:hidden mb-14 md:mb-0">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-2 text-emerald-300 font-serif font-bold">
             <HeartHandshake size={18} />

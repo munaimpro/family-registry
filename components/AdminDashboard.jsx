@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { deleteRecordById, saveSingleRecord, saveRecords, INITIAL_SAMPLE_RECORDS } from '@/lib/storage';
+import { deleteRecordById, saveSingleRecord, saveRecords, INITIAL_SAMPLE_RECORDS } from '../lib/storage';
 import { toast } from 'react-toastify';
 import { 
   Users, 

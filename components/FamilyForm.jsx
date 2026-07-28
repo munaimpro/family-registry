@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { generateNextFormNumber } from '@/lib/storage';
+import React, { useState, useEffect } from 'react';
+import { generateNextFormNumber, getAppSettings } from '../lib/storage';
 import { toast } from 'react-toastify';
 import { 
   Plus, 
@@ -18,6 +18,8 @@ export const FamilyForm = ({
   onCancel,
   onPrintPreview,
 }) => {
+  const customLogo = getAppSettings().logo || '';
+
   const [formData, setFormData] = useState(() => {
     if (initialData) return initialData;
     const { formNo, memberNo } = generateNextFormNumber();
@@ -183,7 +185,7 @@ export const FamilyForm = ({
   ) => {
     const chars = (value || '').slice(0, length).split('');
     return (
-      <div className="flex items-center gap-1 flex-wrap">
+      <div className="flex items-center gap-0.5 sm:gap-1 max-w-full overflow-x-auto py-1 scrollbar-none">
         {Array.from({ length }).map((_, idx) => (
           <input
             key={idx}
@@ -213,7 +215,7 @@ export const FamilyForm = ({
                 e.currentTarget.previousElementSibling.focus();
               }
             }}
-            className="w-6 h-7 sm:w-7 sm:h-8 border border-black bg-white text-center font-mono font-bold text-xs sm:text-sm text-black focus:outline-hidden focus:ring-1 focus:ring-black rounded-xs"
+            className="w-5 h-7 sm:w-6 sm:h-8 md:w-7 md:h-8 border border-black bg-white text-center font-mono font-bold text-xs sm:text-sm text-black focus:outline-hidden focus:ring-1 focus:ring-black rounded-xs flex-shrink-0"
           />
         ))}
       </div>
@@ -239,14 +241,14 @@ export const FamilyForm = ({
       motherName: 'রাহেলা বেগম',
       motherOccupation: 'গৃহিনী',
       presentAddress: {
-        village: 'উত্তর গোলিন্দর বীর, অলি মিয়া মিশ্রির বাড়ি',
+        village: 'অলি মিয়া মিস্ত্রি বাড়ী, ফইল্যাতলী, উত্তর গোবিন্দরখিল',
         road: 'ওয়ার্ড নং ০৯',
         postOffice: 'পটিয়া',
         thana: 'পটিয়া',
         district: 'চট্টগ্রাম',
       },
       permanentAddress: {
-        village: 'উত্তর গোলিন্দর বীর, অলি মিয়া মিশ্রির বাড়ি',
+        village: 'অলি মিয়া মিস্ত্রি বাড়ী, ফইল্যাতলী, উত্তর গোবিন্দরখিল',
         road: 'ওয়ার্ড নং ০৯',
         postOffice: 'পটিয়া',
         thana: 'পটিয়া',
@@ -407,11 +409,15 @@ export const FamilyForm = ({
         <div className="flex flex-col sm:flex-row items-center justify-between border-b-2 border-[#0F2C59] pb-4 mb-4 gap-3">
           
           {/* Circular Crest Logo Left */}
-          <div className="w-20 h-20 flex-shrink-0 flex items-center justify-center border-2 border-[#0F2C59] rounded-full p-1 bg-white shadow-xs">
-            <div className="w-full h-full rounded-full border border-dashed border-[#1B8A44] flex flex-col items-center justify-center text-center p-0.5">
-              <HeartHandshake className="w-6 h-6 text-[#1B8A44]" />
-              <span className="text-[7px] font-bold text-[#0F2C59] leading-none mt-0.5">অলি মিয়া সমাজ কল্যাণ</span>
-            </div>
+          <div className="w-20 h-20 flex-shrink-0 flex items-center justify-center border-2 border-[#0F2C59] rounded-full p-1 bg-white shadow-xs overflow-hidden">
+            {customLogo ? (
+              <img src={customLogo} alt="Logo" className="w-full h-full object-cover rounded-full" />
+            ) : (
+              <div className="w-full h-full rounded-full border border-dashed border-[#1B8A44] flex flex-col items-center justify-center text-center p-0.5">
+                <HeartHandshake className="w-6 h-6 text-[#1B8A44]" />
+                <span className="text-[7px] font-bold text-[#0F2C59] leading-none mt-0.5">অলি মিয়া সমাজ কল্যাণ</span>
+              </div>
+            )}
           </div>
 
           {/* Centered Main Title Banner */}
@@ -420,7 +426,7 @@ export const FamilyForm = ({
               অলি মিয়া সমাজ কল্যাণ পরিষদ
             </h1>
             <p className="text-xs sm:text-sm font-semibold text-black">
-              অলি মিয়া মিশ্রির বাড়ি, উত্তর গোলিন্দর বীর,
+              অলি মিয়া মিস্ত্রি বাড়ী, ফইল্যাতলী, উত্তর গোবিন্দরখিল,
             </p>
             <p className="text-xs sm:text-sm font-semibold text-black">
               ৯নং ওয়ার্ড পশ্চিম পৌর এলাকা, পটিয়া চট্টগ্রাম।
@@ -824,13 +830,13 @@ export const FamilyForm = ({
             <thead>
               <tr className="border-b border-black font-bold text-black bg-slate-50/50">
                 <th className="border border-black p-1.5 w-10">ক্রমিক নং</th>
-                <th className="border border-black p-1.5 min-w-[130px]">নাম</th>
+                <th className="border border-black p-1.5 min-w-[220px] sm:min-w-[240px]">নাম</th>
                 <th className="border border-black p-1.5 w-28">জন্ম তারিখ<br /><span className="text-[9px] font-normal">(দিন/মাস/বছর)</span></th>
                 <th className="border border-black p-1.5 w-20">রক্তের গ্রুপ</th>
                 <th className="border border-black p-1.5 min-w-[140px]">শিক্ষা প্রতিষ্ঠান/শ্রেণি/পেশা</th>
                 <th className="border border-black p-1.5 w-28">সম্পর্ক<br /><span className="text-[9px] font-normal">(স্ত্রী/পুত্র/কন্যা ইত্যাদি)</span></th>
                 <th className="border border-black p-1.5 min-w-[120px]">ঠিকানা</th>
-                <th className="border border-black p-1.5 min-w-[120px]">বিশেষ তথ্য<br /><span className="text-[9px] font-normal">(রোগী, প্রবাসী, প্রতিবন্ধী)</span></th>
+                <th className="border border-black p-1.5 min-w-[130px]">বিশেষ তথ্য<br /><span className="text-[9px] font-normal">(রোগী, প্রবাসী, প্রতিবন্ধী, পৌষ্য)</span></th>
                 <th className="border border-black p-1.5 w-10 print:hidden">মুছুন</th>
               </tr>
             </thead>

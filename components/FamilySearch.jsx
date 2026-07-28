@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { searchRecords } from '@/lib/storage';
+import { searchRecords } from '../lib/storage';
 import { 
   Search, 
   Heart, 
@@ -13,7 +13,10 @@ import {
   Eye, 
   Edit2, 
   RotateCcw,
-  Plus
+  Plus,
+  User,
+  Hash,
+  X
 } from 'lucide-react';
 
 export const FamilySearch = ({
@@ -23,18 +26,25 @@ export const FamilySearch = ({
   onPrintRecord,
   onAddNew,
 }) => {
-  const [query, setQuery] = useState('');
+  const [nameQuery, setNameQuery] = useState('');
+  const [formNoQuery, setFormNoQuery] = useState('');
+  const [generalQuery, setGeneralQuery] = useState('');
   const [selectedBloodGroup, setSelectedBloodGroup] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
 
-  const filteredRecords = searchRecords(records, query, selectedBloodGroup, statusFilter);
+  const filteredRecords = searchRecords(records, {
+    nameQuery,
+    formNoQuery,
+    generalQuery,
+    selectedBloodGroup
+  });
 
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
   const resetFilters = () => {
-    setQuery('');
+    setNameQuery('');
+    setFormNoQuery('');
+    setGeneralQuery('');
     setSelectedBloodGroup('');
-    setStatusFilter('');
   };
 
   return (
@@ -47,7 +57,7 @@ export const FamilySearch = ({
               <Search className="text-[#1B8A44]" size={20} /> পরিবার ডিরেক্টরি ও অনুসন্ধান
             </h2>
             <p className="text-xs text-slate-600 mt-1">
-              ফরম নম্বর, নাম, রক্তের গ্রুপ বা মোবাইল নম্বর দিয়ে দ্রুত সার্চ করুন
+              ফরম নম্বর বা নাম (বাংলা অথবা English) দিয়ে পৃথকভাবে সার্চ করুন
             </p>
           </div>
 
@@ -60,25 +70,95 @@ export const FamilySearch = ({
         </div>
 
         {/* Input Controls */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {/* Query Text Box */}
-          <div className="relative">
-            <Search size={16} className="absolute left-3 top-3 text-slate-400" />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="নাম, ফরম নং, মোবাইল, এনআইডি..."
-              className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+          {/* Separate Name Input Field */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1">
+              <User size={13} className="text-[#1B8A44]" />
+              নাম (বাংলা / English)
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                value={nameQuery}
+                onChange={(e) => setNameQuery(e.target.value)}
+                placeholder="e.g. রফিকুল / Rafiqul / ইউনুস"
+                className="w-full px-3 py-2 pr-8 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
+              />
+              {nameQuery && (
+                <button
+                  onClick={() => setNameQuery('')}
+                  className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  title="ক্লিয়ার করুন"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Blood Group Filter */}
-          <div className="relative">
+          {/* Separate Form No Input Field */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1">
+              <Hash size={13} className="text-[#0F2C59]" />
+              ফরম নম্বর (Form No)
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                value={formNoQuery}
+                onChange={(e) => setFormNoQuery(e.target.value)}
+                placeholder="e.g. F-2026-001 / 001"
+                className="w-full px-3 py-2 pr-8 bg-slate-50 border border-slate-300 rounded-xl text-sm font-mono text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
+              />
+              {formNoQuery && (
+                <button
+                  onClick={() => setFormNoQuery('')}
+                  className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  title="ক্লিয়ার করুন"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile / Address / NID Input Field */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1">
+              <Phone size={13} className="text-emerald-600" />
+              মোবাইল / এনআইডি / গ্রাম
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                value={generalQuery}
+                onChange={(e) => setGeneralQuery(e.target.value)}
+                placeholder="মোবাইল, এনআইডি, গ্রাম..."
+                className="w-full px-3 py-2 pr-8 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
+              />
+              {generalQuery && (
+                <button
+                  onClick={() => setGeneralQuery('')}
+                  className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  title="ক্লিয়ার করুন"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Blood Group Dropdown */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1">
+              <Heart size={13} className="text-rose-600" />
+              রক্তের গ্রুপ (Blood Group)
+            </label>
             <select
               value={selectedBloodGroup}
               onChange={(e) => setSelectedBloodGroup(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm text-rose-700 font-bold focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm text-rose-700 font-bold focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden h-[38px] cursor-pointer"
             >
               <option value="">সকল রক্তের গ্রুপ (All)</option>
               {bloodGroups.map(bg => (
@@ -86,29 +166,52 @@ export const FamilySearch = ({
               ))}
             </select>
           </div>
+        </div>
 
-          {/* Status Filter */}
-          <div>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
-            >
-              <option value="">সকল স্ট্যাটাস</option>
-              <option value="verified">যাচাইকৃত (Verified)</option>
-              <option value="pending">অপেক্ষমাণ (Pending)</option>
-            </select>
-          </div>
+        {/* Filter Badges & Reset Controls */}
+        <div className="mt-3 flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-slate-100">
+          {(nameQuery || formNoQuery || generalQuery || selectedBloodGroup) ? (
+            <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-600">
+              <span className="font-bold text-[#0F2C59]">ফিল্টার সক্রিয়:</span>
+              {nameQuery && (
+                <span className="px-2 py-0.5 bg-emerald-100 text-[#1B8A44] rounded-md font-bold text-[11px] flex items-center gap-1">
+                  নাম: {nameQuery}
+                </span>
+              )}
+              {formNoQuery && (
+                <span className="px-2 py-0.5 bg-blue-100 text-blue-800 rounded-md font-bold font-mono text-[11px] flex items-center gap-1">
+                  ফরম নং: {formNoQuery}
+                </span>
+              )}
+              {generalQuery && (
+                <span className="px-2 py-0.5 bg-slate-200 text-slate-800 rounded-md font-bold text-[11px] flex items-center gap-1">
+                  অন্যান্য: {generalQuery}
+                </span>
+              )}
+              {selectedBloodGroup && (
+                <span className="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-md font-bold text-[11px] flex items-center gap-1">
+                  রক্ত: {selectedBloodGroup}
+                </span>
+              )}
+              <button
+                onClick={resetFilters}
+                className="text-xs text-rose-600 underline font-bold hover:text-rose-800 cursor-pointer ml-1"
+              >
+                সব রিসেট
+              </button>
+            </div>
+          ) : (
+            <span className="text-[11px] text-slate-500">
+              * নাম বাংলা (e.g. রফিকুল) অথবা ইংরেজিতে (e.g. Rafiqul) এবং ফরম নম্বর দিয়ে সার্চ করতে পারবেন।
+            </span>
+          )}
 
-          {/* Reset Filters */}
-          <div>
-            <button
-              onClick={resetFilters}
-              className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer border border-slate-300"
-            >
-              <RotateCcw size={14} /> ফিল্টার রিসেট করুন
-            </button>
-          </div>
+          <button
+            onClick={resetFilters}
+            className="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold flex items-center gap-1 transition cursor-pointer border border-slate-300 ml-auto"
+          >
+            <RotateCcw size={13} /> ফিল্টার রিসেট
+          </button>
         </div>
 
         {/* Results Counter & Blood Pills */}

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { saveRecords, getStoredRecords } from '@/lib/storage';
+import { saveRecords, getStoredRecords } from '../lib/storage';
 import { toast } from 'react-toastify';
 import { Upload, X } from 'lucide-react';
 

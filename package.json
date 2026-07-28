@@ -10,12 +10,15 @@
     "clean": "next clean"
   },
   "dependencies": {
+    "@better-auth/mongo-adapter": "^1.6.25",
     "@google/genai": "^2.4.0",
     "@hookform/resolvers": "^5.2.1",
     "autoprefixer": "^10.4.21",
+    "better-auth": "^1.6.25",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.553.0",
+    "mongodb": "^7.5.0",
     "motion": "^12.23.24",
     "next": "^15.4.9",
     "postcss": "^8.5.6",

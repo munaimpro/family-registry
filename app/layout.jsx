@@ -1,5 +1,5 @@
 import './globals.css';
-import { AppShell } from '@/components/AppShell';
+import { AppShell } from '../components/AppShell';
 
 export const metadata = {
   title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',

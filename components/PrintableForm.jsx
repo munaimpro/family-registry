@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Printer, HeartHandshake } from 'lucide-react';
+import { getAppSettings } from '../lib/storage';
 
 export const PrintableForm = ({ record, onClose }) => {
+  const customLogo = getAppSettings().logo || '';
   const handlePrint = () => {
     window.print();
   };
@@ -16,11 +18,11 @@ export const PrintableForm = ({ record, onClose }) => {
       boxes.push(chars[i] || '');
     }
     return (
-      <div className="flex gap-1 items-center inline-flex">
+      <div className="flex gap-0.5 sm:gap-1 items-center inline-flex max-w-full overflow-x-auto py-0.5 scrollbar-none">
         {boxes.map((char, idx) => (
           <span
             key={idx}
-            className="w-5 h-6 border border-black text-center font-mono text-sm leading-6 inline-block font-bold bg-white text-black"
+            className="w-4.5 h-5.5 sm:w-5 sm:h-6 border border-black text-center font-mono text-xs sm:text-sm leading-5 sm:leading-6 inline-block font-bold bg-white text-black flex-shrink-0"
           >
             {char}
           </span>
@@ -83,11 +85,15 @@ export const PrintableForm = ({ record, onClose }) => {
         {/* Header Branding Section */}
         <div className="flex flex-col sm:flex-row items-center justify-between border-b-2 border-[#0F2C59] pb-4 mb-4 gap-3 relative z-20">
           {/* Logo Crest */}
-          <div className="w-20 h-20 flex-shrink-0 flex items-center justify-center border-2 border-[#0F2C59] rounded-full p-1 bg-white shadow-xs">
-            <div className="w-full h-full rounded-full border border-dashed border-[#1B8A44] flex flex-col items-center justify-center text-center p-0.5">
-              <HeartHandshake className="w-6 h-6 text-[#1B8A44]" />
-              <span className="text-[7px] font-bold text-[#0F2C59] leading-none mt-0.5">অলি মিয়া সমাজ কল্যাণ</span>
-            </div>
+          <div className="w-20 h-20 flex-shrink-0 flex items-center justify-center border-2 border-[#0F2C59] rounded-full p-1 bg-white shadow-xs overflow-hidden">
+            {customLogo ? (
+              <img src={customLogo} alt="Logo" className="w-full h-full object-cover rounded-full" />
+            ) : (
+              <div className="w-full h-full rounded-full border border-dashed border-[#1B8A44] flex flex-col items-center justify-center text-center p-0.5">
+                <HeartHandshake className="w-6 h-6 text-[#1B8A44]" />
+                <span className="text-[7px] font-bold text-[#0F2C59] leading-none mt-0.5">অলি মিয়া সমাজ কল্যাণ</span>
+              </div>
+            )}
           </div>
 
           {/* Main Title Banner */}
@@ -96,7 +102,7 @@ export const PrintableForm = ({ record, onClose }) => {
               অলি মিয়া সমাজ কল্যাণ পরিষদ
             </h1>
             <p className="text-xs sm:text-sm font-semibold text-black">
-              অলি মিয়া মিশ্রির বাড়ি, উত্তর গোলিন্দর বীর,
+              অলি মিয়া মিস্ত্রি বাড়ী, ফইল্যাতলী, উত্তর গোবিন্দরখিল,
             </p>
             <p className="text-xs sm:text-sm font-semibold text-black">
               ৯নং ওয়ার্ড পশ্চিম পৌর এলাকা, পটিয়া চট্টগ্রাম।
@@ -343,13 +349,13 @@ export const PrintableForm = ({ record, onClose }) => {
             <thead>
               <tr className="border-b border-black font-bold text-black bg-slate-50/50">
                 <th className="border border-black p-1 w-8">ক্রমিক নং</th>
-                <th className="border border-black p-1 w-32">নাম</th>
+                <th className="border border-black p-1 min-w-[180px] w-48">নাম</th>
                 <th className="border border-black p-1 w-20">জন্ম তারিখ<br />(দিন/মাস/বছর)</th>
                 <th className="border border-black p-1 w-12">রক্তের গ্রুপ</th>
                 <th className="border border-black p-1">শিক্ষা প্রতিষ্ঠান/শ্রেণি/পেশা</th>
                 <th className="border border-black p-1 w-24">সম্পর্ক<br />(পিতা/মাতা/স্বামী/স্ত্রী/পুত্র/কন্যা)</th>
                 <th className="border border-black p-1">ঠিকানা</th>
-                <th className="border border-black p-1 w-28">বিশেষ তথ্য<br />(রোগী, প্রবাসী, প্রতিবন্ধী)</th>
+                <th className="border border-black p-1 min-w-[130px] w-32">বিশেষ তথ্য<br />(রোগী, প্রবাসী, প্রতিবন্ধী, পৌষ্য)</th>
               </tr>
             </thead>
             <tbody>

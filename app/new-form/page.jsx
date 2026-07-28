@@ -2,9 +2,9 @@
 
 import React, { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { saveSingleRecord } from '@/lib/storage';
-import { useApp } from '@/lib/AppContext';
-import { FamilyForm } from '@/components/FamilyForm';
+import { saveSingleRecord } from '../../lib/storage';
+import { useApp } from '../../lib/AppContext';
+import { FamilyForm } from '../../components/FamilyForm';
 import { toast } from 'react-toastify';
 
 function NewFormContent() {

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getStoredRecords, INITIAL_SAMPLE_RECORDS } from '@/lib/storage';
+import { getStoredRecords, INITIAL_SAMPLE_RECORDS } from './storage';
 import { toast } from 'react-toastify';
 
 const AppContext = createContext(undefined);
