@@ -120,6 +120,20 @@ export const FamilyProfile = ({
                   <span className="text-[#1B8A44] font-mono font-bold">{record.mobileNumber}</span>
                 </div>
               </div>
+              {record.bloodDonationDates && (Array.isArray(record.bloodDonationDates) ? record.bloodDonationDates.length > 0 : Boolean(record.bloodDonationDates)) && (
+                <div className="mt-2 pt-2 border-t border-[#1B8A44]/10 text-xs">
+                  <span className="text-slate-600 font-bold text-[11px] flex items-center gap-1 mb-1">
+                    <Heart size={12} className="text-rose-600 fill-rose-600" /> রক্তদানের তারিখসমূহ:
+                  </span>
+                  <div className="flex flex-wrap gap-1">
+                    {(Array.isArray(record.bloodDonationDates) ? record.bloodDonationDates : [record.bloodDonationDates]).map((d, i) => (
+                      <span key={i} className="px-2 py-0.5 bg-rose-50 text-rose-800 border border-rose-200 rounded text-[11px] font-mono font-bold">
+                        {d}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Members Roster */}
@@ -154,6 +168,20 @@ export const FamilyProfile = ({
                   {mem.specialInfo && (
                     <div className="mt-2 p-1.5 bg-amber-50 border border-amber-200 rounded text-amber-800 text-[11px] font-medium">
                       বিশেষ: {mem.specialInfo}
+                    </div>
+                  )}
+                  {mem.bloodDonationDates && (Array.isArray(mem.bloodDonationDates) ? mem.bloodDonationDates.length > 0 : Boolean(mem.bloodDonationDates)) && (
+                    <div className="mt-2 pt-2 border-t border-slate-200">
+                      <span className="text-slate-500 text-[11px] font-bold block mb-1 flex items-center gap-1">
+                        <Heart size={12} className="text-rose-600 fill-rose-600" /> রক্তদানের তারিখ:
+                      </span>
+                      <div className="flex flex-wrap gap-1">
+                        {(Array.isArray(mem.bloodDonationDates) ? mem.bloodDonationDates : [mem.bloodDonationDates]).map((d, i) => (
+                          <span key={i} className="px-2 py-0.5 bg-rose-50 text-rose-800 border border-rose-200 rounded text-[11px] font-mono font-bold">
+                            {d}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>

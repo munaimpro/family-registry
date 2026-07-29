@@ -275,6 +275,14 @@ export const PrintableForm = ({ record, onClose }) => {
                 {record.bloodGroup || '—'}
               </span>
             </div>
+            {record.bloodDonationDates && (Array.isArray(record.bloodDonationDates) ? record.bloodDonationDates.length > 0 : Boolean(record.bloodDonationDates)) && (
+              <div className="md:col-span-2 flex items-baseline mt-1 pt-1 border-t border-dotted border-black/30">
+                <span className="font-bold w-32 flex-shrink-0 text-black">রক্তদানের তারিখ :</span>
+                <span className="border-b border-dotted border-black flex-1 px-1 font-mono text-black font-semibold">
+                  {Array.isArray(record.bloodDonationDates) ? record.bloodDonationDates.join(', ') : record.bloodDonationDates}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* 7. জাতীয়তা & ধর্ম */}
@@ -352,6 +360,7 @@ export const PrintableForm = ({ record, onClose }) => {
                 <th className="border border-black p-1 min-w-[180px] w-48">নাম</th>
                 <th className="border border-black p-1 w-20">জন্ম তারিখ<br />(দিন/মাস/বছর)</th>
                 <th className="border border-black p-1 w-12">রক্তের গ্রুপ</th>
+                <th className="border border-black p-1 w-28">রক্তদানের তারিখ</th>
                 <th className="border border-black p-1">শিক্ষা প্রতিষ্ঠান/শ্রেণি/পেশা</th>
                 <th className="border border-black p-1 w-24">সম্পর্ক<br />(পিতা/মাতা/স্বামী/স্ত্রী/পুত্র/কন্যা)</th>
                 <th className="border border-black p-1">ঠিকানা</th>
@@ -369,6 +378,11 @@ export const PrintableForm = ({ record, onClose }) => {
                     </td>
                     <td className="border border-black p-1 font-mono">{member?.dobOrAge || ''}</td>
                     <td className="border border-black p-1 font-bold">{member?.bloodGroup || ''}</td>
+                    <td className="border border-black p-1 text-center font-mono text-[11px] leading-tight">
+                      {member?.bloodDonationDates
+                        ? (Array.isArray(member.bloodDonationDates) ? member.bloodDonationDates.join(', ') : member.bloodDonationDates)
+                        : '—'}
+                    </td>
                     <td className="border border-black p-1 text-left px-1">
                       {member?.instituteOrOccupation || ''}
                     </td>

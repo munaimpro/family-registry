@@ -20,8 +20,25 @@ export const FamilyForm = ({
 }) => {
   const customLogo = getAppSettings().logo || '';
 
+  const normalizeDates = (val) => {
+    if (Array.isArray(val)) return val;
+    if (typeof val === 'string' && val.trim()) {
+      return val.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    return [];
+  };
+
   const [formData, setFormData] = useState(() => {
-    if (initialData) return initialData;
+    if (initialData) {
+      return {
+        ...initialData,
+        bloodDonationDates: normalizeDates(initialData.bloodDonationDates),
+        members: (initialData.members || []).map(m => ({
+          ...m,
+          bloodDonationDates: normalizeDates(m.bloodDonationDates)
+        }))
+      };
+    }
     const { formNo, memberNo } = generateNextFormNumber();
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -57,6 +74,7 @@ export const FamilyForm = ({
       },
       dob: '',
       bloodGroup: '',
+      bloodDonationDates: [],
       nationality: '',
       religion: '',
       nidNumber: '',
@@ -80,6 +98,7 @@ export const FamilyForm = ({
           gender: 'মহিলা',
           dobOrAge: '',
           bloodGroup: '',
+          bloodDonationDates: [],
           instituteOrOccupation: '',
           relation: '',
           address: '',
@@ -93,6 +112,7 @@ export const FamilyForm = ({
           gender: 'পুরুষ',
           dobOrAge: '',
           bloodGroup: '',
+          bloodDonationDates: [],
           instituteOrOccupation: '',
           relation: '',
           address: '',
@@ -104,6 +124,8 @@ export const FamilyForm = ({
   });
 
   const [sameAsPresent, setSameAsPresent] = useState(true);
+  const [headBloodDateInput, setHeadBloodDateInput] = useState('');
+  const [memberBloodDateInputs, setMemberBloodDateInputs] = useState({});
 
   // Synchronize DOB parts for boxed input
   const parseDobParts = (str) => {
@@ -222,6 +244,54 @@ export const FamilyForm = ({
     );
   };
 
+  // Blood donation date handlers for Head
+  const handleAddHeadBloodDate = () => {
+    const val = headBloodDateInput.trim();
+    if (!val) return;
+    setFormData(prev => ({
+      ...prev,
+      bloodDonationDates: [...(prev.bloodDonationDates || []), val]
+    }));
+    setHeadBloodDateInput('');
+    toast.success(`রক্তদানের তারিখ '${val}' যুক্ত করা হয়েছে`);
+  };
+
+  const handleRemoveHeadBloodDate = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      bloodDonationDates: (prev.bloodDonationDates || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  // Blood donation date handlers for Members
+  const handleAddMemberBloodDate = (memberIndex) => {
+    const val = (memberBloodDateInputs[memberIndex] || '').trim();
+    if (!val) return;
+    setFormData(prev => {
+      const updatedMembers = [...prev.members];
+      const currentDates = normalizeDates(updatedMembers[memberIndex].bloodDonationDates);
+      updatedMembers[memberIndex] = {
+        ...updatedMembers[memberIndex],
+        bloodDonationDates: [...currentDates, val]
+      };
+      return { ...prev, members: updatedMembers };
+    });
+    setMemberBloodDateInputs(prev => ({ ...prev, [memberIndex]: '' }));
+    toast.success(`সদস্যের রক্তদানের তারিখ '${val}' যুক্ত করা হয়েছে`);
+  };
+
+  const handleRemoveMemberBloodDate = (memberIndex, dateIndex) => {
+    setFormData(prev => {
+      const updatedMembers = [...prev.members];
+      const currentDates = normalizeDates(updatedMembers[memberIndex].bloodDonationDates);
+      updatedMembers[memberIndex] = {
+        ...updatedMembers[memberIndex],
+        bloodDonationDates: currentDates.filter((_, i) => i !== dateIndex)
+      };
+      return { ...prev, members: updatedMembers };
+    });
+  };
+
   const handleAutoFill = () => {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -256,6 +326,7 @@ export const FamilyForm = ({
       },
       dob: '15/08/1988',
       bloodGroup: 'B+',
+      bloodDonationDates: ['10/01/2024', '15/08/2025'],
       nationality: 'বাংলাদেশী',
       religion: 'ইসলাম',
       nidNumber: '19881512345678901',
@@ -279,6 +350,7 @@ export const FamilyForm = ({
           gender: 'মহিলা',
           dobOrAge: '12/04/1992',
           bloodGroup: 'O+',
+          bloodDonationDates: ['15/05/2024', '10/12/2025'],
           instituteOrOccupation: 'গৃহিনী',
           relation: 'স্ত্রী',
           address: 'বর্তমান ঠিকানা',
@@ -292,6 +364,7 @@ export const FamilyForm = ({
           gender: 'পুরুষ',
           dobOrAge: '05/10/2015',
           bloodGroup: 'B+',
+          bloodDonationDates: ['01/02/2025'],
           instituteOrOccupation: 'পটিয়া মডেল প্রাইমারি স্কুল (শ্রেণি: ৫ম)',
           relation: 'পুত্র',
           address: 'বর্তমান ঠিকানা',
@@ -305,6 +378,7 @@ export const FamilyForm = ({
           gender: 'মহিলা',
           dobOrAge: '20/01/2019',
           bloodGroup: 'B+',
+          bloodDonationDates: [],
           instituteOrOccupation: 'শিশু শ্রেণি',
           relation: 'কন্যা',
           address: 'বর্তমান ঠিকানা',
@@ -335,6 +409,7 @@ export const FamilyForm = ({
         gender: 'পুরুষ',
         dobOrAge: '',
         bloodGroup: '',
+        bloodDonationDates: [],
         instituteOrOccupation: '',
         relation: '',
         address: 'বর্তমান ঠিকানা',
@@ -707,7 +782,7 @@ export const FamilyForm = ({
             </div>
             <div className="flex items-center gap-2 justify-start md:justify-end">
               <label className="font-bold text-black flex items-center gap-1">
-                <Heart size={14} className="text-rose-700" /> রক্তের গ্রুপ :
+                <Heart size={14} className="text-rose-700 fill-rose-600" /> রক্তের গ্রুপ :
               </label>
               <select
                 value={formData.bloodGroup}
@@ -719,6 +794,55 @@ export const FamilyForm = ({
                   <option key={bg} value={bg}>{bg}</option>
                 ))}
               </select>
+            </div>
+
+            {/* রক্তদানের তারিখ (Head Multiple Dates) */}
+            <div className="col-span-1 md:col-span-2 pt-2 mt-1 border-t border-dotted border-slate-300">
+              <div className="flex items-center gap-2 flex-wrap">
+                <label className="font-bold text-black flex items-center gap-1 text-xs">
+                  <Heart size={14} className="text-rose-700 fill-rose-600" /> রক্তদানের তারিখ :
+                </label>
+
+                <div className="flex flex-wrap items-center gap-1.5">
+                  {(formData.bloodDonationDates || []).map((dateStr, dIdx) => (
+                    <span key={dIdx} className="inline-flex items-center gap-1 bg-rose-50 border border-rose-300 text-rose-800 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-2xs">
+                      <Heart size={10} className="text-rose-600 fill-rose-600" />
+                      <span>{dateStr}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveHeadBloodDate(dIdx)}
+                        className="text-rose-500 hover:text-rose-800 font-black ml-1 cursor-pointer leading-none"
+                        title="তারিখ মুছুন"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-1 print:hidden">
+                  <input
+                    type="text"
+                    placeholder="দিন/মাস/বছর (যেমন: 15/02/2025)"
+                    value={headBloodDateInput}
+                    onChange={(e) => setHeadBloodDateInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddHeadBloodDate();
+                      }
+                    }}
+                    className="w-44 bg-white border border-black rounded px-2 py-0.5 text-xs text-black font-medium focus:outline-none focus:ring-1 focus:ring-rose-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddHeadBloodDate}
+                    className="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded text-xs font-bold flex items-center gap-1 cursor-pointer shadow-xs"
+                  >
+                    + তারিখ যোগ করুন
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -833,6 +957,7 @@ export const FamilyForm = ({
                 <th className="border border-black p-1.5 min-w-[220px] sm:min-w-[240px]">নাম</th>
                 <th className="border border-black p-1.5 w-28">জন্ম তারিখ<br /><span className="text-[9px] font-normal">(দিন/মাস/বছর)</span></th>
                 <th className="border border-black p-1.5 w-20">রক্তের গ্রুপ</th>
+                <th className="border border-black p-1.5 min-w-[160px]">রক্তদানের তারিখ<br /><span className="text-[9px] font-normal">(একাধিক তারিখ)</span></th>
                 <th className="border border-black p-1.5 min-w-[140px]">শিক্ষা প্রতিষ্ঠান/শ্রেণি/পেশা</th>
                 <th className="border border-black p-1.5 w-28">সম্পর্ক<br /><span className="text-[9px] font-normal">(স্ত্রী/পুত্র/কন্যা ইত্যাদি)</span></th>
                 <th className="border border-black p-1.5 min-w-[120px]">ঠিকানা</th>
@@ -871,6 +996,55 @@ export const FamilyForm = ({
                         <option key={bg} value={bg}>{bg}</option>
                       ))}
                     </select>
+                  </td>
+                  <td className="border border-black p-1.5 min-w-[160px] text-left">
+                    <div className="flex flex-col gap-1.5">
+                      {/* List of existing blood donation dates */}
+                      <div className="flex flex-wrap gap-1">
+                        {normalizeDates(member.bloodDonationDates).map((dStr, dIdx) => (
+                          <span
+                            key={dIdx}
+                            className="inline-flex items-center gap-1 bg-rose-50 border border-rose-300 text-rose-800 text-[11px] font-bold px-1.5 py-0.5 rounded-md shadow-2xs"
+                          >
+                            <Heart size={10} className="text-rose-600 fill-rose-600 flex-shrink-0" />
+                            <span>{dStr}</span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveMemberBloodDate(idx, dIdx)}
+                              className="text-rose-500 hover:text-rose-800 font-bold ml-0.5 cursor-pointer leading-none"
+                              title="তারিখ মুছুন"
+                            >
+                              &times;
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Input to add new date */}
+                      <div className="flex items-center gap-1 print:hidden">
+                        <input
+                          type="text"
+                          placeholder="দিন/মাস/বছর"
+                          value={memberBloodDateInputs[idx] || ''}
+                          onChange={(e) => setMemberBloodDateInputs(prev => ({ ...prev, [idx]: e.target.value }))}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleAddMemberBloodDate(idx);
+                            }
+                          }}
+                          className="w-24 bg-white border border-slate-300 rounded px-1.5 py-0.5 text-[11px] text-black focus:outline-none focus:border-rose-500"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleAddMemberBloodDate(idx)}
+                          className="px-2 py-0.5 bg-rose-600 hover:bg-rose-700 text-white rounded text-[10px] font-bold cursor-pointer whitespace-nowrap shadow-xs"
+                          title="নতুন রক্তদানের তারিখ যোগ করুন"
+                        >
+                          + যোগ
+                        </button>
+                      </div>
+                    </div>
                   </td>
                   <td className="border border-black p-1">
                     <input
