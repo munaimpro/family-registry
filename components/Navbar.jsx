@@ -301,7 +301,7 @@ export const Navbar = ({
                 <Link
                   href="/signin"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] bg-emerald-600 text-white shadow-md"
+                  className="w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-11 bg-emerald-600 text-white shadow-md"
                 >
                   <LogIn size={18} />
                   <span>লগইন (Sign In)</span>

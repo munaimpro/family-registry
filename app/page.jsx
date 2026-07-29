@@ -85,11 +85,11 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans selection:bg-[#1B8A44] selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans selection:bg-[#1B8A44] selection:text-white mt-6.5]">
       
       {/* 1. TOP BISMILLAH BANNER */}
       <div className="bg-[#0A1D3B] text-white py-4 px-4 text-center border-b border-[#1B8A44]/40 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/20 via-[#1B8A44]/20 to-emerald-900/20 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-emerald-900/20 via-[#1B8A44]/20 to-emerald-900/20 pointer-events-none"></div>
         <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center justify-center gap-1">
           <div className="inline-block bg-emerald-950/80 border border-emerald-500/40 px-4 py-1.5 rounded-full shadow-inner mb-1">
             <span className="text-xl sm:text-2xl md:text-3xl font-serif text-emerald-300 font-bold tracking-widest leading-relaxed">
