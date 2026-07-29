@@ -333,6 +333,12 @@ export const FamilySearch = ({
                         <h3 className="text-lg font-bold text-[#0F2C59] font-serif group-hover:text-[#1B8A44] transition flex items-center gap-2">
                           <span>{rec.headName}</span>
                         </h3>
+                        {rec.fatherOrHusbandName && (
+                          <p className="text-xs text-slate-600 font-medium mt-0.5 flex items-center gap-1">
+                            <User size={13} className="text-[#1B8A44] flex-shrink-0" />
+                            <span>পিতার নাম: <strong className="text-slate-800 font-semibold">{rec.fatherOrHusbandName}</strong></span>
+                          </p>
+                        )}
                       </div>
                       {rec.bloodGroup && (
                         <span className="px-2.5 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-xs font-bold flex items-center gap-1 shadow-xs flex-shrink-0">

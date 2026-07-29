@@ -7,6 +7,8 @@ import { useApp } from '../../../lib/AppContext';
 import { FamilyForm } from '../../../components/FamilyForm';
 import { toast } from 'react-toastify';
 
+export const dynamic = 'force-dynamic';
+
 export default function EditFormPage() {
   const router = useRouter();
   const params = useParams();

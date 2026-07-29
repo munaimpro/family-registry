@@ -6,6 +6,8 @@ import { getStoredRecords } from '../../../lib/storage';
 import { FamilyProfile } from '../../../components/FamilyProfile';
 import { FileText, ChevronLeft } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default function MemberProfilePage() {
   const router = useRouter();
   const params = useParams();
