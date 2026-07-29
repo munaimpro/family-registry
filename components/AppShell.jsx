@@ -22,8 +22,12 @@ function ShellContent({ children }) {
 
   const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
   const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 0);
     const updateSettings = () => {
       const settings = getAppSettings();
       if (settings) {
@@ -35,6 +39,7 @@ function ShellContent({ children }) {
 
     window.addEventListener('omskp_settings_updated', updateSettings);
     return () => {
+      clearTimeout(timer);
       window.removeEventListener('omskp_settings_updated', updateSettings);
     };
   }, []);
@@ -42,18 +47,20 @@ function ShellContent({ children }) {
   return (
     <div className="min-h-screen bg-[#F4F6F4] text-slate-800 flex flex-col font-sans selection:bg-[#1B8A44] selection:text-white">
       {/* Toast Notifications */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      {mounted && (
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      )}
 
       {/* Main Navbar with Next.js App Router Navigation */}
       <Navbar
