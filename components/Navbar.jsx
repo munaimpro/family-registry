@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useSession, signOut } from '../lib/auth-client';
 import { getAppSettings } from '../lib/storage';
 import { 
+  Home,
   Search, 
   ShieldCheck, 
   PlusCircle, 
@@ -30,21 +31,23 @@ export const Navbar = ({
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logo, setLogo] = useState('');
+  const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
+  const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম');
 
   useEffect(() => {
-    const updateLogo = () => {
+    const updateSettings = () => {
       const settings = getAppSettings();
-      if (settings && settings.logo) {
-        setLogo(settings.logo);
-      } else {
-        setLogo('');
+      if (settings) {
+        setLogo(settings.logo || '');
+        if (settings.foundationName) setFoundationName(settings.foundationName);
+        if (settings.address) setAddress(settings.address);
       }
     };
-    updateLogo();
+    updateSettings();
 
-    window.addEventListener('omskp_settings_updated', updateLogo);
+    window.addEventListener('omskp_settings_updated', updateSettings);
     return () => {
-      window.removeEventListener('omskp_settings_updated', updateLogo);
+      window.removeEventListener('omskp_settings_updated', updateSettings);
     };
   }, []);
 
@@ -57,7 +60,7 @@ export const Navbar = ({
 
   return (
     <>
-      <header className="bg-[#0F2C59] text-white sticky top-0 z-40 shadow-md border-b-4 border-[#1B8A44]">
+      <header className="bg-[#0F2C59] text-white fixed top-0 left-0 right-0 z-50 shadow-md border-b-4 border-[#1B8A44]">
         {/* Decorative Diagonal Green Accents in Top Right */}
         <div className="absolute top-0 right-0 w-36 h-full overflow-hidden pointer-events-none hidden sm:block">
           <div className="absolute -top-6 -right-6 w-32 h-20 bg-[#1B8A44] transform rotate-45 shadow-sm"></div>
@@ -85,10 +88,10 @@ export const Navbar = ({
               </div>
               <div className="min-w-0">
                 <h1 className="text-sm sm:text-lg md:text-2xl font-black text-white tracking-tight sm:tracking-wide font-serif leading-tight truncate">
-                  অলি মিয়া সমাজ কল্যাণ পরিষদ
+                  {foundationName}
                 </h1>
                 <p className="text-[10px] sm:text-xs text-emerald-200 font-sans truncate">
-                  উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম
+                  {address}
                 </p>
               </div>
             </Link>
@@ -134,6 +137,18 @@ export const Navbar = ({
                 href="/"
                 className={`px-3 sm:px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
                   pathname === '/'
+                    ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                    : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                }`}
+              >
+                <Home size={15} />
+                <span>হোম</span>
+              </Link>
+
+              <Link
+                href="/member"
+                className={`px-3 sm:px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
+                  pathname === '/member'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
                 }`}
@@ -231,6 +246,21 @@ export const Navbar = ({
                 }`}
               >
                 <div className="flex items-center gap-2.5">
+                  <Home size={18} />
+                  <span>হোম পেজ</span>
+                </div>
+              </Link>
+
+              <Link
+                href="/member"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-between transition min-h-[44px] ${
+                  pathname === '/member'
+                    ? 'bg-[#1B8A44] text-white shadow-md'
+                    : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
                   <Search size={18} />
                   <span>পরিবার অনুসন্ধান ও তালিকা</span>
                 </div>
@@ -321,13 +351,23 @@ export const Navbar = ({
         </div>
       </header>
 
-      {/* Sticky Mobile Bottom Navigation Bar (Phone & Tablet < 768px) */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#0F2C59] border-t-2 border-[#1B8A44] md:hidden shadow-2xl backdrop-blur-md bg-opacity-95">
-        <div className={`grid ${isLoggedIn ? 'grid-cols-5' : 'grid-cols-4'} h-14`}>
+      {/* Fixed Mobile Bottom Navigation Bar (Phone & Tablet < 768px) */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0F2C59] border-t-2 border-[#1B8A44] md:hidden shadow-2xl backdrop-blur-md bg-opacity-95">
+        <div className="grid grid-cols-5 h-14">
           <Link
             href="/"
             className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
               pathname === '/' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            <Home size={16} />
+            <span>হোম</span>
+          </Link>
+
+          <Link
+            href="/member"
+            className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
+              pathname === '/member' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
             }`}
           >
             <Search size={16} />
@@ -365,26 +405,15 @@ export const Navbar = ({
               <span>লগইন</span>
             </Link>
           ) : (
-            <>
-              <Link
-                href="/admin/profile"
-                className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
-                  pathname === '/admin/profile' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-                }`}
-              >
-                <User size={16} />
-                <span>প্রোফাইল</span>
-              </Link>
-              <Link
-                href="/admin/settings"
-                className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
-                  pathname === '/admin/settings' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-                }`}
-              >
-                <Settings size={16} />
-                <span>সেটিংস</span>
-              </Link>
-            </>
+            <Link
+              href="/admin/settings"
+              className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
+                pathname === '/admin/settings' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              <Settings size={16} />
+              <span>সেটিংস</span>
+            </Link>
           )}
         </div>
       </nav>

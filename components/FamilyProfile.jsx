@@ -105,7 +105,14 @@ export const FamilyProfile = ({
                   {record.headName[0] || 'প'}
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#0F2C59]">{record.headName}</h3>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <h3 className="text-base font-bold text-[#0F2C59]">{record.headName}</h3>
+                    {record.isExternalMember && (
+                      <span className="px-1.5 py-0.5 bg-amber-500 text-white text-[9px] font-mono font-bold rounded uppercase">
+                        External Member
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-[#1B8A44] font-bold">{record.headOccupation || 'পেশা উল্লেখ নেই'}</p>
                   <p className="text-xs text-slate-600 mt-1">পিতা/স্বামী: {record.fatherOrHusbandName}</p>
                 </div>
@@ -202,8 +209,13 @@ export const FamilyProfile = ({
                   {record.headName[0]}
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h1 className="text-2xl md:text-3xl font-black text-white font-serif">{record.headName}</h1>
+                    {record.isExternalMember && (
+                      <span className="px-2.5 py-0.5 bg-amber-500 text-white border border-amber-300 rounded-md text-xs font-mono font-extrabold tracking-wider uppercase shadow-2xs">
+                        External Member
+                      </span>
+                    )}
                     {record.status === 'verified' ? (
                       <span className="px-2.5 py-0.5 bg-[#1B8A44] text-white border border-[#62C255] rounded-full text-xs font-bold flex items-center gap-1">
                         <CheckCircle2 size={12} /> যাচাইকৃত

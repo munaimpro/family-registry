@@ -3,8 +3,10 @@ import { NextResponse } from "next/server";
 export function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // Allow auth routes, api routes, and static assets
+  // Allow public routes (home, member directory, member profile, auth, api, static assets)
   if (
+    pathname === "/" ||
+    pathname.startsWith("/member") ||
     pathname.startsWith("/signin") ||
     pathname.startsWith("/signup") ||
     pathname.startsWith("/api") ||

@@ -1,12 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppProvider, useApp } from '../lib/AppContext';
 import { Navbar } from './Navbar';
 import { PrintableForm } from './PrintableForm';
 import { ImportModal } from './ImportModal';
 import { ToastContainer } from 'react-toastify';
 import { HeartHandshake } from 'lucide-react';
+import { getAppSettings } from '../lib/storage';
 
 function ShellContent({ children }) {
   const { 
@@ -18,6 +19,25 @@ function ShellContent({ children }) {
     setIsImportOpen, 
     handleExportBackup 
   } = useApp();
+
+  const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
+  const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম');
+
+  useEffect(() => {
+    const updateSettings = () => {
+      const settings = getAppSettings();
+      if (settings) {
+        if (settings.foundationName) setFoundationName(settings.foundationName);
+        if (settings.address) setAddress(settings.address);
+      }
+    };
+    updateSettings();
+
+    window.addEventListener('omskp_settings_updated', updateSettings);
+    return () => {
+      window.removeEventListener('omskp_settings_updated', updateSettings);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F4F6F4] text-slate-800 flex flex-col font-sans selection:bg-[#1B8A44] selection:text-white">
@@ -43,7 +63,7 @@ function ShellContent({ children }) {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 pb-20 md:pb-8">
+      <main className="flex-1 pt-16 md:pt-28 pb-20 md:pb-8">
         {/* Printable Modal View Overlay */}
         {printingRecord && (
           <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 p-2 sm:p-4 md:p-8 flex items-start justify-center backdrop-blur-xs">
@@ -73,10 +93,10 @@ function ShellContent({ children }) {
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-2 text-emerald-300 font-serif font-bold">
             <HeartHandshake size={18} />
-            অলি মিয়া সমাজ কল্যাণ পরিষদ (স্থাপিত: ২০১০)
+            {foundationName}
           </div>
           <p className="text-emerald-100">
-            উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পশ্চিম পৌর এলাকা, পটিয়া চট্টগ্রাম • সর্বস্বত্ব সংরক্ষিত
+            {address} • সর্বস্বত্ব সংরক্ষিত
           </p>
         </div>
       </footer>

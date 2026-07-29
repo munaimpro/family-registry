@@ -564,6 +564,21 @@ export const FamilyForm = ({
               />
             </div>
 
+            {/* External Member Checkbox Field */}
+            <div className="flex items-center gap-2 bg-amber-50 border border-amber-300 px-3 py-1.5 rounded-lg shadow-2xs my-1 sm:my-0">
+              <input
+                type="checkbox"
+                id="isExternalMemberCheckbox"
+                checked={Boolean(formData.isExternalMember)}
+                onChange={(e) => handleInputChange('isExternalMember', e.target.checked)}
+                className="w-4 h-4 text-amber-600 rounded border-slate-400 focus:ring-amber-500 cursor-pointer"
+              />
+              <label htmlFor="isExternalMemberCheckbox" className="font-bold text-amber-900 text-xs sm:text-sm cursor-pointer select-none flex items-center gap-1.5">
+                <span>এক্সটার্নাল মেম্বার</span>
+                <span className="text-[10px] bg-amber-600 text-white font-bold px-1.5 py-0.5 rounded tracking-wide font-mono uppercase">External Member</span>
+              </label>
+            </div>
+
             <div className="flex items-center gap-1.5">
               <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm">ফরম নং–</label>
               <input

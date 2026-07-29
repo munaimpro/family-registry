@@ -5,7 +5,11 @@ import { Printer, HeartHandshake } from 'lucide-react';
 import { getAppSettings } from '../lib/storage';
 
 export const PrintableForm = ({ record, onClose }) => {
-  const customLogo = getAppSettings().logo || '';
+  const settings = getAppSettings();
+  const customLogo = settings?.logo || '';
+  const foundationName = settings?.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ';
+  const address = settings?.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম';
+
   const handlePrint = () => {
     window.print();
   };
@@ -99,13 +103,10 @@ export const PrintableForm = ({ record, onClose }) => {
           {/* Main Title Banner */}
           <div className="text-center flex-1 px-2">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0F2C59] tracking-tight mb-1 font-serif">
-              অলি মিয়া সমাজ কল্যাণ পরিষদ
+              {foundationName}
             </h1>
             <p className="text-xs sm:text-sm font-semibold text-black">
-              অলি মিয়া মিস্ত্রি বাড়ী, ফইল্যাতলী, উত্তর গোবিন্দরখিল,
-            </p>
-            <p className="text-xs sm:text-sm font-semibold text-black">
-              ৯নং ওয়ার্ড পশ্চিম পৌর এলাকা, পটিয়া চট্টগ্রাম।
+              {address}
             </p>
           </div>
 
@@ -141,6 +142,11 @@ export const PrintableForm = ({ record, onClose }) => {
                 {record.memberNo || '—'}
               </span>
             </div>
+            {record.isExternalMember && (
+              <div className="border-2 border-black px-2 py-0.5 font-mono font-extrabold text-[11px] text-black tracking-wider uppercase bg-slate-100">
+                External Member
+              </div>
+            )}
             <div className="flex items-center gap-1">
               <span>ফরম নং–</span>
               <span className="border border-black rounded-xs px-2 py-0.5 bg-white font-mono font-bold text-black">
@@ -156,9 +162,14 @@ export const PrintableForm = ({ record, onClose }) => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-baseline">
             <div className="md:col-span-2 flex items-baseline">
               <span className="font-bold w-32 flex-shrink-0 text-black">১. নাম :</span>
-              <span className="border-b border-dotted border-black flex-1 font-semibold px-1 text-sm text-black">
-                {record.headName}
-              </span>
+              <div className="border-b border-dotted border-black flex-1 font-semibold px-1 text-sm text-black flex items-center gap-2 flex-wrap">
+                <span>{record.headName}</span>
+                {record.isExternalMember && (
+                  <span className="border border-black px-1.5 py-0.2 text-[10px] font-mono font-bold uppercase">
+                    External Member
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex items-baseline">
               <span className="font-bold w-16 flex-shrink-0 text-black">পেশা :</span>

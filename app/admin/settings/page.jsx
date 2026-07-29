@@ -10,7 +10,11 @@ import Link from 'next/link';
 export default function AdminSettingsPage() {
   const router = useRouter();
   const { data: session, isPending } = useSession();
-  const [logo, setLogo] = useState(() => getAppSettings().logo || '');
+  const settings = getAppSettings();
+  const [logo, setLogo] = useState(() => settings.logo || '');
+  const [appTitle, setAppTitle] = useState(() => settings.appTitle || 'স্মার্ট পরিবার ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
+  const [foundationName, setFoundationName] = useState(() => settings.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ');
+  const [address, setAddress] = useState(() => settings.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
@@ -40,7 +44,7 @@ export default function AdminSettingsPage() {
   const handleSave = (e) => {
     e.preventDefault();
     try {
-      saveAppSettings({ logo });
+      saveAppSettings({ logo, appTitle, foundationName, address });
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
@@ -160,6 +164,57 @@ export default function AdminSettingsPage() {
                   onChange={(e) => setLogo(e.target.value)}
                   placeholder="https://example.com/logo.png"
                   className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-mono"
+                />
+              </div>
+
+              {/* App Title */}
+              <div>
+                <label className="block text-sm font-bold text-slate-800 mb-1">
+                  অ্যাপের টাইটেল (App Title)
+                </label>
+                <p className="text-xs text-slate-500 mb-2">
+                  সাইটের সাধারণ শিরোনাম বা নাম যা টাইটেল ও সাবটাইটেলে ব্যবহৃত হয়।
+                </p>
+                <input
+                  type="text"
+                  value={appTitle}
+                  onChange={(e) => setAppTitle(e.target.value)}
+                  placeholder="যেমন: স্মার্ট পরিবার ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-sans font-medium"
+                />
+              </div>
+
+              {/* Foundation Name */}
+              <div>
+                <label className="block text-sm font-bold text-slate-800 mb-1">
+                  ফাউন্ডেশনের নাম (Foundation Name)
+                </label>
+                <p className="text-xs text-slate-500 mb-2">
+                  সংগঠন বা ফাউন্ডেশনের নাম যা হেডার নেভবার, প্রিন্ট ফরম এবং ফুটারে প্রদর্শিত হয়।
+                </p>
+                <input
+                  type="text"
+                  value={foundationName}
+                  onChange={(e) => setFoundationName(e.target.value)}
+                  placeholder="যেমন: অলি মিয়া সমাজ কল্যাণ পরিষদ"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-sans font-medium"
+                />
+              </div>
+
+              {/* Address */}
+              <div>
+                <label className="block text-sm font-bold text-slate-800 mb-1">
+                  ঠিকানা (Address)
+                </label>
+                <p className="text-xs text-slate-500 mb-2">
+                  সংগঠনের বিস্তারিত ঠিকানা যা নেভবার, প্রিন্টেবল ফরম এবং ফুটারে ব্যবহৃত হবে।
+                </p>
+                <input
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="যেমন: উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-sans font-medium"
                 />
               </div>
 
