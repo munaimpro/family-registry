@@ -19,7 +19,6 @@ import {
   Droplet, 
   Clock, 
   UserPlus, 
-  MapPin, 
   HeartHandshake, 
   Award, 
   HelpCircle,
@@ -109,21 +108,11 @@ export default function HomePage() {
         
         <div className="max-w-6xl mx-auto relative z-10 text-center">
           
-          {/* Foundation Logo & Badge */}
-          <div className="inline-flex items-center gap-2 bg-emerald-900/60 border border-emerald-400/30 text-emerald-300 px-3.5 py-1.5 rounded-full text-xs font-bold mb-6 backdrop-blur-md shadow-lg">
-            <Sparkles size={14} className="text-emerald-400 animate-pulse" />
-            <span>{appTitle}</span>
-          </div>
-
           {/* Main Title: Foundation Name & Organization */}
-          <div className="mb-6 space-y-2">
+          <div className="mb-6">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white font-serif tracking-tight leading-tight">
               {foundationName}
             </h1>
-            <p className="text-xs sm:text-base text-slate-300 max-w-2xl mx-auto pt-2 flex items-center justify-center gap-2">
-              <MapPin size={16} className="text-[#62C255] flex-shrink-0" />
-              <span>{address}</span>
-            </p>
           </div>
 
           <p className="text-sm sm:text-base md:text-lg text-emerald-100/90 max-w-3xl mx-auto font-normal leading-relaxed mb-8">
