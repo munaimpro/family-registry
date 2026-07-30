@@ -29,16 +29,23 @@ export const FamilySearch = ({
   onEditRecord,
   onPrintRecord,
   onAddNew,
+  initialBloodGroup = '',
 }) => {
   const [nameQuery, setNameQuery] = useState('');
   const [formNoQuery, setFormNoQuery] = useState('');
   const [generalQuery, setGeneralQuery] = useState('');
-  const [selectedBloodGroup, setSelectedBloodGroup] = useState('');
+  const [selectedBloodGroup, setSelectedBloodGroup] = useState(initialBloodGroup);
   const [filterType, setFilterType] = useState('all'); // 'all', 'external', 'regular'
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
+
+  // Sync when initialBloodGroup changes (e.g. navigated from home page)
+  useEffect(() => {
+    setSelectedBloodGroup(initialBloodGroup);
+    setCurrentPage(1);
+  }, [initialBloodGroup]);
 
   // Search logic
   const searchedRecords = searchRecords(records, {
