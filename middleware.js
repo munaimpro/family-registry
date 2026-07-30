@@ -11,6 +11,7 @@ export function middleware(request) {
     pathname.startsWith("/signup") ||
     pathname.startsWith("/admin") ||
     pathname.startsWith("/new-form") ||
+    pathname.startsWith("/settings") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
     pathname.includes(".")
