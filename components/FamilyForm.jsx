@@ -18,7 +18,20 @@ export const FamilyForm = ({
   onCancel,
   onPrintPreview,
 }) => {
-  const customLogo = getAppSettings().logo || '';
+  const [appSettings, setAppSettings] = useState(() => getAppSettings());
+
+  useEffect(() => {
+    const handleSettingsUpdate = () => {
+      setAppSettings(getAppSettings());
+    };
+    window.addEventListener('omskp_settings_updated', handleSettingsUpdate);
+    return () => window.removeEventListener('omskp_settings_updated', handleSettingsUpdate);
+  }, []);
+
+  const customLogo = appSettings?.logo || '';
+  const foundationName = appSettings?.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ';
+  const formTitle = appSettings?.formTitle || 'পরিবার শুমারি ও তথ্য নিবন্ধন ফরম';
+  const address = appSettings?.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম';
 
   const normalizeDates = (val) => {
     if (Array.isArray(val)) return val;
@@ -498,18 +511,22 @@ export const FamilyForm = ({
           {/* Centered Main Title Banner */}
           <div className="text-center flex-1 px-2">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0F2C59] tracking-tight mb-1 font-serif">
-              অলি মিয়া সমাজ কল্যাণ পরিষদ
+              {foundationName}
             </h1>
             <p className="text-xs sm:text-sm font-semibold text-black">
-              অলি মিয়া মিস্ত্রি বাড়ী, ফইল্যাতলী, উত্তর গোবিন্দরখিল,
-            </p>
-            <p className="text-xs sm:text-sm font-semibold text-black">
-              ৯নং ওয়ার্ড পশ্চিম পৌর এলাকা, পটিয়া চট্টগ্রাম।
+              {address}
             </p>
           </div>
 
           {/* Right Spacer or Badge */}
           <div className="w-20 hidden sm:block"></div>
+        </div>
+
+        {/* Form Title Banner / Heading */}
+        <div className="text-center my-4">
+          <span className="inline-block bg-[#0F2C59] text-white font-extrabold px-6 py-1.5 rounded-md border-2 border-[#1B8A44] text-xs sm:text-sm font-serif shadow-xs tracking-wide">
+            {formTitle}
+          </span>
         </div>
 
         {/* Top Metadata Section */}

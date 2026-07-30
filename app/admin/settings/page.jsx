@@ -14,6 +14,7 @@ export default function AdminSettingsPage() {
   const [logo, setLogo] = useState(() => settings.logo || '');
   const [appTitle, setAppTitle] = useState(() => settings.appTitle || 'স্মার্ট পরিবার ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
   const [foundationName, setFoundationName] = useState(() => settings.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ');
+  const [formTitle, setFormTitle] = useState(() => settings.formTitle || 'পরিবার শুমারি ও তথ্য নিবন্ধন ফরম');
   const [address, setAddress] = useState(() => settings.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -44,7 +45,7 @@ export default function AdminSettingsPage() {
   const handleSave = (e) => {
     e.preventDefault();
     try {
-      saveAppSettings({ logo, appTitle, foundationName, address });
+      saveAppSettings({ logo, appTitle, foundationName, formTitle, address });
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
@@ -173,7 +174,7 @@ export default function AdminSettingsPage() {
                   অ্যাপের টাইটেল (App Title)
                 </label>
                 <p className="text-xs text-slate-500 mb-2">
-                  সাইটের সাধারণ শিরোনাম বা নাম যা টাইটেল ও সাবটাইটেলে ব্যবহৃত হয়।
+                  সাইটের সাধারণ শিরোনাম যা হেডার নেভবারে লোগোর পাশে প্রদর্শিত হবে।
                 </p>
                 <input
                   type="text"
@@ -190,13 +191,30 @@ export default function AdminSettingsPage() {
                   ফাউন্ডেশনের নাম (Foundation Name)
                 </label>
                 <p className="text-xs text-slate-500 mb-2">
-                  সংগঠন বা ফাউন্ডেশনের নাম যা হেডার নেভবার, প্রিন্ট ফরম এবং ফুটারে প্রদর্শিত হয়।
+                  সংগঠন বা ফাউন্ডেশনের নাম যা হোম পেজের হিরো সেকশনের মূল শিরোনামে প্রদর্শিত হবে।
                 </p>
                 <input
                   type="text"
                   value={foundationName}
                   onChange={(e) => setFoundationName(e.target.value)}
                   placeholder="যেমন: অলি মিয়া সমাজ কল্যাণ পরিষদ"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-sans font-medium"
+                />
+              </div>
+
+              {/* Form Title */}
+              <div>
+                <label className="block text-sm font-bold text-slate-800 mb-1">
+                  ফরমের টাইটেল (Form Title)
+                </label>
+                <p className="text-xs text-slate-500 mb-2">
+                  ইনপুট ফরম এবং প্রিন্টেবল ফর্মে ফরম হেডিং হিসেবে প্রদর্শিত হবে।
+                </p>
+                <input
+                  type="text"
+                  value={formTitle}
+                  onChange={(e) => setFormTitle(e.target.value)}
+                  placeholder="যেমন: পরিবার শুমারি ও তথ্য নিবন্ধন ফরম"
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-sans font-medium"
                 />
               </div>

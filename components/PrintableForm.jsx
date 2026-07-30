@@ -5,9 +5,19 @@ import { Printer, HeartHandshake } from 'lucide-react';
 import { getAppSettings } from '../lib/storage';
 
 export const PrintableForm = ({ record, onClose }) => {
-  const settings = getAppSettings();
+  const [settings, setSettings] = useState(() => getAppSettings());
+
+  useEffect(() => {
+    const handleSettingsUpdate = () => {
+      setSettings(getAppSettings());
+    };
+    window.addEventListener('omskp_settings_updated', handleSettingsUpdate);
+    return () => window.removeEventListener('omskp_settings_updated', handleSettingsUpdate);
+  }, []);
+
   const customLogo = settings?.logo || '';
   const foundationName = settings?.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ';
+  const formTitle = settings?.formTitle || 'পরিবার শুমারি ও তথ্য নিবন্ধন ফরম';
   const address = settings?.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম';
 
   const handlePrint = () => {
@@ -112,6 +122,13 @@ export const PrintableForm = ({ record, onClose }) => {
 
           {/* Reserved Empty Spacer for balance */}
           <div className="w-20 hidden sm:block"></div>
+        </div>
+
+        {/* Form Title Heading Banner */}
+        <div className="text-center my-3">
+          <span className="inline-block border-2 border-[#0F2C59] text-[#0F2C59] font-extrabold px-6 py-1 rounded-md text-xs sm:text-sm font-serif bg-slate-50 tracking-wide">
+            {formTitle}
+          </span>
         </div>
 
         {/* Top Meta Fields: Line 1 (সূত্র - বামে, তারিখ - ডানে), Line 2 (সদস্য নং - বামে, ফরম নং - ডানে) */}

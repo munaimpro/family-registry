@@ -32,6 +32,7 @@ export const Navbar = ({
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logo, setLogo] = useState('');
+  const [appTitle, setAppTitle] = useState('স্মার্ট পরিবার ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
   const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
   const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম');
 
@@ -40,6 +41,7 @@ export const Navbar = ({
       const settings = getAppSettings();
       if (settings) {
         setLogo(settings.logo || '');
+        if (settings.appTitle) setAppTitle(settings.appTitle);
         if (settings.foundationName) setFoundationName(settings.foundationName);
         if (settings.address) setAddress(settings.address);
       }
@@ -88,11 +90,11 @@ export const Navbar = ({
                 )}
               </div>
               <div className="min-w-0">
-                <h1 className="text-sm sm:text-lg md:text-2xl font-black text-white tracking-tight sm:tracking-wide font-serif leading-tight truncate">
-                  {foundationName}
+                <h1 className="text-sm sm:text-lg md:text-xl font-black text-white tracking-tight sm:tracking-wide font-serif leading-tight truncate">
+                  {appTitle}
                 </h1>
                 <p className="text-[10px] sm:text-xs text-emerald-200 font-sans truncate">
-                  {address}
+                  {foundationName} • {address}
                 </p>
               </div>
             </Link>
