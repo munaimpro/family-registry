@@ -293,7 +293,9 @@ export const AdminDashboard = ({
                   
                   <td className="p-3">
                     <span className="font-mono font-bold text-[#0F2C59] block">{rec.formNo}</span>
-                    <span className="font-mono text-[10px] text-slate-500">{rec.memberNo}</span>
+                    <span className="font-mono text-[10px] text-slate-500">
+                      {rec.memberNo?.startsWith('OMSKP-') ? rec.memberNo : `OMSKP-${rec.memberNo || ''}`}
+                    </span>
                   </td>
 
                   <td className="p-3">

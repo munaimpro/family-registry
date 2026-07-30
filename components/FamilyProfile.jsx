@@ -23,9 +23,9 @@ export const FamilyProfile = ({
   const [activeView, setActiveView] = useState('profile');
 
   return (
-    <div className="max-w-5xl mx-auto my-6 px-2 sm:px-4">
+    <div className="max-w-5xl mx-auto my-6 px-2 sm:px-4 print:max-w-none print:m-0 print:p-0 print:w-full">
       {/* Navigation Top Bar */}
-      <div className="flex flex-wrap justify-between items-center gap-3 mb-6 bg-white p-4 rounded-xl border-2 border-[#0F2C59]/30 shadow-md">
+      <div className="flex flex-wrap justify-between items-center gap-3 mb-6 bg-white p-4 rounded-xl border-2 border-[#0F2C59]/30 shadow-md print:hidden">
         <button
           onClick={onBack}
           className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition cursor-pointer border border-slate-300"
@@ -243,7 +243,9 @@ export const FamilyProfile = ({
                 </div>
                 <div className="bg-white/10 border border-white/20 px-3 py-1.5 rounded-lg">
                   <span className="text-[10px] text-emerald-200 block uppercase font-bold">সদস্য নং</span>
-                  <span className="text-sm font-mono font-bold text-[#62C255]">{record.memberNo}</span>
+                  <span className="text-sm font-mono font-bold text-[#62C255]">
+                    {record.memberNo?.startsWith('OMSKP-') ? record.memberNo : `OMSKP-${record.memberNo || ''}`}
+                  </span>
                 </div>
               </div>
             </div>

@@ -3,11 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { generateNextFormNumber, getAppSettings } from '../lib/storage';
 import { toast } from 'react-toastify';
-import { 
-  Plus, 
-  Trash2, 
-  Save, 
-  Printer, 
+import {
+  Plus,
+  Trash2,
+  Save,
+  Printer,
   Heart,
   HeartHandshake
 } from 'lucide-react';
@@ -151,6 +151,14 @@ export const FamilyForm = ({
   };
 
   const [dobParts, setDobParts] = useState(parseDobParts(formData.dob));
+  const [deathDateParts, setDeathDateParts] = useState(parseDobParts(formData.deathDate || formData.passportNo));
+
+  const handleDeathDatePartChange = (part, val) => {
+    const updated = { ...deathDateParts, [part]: val };
+    setDeathDateParts(updated);
+    const combined = `${updated.dd}/${updated.mm}/${updated.yyyy}`;
+    setFormData(prev => ({ ...prev, deathDate: combined }));
+  };
 
   // Synchronize Date parts for boxed input
   const parseDateParts = (str) => {
@@ -472,15 +480,15 @@ export const FamilyForm = ({
   return (
     <div className="max-w-5xl mx-auto my-6 px-2 sm:px-4">
       {/* Outer Paper Sheet Canvas Matching Image replica */}
-      <form 
-        onSubmit={handleSubmit} 
+      <form
+        onSubmit={handleSubmit}
         className="bg-white text-[#0F2C59] p-4 sm:p-8 rounded-lg shadow-2xl border-2 border-[#0F2C59] relative overflow-hidden font-serif leading-snug"
       >
         {/* Top Right Decorative Diagonal Green Corner Accent */}
-        <svg 
-          className="absolute top-0 right-0 w-64 sm:w-80 h-28 sm:h-32 pointer-events-none z-10" 
-          viewBox="0 0 320 128" 
-          fill="none" 
+        <svg
+          className="absolute top-0 right-0 w-64 sm:w-80 h-28 sm:h-32 pointer-events-none z-10"
+          viewBox="0 0 320 128"
+          fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <polygon points="120,0 320,0 320,80 180,0" fill="#1B8A44" />
@@ -489,7 +497,7 @@ export const FamilyForm = ({
 
         {/* Top Header Branding Block */}
         <div className="flex flex-col sm:flex-row items-center justify-between border-b-2 border-[#0F2C59] pb-4 mb-4 gap-3">
-          
+
           {/* Circular Crest Logo Left */}
           <div className="w-20 h-20 flex-shrink-0 flex items-center justify-center border-2 border-[#0F2C59] rounded-full p-1 bg-white shadow-xs overflow-hidden">
             {customLogo ? (
@@ -505,9 +513,9 @@ export const FamilyForm = ({
           {/* Centered Main Title Banner */}
           <div className="text-center flex-1 px-2">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0F2C59] tracking-tight mb-1 font-serif">
-              {foundationName}
+              {formTitle}
             </h1>
-            <p className="text-xs sm:text-sm font-semibold text-black">
+            <p className="text-xs sm:text-sm font-semibold text-black mb-1">
               {address}
             </p>
           </div>
@@ -516,26 +524,9 @@ export const FamilyForm = ({
           <div className="w-20 hidden sm:block"></div>
         </div>
 
-        {/* Form Title Banner / Heading */}
-        <div className="text-center my-4">
-          <span className="inline-block bg-[#0F2C59] text-white font-extrabold px-6 py-1.5 rounded-md border-2 border-[#1B8A44] text-xs sm:text-sm font-serif shadow-xs tracking-wide">
-            {formTitle}
-          </span>
-        </div>
-
         {/* Top Metadata Section */}
         <div className="space-y-3 mb-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-1.5 flex-1 w-full sm:w-auto">
-              <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm">সূত্র :</label>
-              <input
-                type="text"
-                value={formData.refNo}
-                onChange={(e) => handleInputChange('refNo', e.target.value)}
-                className="w-full max-w-xs bg-transparent border-b border-dotted border-black px-2 py-0.5 font-sans font-medium text-xs text-black focus:outline-hidden focus:border-solid focus:border-[#1B8A44]"
-              />
-            </div>
-
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-end gap-3">
             <div className="flex items-center gap-2">
               <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm">তারিখ :</label>
               <div className="flex items-center gap-2">
@@ -567,12 +558,15 @@ export const FamilyForm = ({
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-1.5">
               <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm">সদস্য নং–</label>
-              <input
-                type="text"
-                value={formData.memberNo}
-                onChange={(e) => handleInputChange('memberNo', e.target.value)}
-                className="w-32 bg-white border border-black rounded-xs px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden"
-              />
+              <div className="flex items-center border border-black rounded-xs bg-white overflow-hidden">
+                <span className="bg-gray-100 px-2 py-0.5 border-r border-black font-mono font-bold text-black text-xs">OMSKP-</span>
+                <input
+                  type="text"
+                  value={formData.memberNo ? formData.memberNo.replace('OMSKP-', '') : ''}
+                  onChange={(e) => handleInputChange('memberNo', e.target.value)}
+                  className="w-20 px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden"
+                />
+              </div>
             </div>
 
             {/* External Member Checkbox Field */}
@@ -604,7 +598,7 @@ export const FamilyForm = ({
 
         {/* Numbered Input Form Section */}
         <div className="space-y-3.5 text-xs text-black">
-          
+
           {/* ১. নাম & পেশা */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-baseline">
             <div className="md:col-span-2 flex items-baseline">
@@ -848,7 +842,7 @@ export const FamilyForm = ({
             </div>
           </div>
 
-          {/* ৮. জন্ম সনদ & পাসপোর্ট নং */}
+          {/* ৮. জন্ম সনদ & মৃত্যু তারিখ */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-baseline">
             <div className="flex items-baseline">
               <label className="font-bold w-32 flex-shrink-0 text-black">৮. জন্ম সনদ :</label>
@@ -859,13 +853,31 @@ export const FamilyForm = ({
                 className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 font-mono text-black focus:outline-hidden"
               />
             </div>
-            <div className="flex items-baseline">
-              <label className="font-bold w-24 flex-shrink-0 text-black">পাসপোর্ট নং :</label>
+            <div className="flex items-center gap-1 flex-wrap">
+              <label className="font-bold w-24 flex-shrink-0 text-black">মৃত্যু তারিখ :</label>
+              <span className="text-[11px] text-black">দিন :</span>
               <input
                 type="text"
-                value={formData.passportNo}
-                onChange={(e) => handleInputChange('passportNo', e.target.value)}
-                className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 font-mono text-black focus:outline-hidden"
+                maxLength={2}
+                value={deathDateParts.dd}
+                onChange={(e) => handleDeathDatePartChange('dd', e.target.value)}
+                className="w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+              />
+              <span className="text-[11px] ml-1 text-black">মাস :</span>
+              <input
+                type="text"
+                maxLength={2}
+                value={deathDateParts.mm}
+                onChange={(e) => handleDeathDatePartChange('mm', e.target.value)}
+                className="w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+              />
+              <span className="text-[11px] ml-1 text-black">বছর :</span>
+              <input
+                type="text"
+                maxLength={4}
+                value={deathDateParts.yyyy}
+                onChange={(e) => handleDeathDatePartChange('yyyy', e.target.value)}
+                className="w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
               />
             </div>
           </div>
@@ -921,13 +933,13 @@ export const FamilyForm = ({
             <thead>
               <tr className="border-b border-black font-bold text-black bg-slate-50/50">
                 <th className="border border-black p-1.5 w-10">ক্রমিক নং</th>
-                <th className="border border-black p-1.5 min-w-[220px] sm:min-w-[240px]">নাম</th>
+                <th className="border border-black p-1.5 min-w-[160px] sm:min-w-[180px]">নাম</th>
                 <th className="border border-black p-1.5 w-28">জন্ম তারিখ<br /><span className="text-[9px] font-normal">(দিন/মাস/বছর)</span></th>
                 <th className="border border-black p-1.5 w-20">রক্তের গ্রুপ</th>
                 <th className="border border-black p-1.5 min-w-[160px]">রক্তদানের তারিখ<br /><span className="text-[9px] font-normal">(একাধিক তারিখ)</span></th>
                 <th className="border border-black p-1.5 min-w-[140px]">শিক্ষা প্রতিষ্ঠান/শ্রেণি/পেশা</th>
                 <th className="border border-black p-1.5 w-28">সম্পর্ক<br /><span className="text-[9px] font-normal">(স্ত্রী/পুত্র/কন্যা ইত্যাদি)</span></th>
-                <th className="border border-black p-1.5 min-w-[120px]">ঠিকানা</th>
+                <th className="border border-black p-1.5 min-w-[120px]">NID</th>
                 <th className="border border-black p-1.5 min-w-[130px]">বিশেষ তথ্য<br /><span className="text-[9px] font-normal">(রোগী, প্রবাসী, প্রতিবন্ধী, পৌষ্য)</span></th>
                 <th className="border border-black p-1.5 w-10 print:hidden">মুছুন</th>
               </tr>
@@ -1032,9 +1044,9 @@ export const FamilyForm = ({
                   <td className="border border-black p-1">
                     <input
                       type="text"
-                      value={member.address}
-                      onChange={(e) => handleMemberChange(idx, 'address', e.target.value)}
-                      className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden"
+                      value={member.nid || member.address || ''}
+                      onChange={(e) => handleMemberChange(idx, 'nid', e.target.value)}
+                      className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden font-mono text-center"
                     />
                   </td>
                   <td className="border border-black p-1">

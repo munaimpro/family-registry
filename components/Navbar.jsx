@@ -5,12 +5,12 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession, signOut } from '../lib/auth-client';
 import { getAppSettings } from '../lib/storage';
-import { 
+import {
   Home,
-  Search, 
-  ShieldCheck, 
-  PlusCircle, 
-  Download, 
+  Search,
+  ShieldCheck,
+  PlusCircle,
+  Download,
   Upload,
   HeartHandshake,
   Menu,
@@ -72,9 +72,9 @@ export const Navbar = ({
 
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between py-2.5 sm:py-3.5 gap-2">
-            
+
             {/* Logo Brand Title */}
-            <Link 
+            <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-2.5 sm:gap-3.5 group min-w-0"
@@ -94,7 +94,7 @@ export const Navbar = ({
                   {appTitle}
                 </h1>
                 <p className="text-[10px] sm:text-xs text-emerald-200 font-sans truncate">
-                  {foundationName} • {address}
+                  {address}
                 </p>
               </div>
             </Link>
@@ -138,11 +138,10 @@ export const Navbar = ({
             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
               <Link
                 href="/"
-                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
-                  pathname === '/'
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                }`}
+                  }`}
               >
                 <Home size={15} />
                 <span>হোম</span>
@@ -150,14 +149,13 @@ export const Navbar = ({
 
               <Link
                 href="/member"
-                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
-                  pathname === '/member'
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/member'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                }`}
+                  }`}
               >
                 <Search size={15} />
-                <span>অনুসন্ধান ও তালিকা</span>
+                <span>রক্তদাতা খুঁজুন</span>
                 {recordCount > 0 && (
                   <span className="ml-0.5 bg-[#0F2C59] text-[#62C255] text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.5 rounded-full font-mono font-bold border border-[#1B8A44]">
                     {recordCount}
@@ -167,11 +165,10 @@ export const Navbar = ({
 
               <Link
                 href="/new-form"
-                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
-                  pathname === '/new-form'
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/new-form'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                }`}
+                  }`}
               >
                 <PlusCircle size={15} />
                 <span>নতুন ইনপুট ফরম</span>
@@ -179,11 +176,10 @@ export const Navbar = ({
 
               <Link
                 href="/admin"
-                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
-                  pathname === '/admin'
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                }`}
+                  }`}
               >
                 <ShieldCheck size={15} />
                 <span>অ্যাডমিন ড্যাশবোর্ড</span>
@@ -191,11 +187,10 @@ export const Navbar = ({
 
               <Link
                 href="/admin/profile"
-                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
-                  pathname === '/admin/profile'
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin/profile'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                }`}
+                  }`}
               >
                 <User size={15} />
                 <span>প্রোফাইল</span>
@@ -203,11 +198,10 @@ export const Navbar = ({
 
               <Link
                 href="/admin/settings"
-                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
-                  pathname === '/admin/settings'
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin/settings'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                }`}
+                  }`}
               >
                 <Settings size={15} />
                 <span>সেটিংস</span>
@@ -251,11 +245,10 @@ export const Navbar = ({
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-between transition min-h-[44px] ${
-                  pathname === '/'
+                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-between transition min-h-[44px] ${pathname === '/'
                     ? 'bg-[#1B8A44] text-white shadow-md'
                     : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-2.5">
                   <Home size={18} />
@@ -266,11 +259,10 @@ export const Navbar = ({
               <Link
                 href="/member"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-between transition min-h-[44px] ${
-                  pathname === '/member'
+                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-between transition min-h-[44px] ${pathname === '/member'
                     ? 'bg-[#1B8A44] text-white shadow-md'
                     : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-2.5">
                   <Search size={18} />
@@ -286,11 +278,10 @@ export const Navbar = ({
               <Link
                 href="/new-form"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${
-                  pathname === '/new-form'
+                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/new-form'
                     ? 'bg-[#1B8A44] text-white shadow-md'
                     : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <PlusCircle size={18} />
                 <span>নতুন তথ্য ইনপুট ফরম</span>
@@ -299,11 +290,10 @@ export const Navbar = ({
               <Link
                 href="/admin"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${
-                  pathname === '/admin'
+                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin'
                     ? 'bg-[#1B8A44] text-white shadow-md'
                     : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <ShieldCheck size={18} />
                 <span>অ্যাডমিন ড্যাশবোর্ড</span>
@@ -312,11 +302,10 @@ export const Navbar = ({
               <Link
                 href="/admin/profile"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${
-                  pathname === '/admin/profile'
+                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin/profile'
                     ? 'bg-[#1B8A44] text-white shadow-md'
                     : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <User size={18} />
                 <span>প্রোফাইল (Profile)</span>
@@ -325,11 +314,10 @@ export const Navbar = ({
               <Link
                 href="/admin/settings"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${
-                  pathname === '/admin/settings'
+                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin/settings'
                     ? 'bg-[#1B8A44] text-white shadow-md'
                     : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <Settings size={18} />
                 <span>সেটিংস (Settings)</span>
@@ -376,9 +364,8 @@ export const Navbar = ({
         <div className="grid grid-cols-6 h-14">
           <Link
             href="/"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
-              pathname === '/' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-            }`}
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+              }`}
           >
             <Home size={15} />
             <span>হোম</span>
@@ -386,9 +373,8 @@ export const Navbar = ({
 
           <Link
             href="/member"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
-              pathname === '/member' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-            }`}
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/member' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+              }`}
           >
             <Search size={15} />
             <span>তালিকা</span>
@@ -396,9 +382,8 @@ export const Navbar = ({
 
           <Link
             href="/new-form"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
-              pathname === '/new-form' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-            }`}
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/new-form' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+              }`}
           >
             <PlusCircle size={15} />
             <span>নতুন ফরম</span>
@@ -406,9 +391,8 @@ export const Navbar = ({
 
           <Link
             href="/admin"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
-              pathname === '/admin' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-            }`}
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/admin' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+              }`}
           >
             <ShieldCheck size={15} />
             <span>অ্যাডমিন</span>
@@ -416,9 +400,8 @@ export const Navbar = ({
 
           <Link
             href="/admin/profile"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
-              pathname === '/admin/profile' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-            }`}
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/admin/profile' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+              }`}
           >
             <User size={15} />
             <span>প্রোফাইল</span>
@@ -426,9 +409,8 @@ export const Navbar = ({
 
           <Link
             href="/admin/settings"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
-              pathname === '/admin/settings' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-            }`}
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/admin/settings' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+              }`}
           >
             <Settings size={15} />
             <span>সেটিংস</span>
