@@ -18,7 +18,8 @@ import {
   LogIn,
   User,
   Settings,
-  LogOut
+  LogOut,
+  UserPlus
 } from 'lucide-react';
 
 export const Navbar = ({
@@ -132,10 +133,10 @@ export const Navbar = ({
 
           {/* Navigation Tabs (Desktop view) */}
           <div className="hidden md:flex overflow-x-auto items-center justify-between gap-1.5 sm:gap-2 border-t border-white/10 py-2 scrollbar-none max-w-full">
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
               <Link
                 href="/"
-                className={`px-3 sm:px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
                   pathname === '/'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
@@ -147,7 +148,7 @@ export const Navbar = ({
 
               <Link
                 href="/member"
-                className={`px-3 sm:px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
                   pathname === '/member'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
@@ -164,7 +165,7 @@ export const Navbar = ({
 
               <Link
                 href="/new-form"
-                className={`px-3 sm:px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
                   pathname === '/new-form'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
@@ -176,7 +177,7 @@ export const Navbar = ({
 
               <Link
                 href="/admin"
-                className={`px-3 sm:px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
                   pathname === '/admin'
                     ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
                     : 'text-emerald-100 hover:bg-white/10 hover:text-white'
@@ -185,50 +186,59 @@ export const Navbar = ({
                 <ShieldCheck size={15} />
                 <span>অ্যাডমিন ড্যাশবোর্ড</span>
               </Link>
+
+              <Link
+                href="/admin/profile"
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
+                  pathname === '/admin/profile'
+                    ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                    : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                }`}
+              >
+                <User size={15} />
+                <span>প্রোফাইল</span>
+              </Link>
+
+              <Link
+                href="/admin/settings"
+                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
+                  pathname === '/admin/settings'
+                    ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                    : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                }`}
+              >
+                <Settings size={15} />
+                <span>সেটিংস</span>
+              </Link>
             </div>
 
-            {/* Auth Menu Items (Desktop) */}
+            {/* Auth Buttons */}
             <div className="flex items-center gap-1.5">
               {!isLoggedIn ? (
-                <Link
-                  href="/signin"
-                  className={`px-3 sm:px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs`}
-                >
-                  <LogIn size={15} />
-                  <span>লগইন (Sign In)</span>
-                </Link>
-              ) : (
                 <div className="flex items-center gap-1.5">
                   <Link
-                    href="/admin/profile"
-                    className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
-                      pathname === '/admin/profile'
-                        ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                        : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                    }`}
+                    href="/signin"
+                    className={`px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs`}
                   >
-                    <User size={15} />
-                    <span>প্রোফাইল</span>
+                    <LogIn size={15} />
+                    <span>লগইন</span>
                   </Link>
                   <Link
-                    href="/admin/settings"
-                    className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${
-                      pathname === '/admin/settings'
-                        ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                        : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                    }`}
+                    href="/signup"
+                    className={`px-3 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] bg-white/10 hover:bg-white/20 text-white border border-white/20`}
                   >
-                    <Settings size={15} />
-                    <span>সেটিংস</span>
+                    <UserPlus size={15} />
+                    <span>রেজিস্ট্রেশন</span>
                   </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="px-3 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] bg-rose-600/80 hover:bg-rose-700 text-white cursor-pointer"
-                  >
-                    <LogOut size={15} />
-                    <span>লগআউট</span>
-                  </button>
                 </div>
+              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] bg-rose-600/80 hover:bg-rose-700 text-white cursor-pointer shadow-xs"
+                >
+                  <LogOut size={15} />
+                  <span>লগআউট</span>
+                </button>
               )}
             </div>
           </div>
@@ -297,54 +307,62 @@ export const Navbar = ({
                 <span>অ্যাডমিন ড্যাশবোর্ড</span>
               </Link>
 
+              <Link
+                href="/admin/profile"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${
+                  pathname === '/admin/profile'
+                    ? 'bg-[#1B8A44] text-white shadow-md'
+                    : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                }`}
+              >
+                <User size={18} />
+                <span>প্রোফাইল (Profile)</span>
+              </Link>
+
+              <Link
+                href="/admin/settings"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${
+                  pathname === '/admin/settings'
+                    ? 'bg-[#1B8A44] text-white shadow-md'
+                    : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                }`}
+              >
+                <Settings size={18} />
+                <span>সেটিংস (Settings)</span>
+              </Link>
+
               {!isLoggedIn ? (
-                <Link
-                  href="/signin"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-11 bg-emerald-600 text-white shadow-md"
-                >
-                  <LogIn size={18} />
-                  <span>লগইন (Sign In)</span>
-                </Link>
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <Link
+                    href="/signin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition min-h-[44px] bg-emerald-600 text-white shadow-md"
+                  >
+                    <LogIn size={18} />
+                    <span>লগইন (Sign In)</span>
+                  </Link>
+                  <Link
+                    href="/signup"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition min-h-[44px] bg-white/10 text-white border border-white/20"
+                  >
+                    <UserPlus size={18} />
+                    <span>রেজিস্ট্রেশন</span>
+                  </Link>
+                </div>
               ) : (
-                <>
-                  <Link
-                    href="/admin/profile"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${
-                      pathname === '/admin/profile'
-                        ? 'bg-[#1B8A44] text-white shadow-md'
-                        : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                    }`}
-                  >
-                    <User size={18} />
-                    <span>প্রোফাইল (Profile)</span>
-                  </Link>
-
-                  <Link
-                    href="/admin/settings"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${
-                      pathname === '/admin/settings'
-                        ? 'bg-[#1B8A44] text-white shadow-md'
-                        : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                    }`}
-                  >
-                    <Settings size={18} />
-                    <span>সেটিংস (Settings)</span>
-                  </Link>
-
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      handleLogout();
-                    }}
-                    className="w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] bg-rose-600/90 text-white shadow-md cursor-pointer"
-                  >
-                    <LogOut size={18} />
-                    <span>লগআউট (Logout)</span>
-                  </button>
-                </>
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className="w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] bg-rose-600/90 text-white shadow-md cursor-pointer mt-1"
+                >
+                  <LogOut size={18} />
+                  <span>লগআউট (Logout)</span>
+                </button>
               )}
             </div>
           )}
@@ -353,68 +371,66 @@ export const Navbar = ({
 
       {/* Fixed Mobile Bottom Navigation Bar (Phone & Tablet < 768px) */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0F2C59] border-t-2 border-[#1B8A44] md:hidden shadow-2xl backdrop-blur-md bg-opacity-95">
-        <div className="grid grid-cols-5 h-14">
+        <div className="grid grid-cols-6 h-14">
           <Link
             href="/"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
               pathname === '/' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
             }`}
           >
-            <Home size={16} />
+            <Home size={15} />
             <span>হোম</span>
           </Link>
 
           <Link
             href="/member"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
               pathname === '/member' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
             }`}
           >
-            <Search size={16} />
-            <span>ডিরেক্টরি</span>
+            <Search size={15} />
+            <span>তালিকা</span>
           </Link>
 
           <Link
             href="/new-form"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
               pathname === '/new-form' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
             }`}
           >
-            <PlusCircle size={16} />
+            <PlusCircle size={15} />
             <span>নতুন ফরম</span>
           </Link>
 
           <Link
             href="/admin"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
               pathname === '/admin' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
             }`}
           >
-            <ShieldCheck size={16} />
+            <ShieldCheck size={15} />
             <span>অ্যাডমিন</span>
           </Link>
 
-          {!isLoggedIn ? (
-            <Link
-              href="/signin"
-              className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
-                pathname === '/signin' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-              }`}
-            >
-              <LogIn size={16} />
-              <span>লগইন</span>
-            </Link>
-          ) : (
-            <Link
-              href="/admin/settings"
-              className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition ${
-                pathname === '/admin/settings' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-              }`}
-            >
-              <Settings size={16} />
-              <span>সেটিংস</span>
-            </Link>
-          )}
+          <Link
+            href="/admin/profile"
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
+              pathname === '/admin/profile' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            <User size={15} />
+            <span>প্রোফাইল</span>
+          </Link>
+
+          <Link
+            href="/admin/settings"
+            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${
+              pathname === '/admin/settings' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            <Settings size={15} />
+            <span>সেটিংস</span>
+          </Link>
         </div>
       </nav>
     </>
