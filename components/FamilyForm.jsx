@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { generateNextFormNumber, getAppSettings } from '../lib/storage';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import {
   Plus,
   Trash2,
@@ -402,7 +402,7 @@ export const FamilyForm = ({
         }
       ],
     });
-    toast.info('নমুনা তথ্য স্বয়ংক্রিয়ভাবে ফর্মের ঘরে পূরণ করা হয়েছে!');
+    toast.success('নমুনা তথ্য ফর্মের ঘরে পূরণ করা হয়েছে!');
   };
 
   // Family Members Table Row Handlers
@@ -433,12 +433,12 @@ export const FamilyForm = ({
       };
       return { ...prev, members: [...prev.members, newMember] };
     });
-    toast.info('নতুন সদস্য সারি যুক্ত করা হয়েছে');
+    toast.success('নতুন সদস্য সারি যুক্ত করা হয়েছে');
   };
 
   const removeMemberRow = (index) => {
     if (formData.members.length <= 1) {
-      toast.warning('অন্তত ১ জন সদস্যের তথ্য রাখুন');
+      toast.error('অন্তত ১ জন সদস্যের তথ্য রাখুন');
       return;
     }
     setFormData(prev => {

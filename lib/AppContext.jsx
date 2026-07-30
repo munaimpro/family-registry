@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getStoredRecords, INITIAL_SAMPLE_RECORDS } from './storage';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 const AppContext = createContext(undefined);
 
@@ -25,7 +25,7 @@ export const AppProvider = ({ children }) => {
 
   const handleExportBackup = () => {
     if (records.length === 0) {
-      toast.warning('ব্যাকআপের জন্য কোন রেকর্ড পাওয়া যায়নি');
+      toast.error('ব্যাকআপের জন্য কোন রেকর্ড পাওয়া যায়নি');
       return;
     }
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(records, null, 2));

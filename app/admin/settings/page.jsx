@@ -6,6 +6,7 @@ import { useSession } from '../../../lib/auth-client';
 import { getAppSettings, saveAppSettings } from '../../../lib/storage';
 import { Settings, Upload, CheckCircle2, ArrowLeft, Trash2, HeartHandshake } from 'lucide-react';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 export default function AdminSettingsPage() {
   const router = useRouter();
@@ -16,8 +17,7 @@ export default function AdminSettingsPage() {
   const [foundationName, setFoundationName] = useState(() => settings.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ');
   const [formTitle, setFormTitle] = useState(() => settings.formTitle || 'পরিবার শুমারি ও তথ্য নিবন্ধন ফরম');
   const [address, setAddress] = useState(() => settings.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
+
 
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
@@ -33,11 +33,10 @@ export default function AdminSettingsPage() {
       const result = uploadEvent.target?.result;
       if (typeof result === 'string') {
         setLogo(result);
-        setError('');
       }
     };
     reader.onerror = () => {
-      setError('ফাইল পড়তে সমস্যা হয়েছে।');
+      toast.error('ফাইল পড়তে সমস্যা হয়েছে।');
     };
     reader.readAsDataURL(file);
   };
@@ -46,12 +45,9 @@ export default function AdminSettingsPage() {
     e.preventDefault();
     try {
       saveAppSettings({ logo, appTitle, foundationName, formTitle, address });
-      setSuccess(true);
-      setTimeout(() => {
-        setSuccess(false);
-      }, 3000);
+      toast.success('সেটিংস সফলভাবে সংরক্ষিত হয়েছে!');
     } catch (err) {
-      setError('সেটিংস সংরক্ষণ করতে সমস্যা হয়েছে।');
+      toast.error('সেটিংস সংরক্ষণ করতে সমস্যা হয়েছে।');
     }
   };
 
@@ -99,18 +95,6 @@ export default function AdminSettingsPage() {
           </div>
 
           <div className="p-6 sm:p-8 space-y-6">
-            {error && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
-                {error}
-              </div>
-            )}
-
-            {success && (
-              <div className="p-3 bg-emerald-50 border border-emerald-200 text-[#1B8A44] text-xs rounded-xl font-medium flex items-center gap-2">
-                <CheckCircle2 size={16} /> সেটিংস সফলভাবে সংরক্ষিত হয়েছে! সাইট ও ইনপুট ফরে লোগো আপডেট করা হয়েছে।
-              </div>
-            )}
-
             <form onSubmit={handleSave} className="space-y-6">
               <div>
                 <label className="block text-sm font-bold text-slate-800 mb-2">

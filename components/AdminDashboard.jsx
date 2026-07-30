@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { deleteRecordById, saveSingleRecord, saveRecords, INITIAL_SAMPLE_RECORDS } from '../lib/storage';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { 
   Users, 
   Heart, 
@@ -80,7 +80,7 @@ export const AdminDashboard = ({
   // Export CSV
   const exportToCSV = () => {
     if (records.length === 0) {
-      toast.warning('ডাউনলোডের জন্য কোন ডেটা নেই');
+      toast('ডাউনলোডের জন্য কোন ডেটা নেই', { icon: '⚠️' });
       return;
     }
 
@@ -126,7 +126,7 @@ export const AdminDashboard = ({
     if (window.confirm('আপনি কি নিশ্চিত যে ডেমো স্যাম্পল ডেটাতে রিসেট করতে চান? বর্তমান সব পরিবর্তন মুছে যাবে।')) {
       saveRecords(INITIAL_SAMPLE_RECORDS);
       onRefreshData();
-      toast.info('স্যাম্পল ডেটায় রিসেট সম্পূর্ণ হয়েছে');
+      toast.success('স্যাম্পল ডেটায় রিসেট সম্পূর্ণ হয়েছে');
     }
   };
 

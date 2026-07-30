@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { saveSingleRecord } from '../../lib/storage';
 import { useApp } from '../../lib/AppContext';
 import { FamilyForm } from '../../components/FamilyForm';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 function NewFormContent() {
   const router = useRouter();

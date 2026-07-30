@@ -6,6 +6,7 @@ import { useSession, signOut, changePassword } from '../../../lib/auth-client';
 import { getUserProfile, saveUserProfile } from '../../../lib/storage';
 import { User, Lock, Shield, LogOut, KeyRound, CheckCircle2, ArrowLeft, Upload, Settings } from 'lucide-react';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 export default function AdminProfilePage() {
   const router = useRouter();
@@ -20,7 +21,6 @@ export default function AdminProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [passwordSuccess, setPasswordSuccess] = useState(false);
-  const [avatarSuccess, setAvatarSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const activeAvatar = uploadedAvatar || storedProfile.avatar || '';
@@ -41,8 +41,7 @@ export default function AdminProfilePage() {
         setUploadedAvatar(result);
         if (userEmail) {
           saveUserProfile(userEmail, { avatar: result });
-          setAvatarSuccess(true);
-          setTimeout(() => setAvatarSuccess(false), 3000);
+          toast.success('প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে!');
         }
       }
     };
@@ -74,15 +73,15 @@ export default function AdminProfilePage() {
       });
 
       if (error) {
-        setPasswordError(error.message || 'পাসওয়ার্ড পরিবর্তন করতে ব্যর্থ হয়েছে। বর্তমান পাসওয়ার্ড যাচাই করুন।');
+        toast.error(error.message || 'পাসওয়ার্ড পরিবর্তন করতে ব্যর্থ হয়েছে। বর্তমান পাসওয়ার্ড যাচাই করুন।');
       } else {
-        setPasswordSuccess(true);
+        toast.success('পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে!');
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
       }
     } catch (err) {
-      setPasswordError('একটি অপ্রত্যাশিত ত্রুটি ঘটেছে।');
+      toast.error('একটি অপ্রত্যাশিত ত্রুটি ঘটেছে।');
     } finally {
       setLoading(false);
     }
@@ -156,9 +155,6 @@ export default function AdminProfilePage() {
               <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/20 text-emerald-300 rounded-lg text-xs font-semibold border border-emerald-400/30">
                 <Shield size={13} /> সিস্টেম অ্যাডমিন
               </div>
-              {avatarSuccess && (
-                <p className="text-xs text-emerald-400 font-semibold pt-1">প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে!</p>
-              )}
             </div>
           </div>
 
@@ -166,18 +162,6 @@ export default function AdminProfilePage() {
             <h2 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
               <KeyRound size={18} className="text-[#1B8A44]" /> পাসওয়ার্ড পরিবর্তন করুন (Change Password)
             </h2>
-
-            {passwordError && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
-                {passwordError}
-              </div>
-            )}
-
-            {passwordSuccess && (
-              <div className="p-3 bg-emerald-50 border border-emerald-200 text-[#1B8A44] text-xs rounded-xl font-medium flex items-center gap-2">
-                <CheckCircle2 size={16} /> পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে!
-              </div>
-            )}
 
             <form onSubmit={handlePasswordChange} className="space-y-4 max-w-lg">
               <div>

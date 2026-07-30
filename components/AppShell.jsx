@@ -5,7 +5,7 @@ import { AppProvider, useApp } from '../lib/AppContext';
 import { Navbar } from './Navbar';
 import { PrintableForm } from './PrintableForm';
 import { ImportModal } from './ImportModal';
-import { ToastContainer } from 'react-toastify';
+import { Toaster } from 'react-hot-toast';
 import { HeartHandshake } from 'lucide-react';
 import { getAppSettings } from '../lib/storage';
 
@@ -48,18 +48,7 @@ function ShellContent({ children }) {
     <div className="min-h-screen bg-[#F4F6F4] text-slate-800 flex flex-col font-sans selection:bg-[#1B8A44] selection:text-white">
       {/* Toast Notifications */}
       {mounted && (
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
+        <Toaster position="top-right" />
       )}
 
       {/* Main Navbar with Next.js App Router Navigation */}

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { saveRecords, getStoredRecords } from '../lib/storage';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { Upload, X } from 'lucide-react';
 
 export const ImportModal = ({
@@ -24,7 +24,7 @@ export const ImportModal = ({
       try {
         const text = event.target?.result;
         setJsonInput(text);
-        toast.info('JSON ফাইল লোড হয়েছে');
+        toast.success('JSON ফাইল লোড হয়েছে');
       } catch (err) {
         toast.error('ফাইল পড়তে সমস্যা হয়েছে');
       }

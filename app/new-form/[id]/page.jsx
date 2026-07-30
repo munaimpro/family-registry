@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { saveSingleRecord, getStoredRecords } from '../../../lib/storage';
 import { useApp } from '../../../lib/AppContext';
 import { FamilyForm } from '../../../components/FamilyForm';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 export const dynamic = 'force-dynamic';
 
