@@ -228,68 +228,39 @@ export const PrintableForm = ({ record, onClose }) => {
             </div>
           </div>
 
-          {/* 4. বর্তমান ঠিকানা */}
+          {/* 4. ঠিকানা */}
           <div>
             <div className="flex flex-wrap items-baseline gap-y-1">
-              <span className="font-bold w-32 flex-shrink-0 text-black">৪. বর্তমান ঠিকানা :</span>
+              <span className="font-bold w-32 flex-shrink-0 text-black">৪. ঠিকানা :</span>
               <span className="font-semibold mr-1 text-black">বাড়ি/গ্রাম :</span>
               <span className="border-b border-dotted border-black min-w-[140px] flex-1 px-1 mr-2 text-black">
-                {record.presentAddress.village}
+                {record.presentAddress?.village || record.permanentAddress?.village || '—'}
               </span>
               <span className="font-semibold mr-1 text-black">রোড :</span>
               <span className="border-b border-dotted border-black min-w-[100px] px-1 mr-2 text-black">
-                {record.presentAddress.road || '—'}
+                {record.presentAddress?.road || record.permanentAddress?.road || '—'}
               </span>
             </div>
             <div className="flex flex-wrap items-baseline gap-y-1 mt-1 pl-32">
               <span className="font-semibold mr-1 text-black">পোঃ :</span>
               <span className="border-b border-dotted border-black min-w-[100px] px-1 mr-2 text-black">
-                {record.presentAddress.postOffice}
+                {record.presentAddress?.postOffice || record.permanentAddress?.postOffice || '—'}
               </span>
               <span className="font-semibold mr-1 text-black">থানা :</span>
               <span className="border-b border-dotted border-black min-w-[100px] px-1 mr-2 text-black">
-                {record.presentAddress.thana}
+                {record.presentAddress?.thana || record.permanentAddress?.thana || '—'}
               </span>
               <span className="font-semibold mr-1 text-black">জেলা :</span>
               <span className="border-b border-dotted border-black min-w-[100px] px-1 text-black">
-                {record.presentAddress.district}
+                {record.presentAddress?.district || record.permanentAddress?.district || '—'}
               </span>
             </div>
           </div>
 
-          {/* 5. স্থায়ী ঠিকানা */}
-          <div>
-            <div className="flex flex-wrap items-baseline gap-y-1">
-              <span className="font-bold w-32 flex-shrink-0 text-black">৫. স্থায়ী ঠিকানা :</span>
-              <span className="font-semibold mr-1 text-black">বাড়ি/গ্রাম :</span>
-              <span className="border-b border-dotted border-black min-w-[140px] flex-1 px-1 mr-2 text-black">
-                {record.permanentAddress.village}
-              </span>
-              <span className="font-semibold mr-1 text-black">রোড :</span>
-              <span className="border-b border-dotted border-black min-w-[100px] px-1 mr-2 text-black">
-                {record.permanentAddress.road || '—'}
-              </span>
-            </div>
-            <div className="flex flex-wrap items-baseline gap-y-1 mt-1 pl-32">
-              <span className="font-semibold mr-1 text-black">পোঃ :</span>
-              <span className="border-b border-dotted border-black min-w-[100px] px-1 mr-2 text-black">
-                {record.permanentAddress.postOffice}
-              </span>
-              <span className="font-semibold mr-1 text-black">থানা :</span>
-              <span className="border-b border-dotted border-black min-w-[100px] px-1 mr-2 text-black">
-                {record.permanentAddress.thana}
-              </span>
-              <span className="font-semibold mr-1 text-black">জেলা :</span>
-              <span className="border-b border-dotted border-black min-w-[100px] px-1 text-black">
-                {record.permanentAddress.district}
-              </span>
-            </div>
-          </div>
-
-          {/* 6. জন্ম তারিখ ও রক্তের গ্রুপ */}
+          {/* 5. জন্ম তারিখ ও রক্তের গ্রুপ */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-center">
             <div className="flex items-center gap-1 flex-wrap">
-              <span className="font-bold w-32 flex-shrink-0 text-black">৬. জন্ম তারিখ :</span>
+              <span className="font-bold w-32 flex-shrink-0 text-black">৫. জন্ম তারিখ :</span>
               <span className="text-[11px] text-black">দিন :</span>
               {renderDigitBoxes(dobParts.day, 2)}
               <span className="text-[11px] ml-1 text-black">মাস :</span>
@@ -313,10 +284,10 @@ export const PrintableForm = ({ record, onClose }) => {
             )}
           </div>
 
-          {/* 7. জাতীয়তা & ধর্ম */}
+          {/* 6. জাতীয়তা & ধর্ম */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-baseline">
             <div className="flex items-baseline">
-              <span className="font-bold w-32 flex-shrink-0 text-black">৭. জাতীয়তা :</span>
+              <span className="font-bold w-32 flex-shrink-0 text-black">৬. জাতীয়তা :</span>
               <span className="border-b border-dotted border-black flex-1 px-1 text-black">
                 {record.nationality || 'বাংলাদেশী'}
               </span>
@@ -329,16 +300,16 @@ export const PrintableForm = ({ record, onClose }) => {
             </div>
           </div>
 
-          {/* 8. জাতীয় পরিচয়পত্র নং (NID Box Grid) */}
+          {/* 7. জাতীয় পরিচয়পত্র নং (NID Box Grid) */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold w-32 flex-shrink-0 text-black">৮. জাতীয় পরিচয়পত্র নং :</span>
+            <span className="font-bold w-32 flex-shrink-0 text-black">৭. জাতীয় পরিচয়পত্র নং :</span>
             {renderDigitBoxes(record.nidNumber, 17)}
           </div>
 
-          {/* 9. জন্ম সনদ & পাসপোর্ট নং */}
+          {/* 8. জন্ম সনদ & পাসপোর্ট নং */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-baseline">
             <div className="flex items-baseline">
-              <span className="font-bold w-32 flex-shrink-0 text-black">৯. জন্ম সনদ :</span>
+              <span className="font-bold w-32 flex-shrink-0 text-black">৮. জন্ম সনদ :</span>
               <span className="border-b border-dotted border-black flex-1 px-1 font-mono text-black">
                 {record.birthCertificateNo || '—'}
               </span>
@@ -351,18 +322,18 @@ export const PrintableForm = ({ record, onClose }) => {
             </div>
           </div>
 
-          {/* 10. শিক্ষাগত যোগ্যতা */}
+          {/* 9. শিক্ষাগত যোগ্যতা */}
           <div className="flex items-baseline">
-            <span className="font-bold w-32 flex-shrink-0 text-black">১০. শিক্ষাগত যোগ্যতা :</span>
+            <span className="font-bold w-32 flex-shrink-0 text-black">৯. শিক্ষাগত যোগ্যতা :</span>
             <span className="border-b border-dotted border-black flex-1 px-1 text-black">
               {record.educationalQualification || '—'}
             </span>
           </div>
 
-          {/* 11. মোবাইল নম্বর (Boxed 11 Digits for Mobile & Alt Mobile) */}
+          {/* 10. মোবাইল নম্বর (Boxed 11 Digits for Mobile & Alt Mobile) */}
           <div className="space-y-1.5">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-bold w-32 flex-shrink-0 text-black">১১. মোবাইল নম্বর :</span>
+              <span className="font-bold w-32 flex-shrink-0 text-black">১০. মোবাইল নম্বর :</span>
               {renderDigitBoxes(record.mobileNumber, 11)}
             </div>
             <div className="flex items-center gap-2 flex-wrap">

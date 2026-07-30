@@ -185,22 +185,16 @@ export const FamilyForm = ({
     }
   };
 
-  const handleAddressChange = (type, subField, value) => {
+  const handleAddressChange = (subField, value) => {
     setFormData(prev => {
       const updatedAddress = {
-        ...prev[type],
+        ...(prev.presentAddress || {}),
         [subField]: value
       };
-      if (type === 'presentAddress' && sameAsPresent) {
-        return {
-          ...prev,
-          presentAddress: updatedAddress,
-          permanentAddress: { ...updatedAddress }
-        };
-      }
       return {
         ...prev,
-        [type]: updatedAddress
+        presentAddress: updatedAddress,
+        permanentAddress: { ...updatedAddress }
       };
     });
   };
@@ -680,22 +674,22 @@ export const FamilyForm = ({
             </div>
           </div>
 
-          {/* ৪. বর্তমান ঠিকানা */}
+          {/* ৪. ঠিকানা */}
           <div>
             <div className="flex flex-wrap items-baseline gap-y-1">
-              <label className="font-bold w-32 flex-shrink-0 text-black">৪. বর্তমান ঠিকানা :</label>
+              <label className="font-bold w-32 flex-shrink-0 text-black">৪. ঠিকানা :</label>
               <span className="font-semibold mr-1 text-black">বাড়ি/গ্রাম :</span>
               <input
                 type="text"
                 value={formData.presentAddress.village}
-                onChange={(e) => handleAddressChange('presentAddress', 'village', e.target.value)}
+                onChange={(e) => handleAddressChange('village', e.target.value)}
                 className="min-w-[140px] flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden"
               />
               <span className="font-semibold mr-1 text-black">রোড :</span>
               <input
                 type="text"
                 value={formData.presentAddress.road}
-                onChange={(e) => handleAddressChange('presentAddress', 'road', e.target.value)}
+                onChange={(e) => handleAddressChange('road', e.target.value)}
                 className="min-w-[90px] w-28 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden"
               />
             </div>
@@ -704,89 +698,30 @@ export const FamilyForm = ({
               <input
                 type="text"
                 value={formData.presentAddress.postOffice}
-                onChange={(e) => handleAddressChange('presentAddress', 'postOffice', e.target.value)}
+                onChange={(e) => handleAddressChange('postOffice', e.target.value)}
                 className="w-24 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden"
               />
               <span className="font-semibold mr-1 text-black">থানা :</span>
               <input
                 type="text"
                 value={formData.presentAddress.thana}
-                onChange={(e) => handleAddressChange('presentAddress', 'thana', e.target.value)}
+                onChange={(e) => handleAddressChange('thana', e.target.value)}
                 className="w-28 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden"
               />
               <span className="font-semibold mr-1 text-black">জেলা :</span>
               <input
                 type="text"
                 value={formData.presentAddress.district}
-                onChange={(e) => handleAddressChange('presentAddress', 'district', e.target.value)}
+                onChange={(e) => handleAddressChange('district', e.target.value)}
                 className="w-28 bg-transparent border-b border-dotted border-black px-2 py-0.5 text-black focus:outline-hidden"
               />
             </div>
           </div>
 
-          {/* ৫. স্থায়ী ঠিকানা */}
-          <div>
-            <div className="flex flex-wrap justify-between items-baseline mb-1">
-              <div className="flex flex-wrap items-baseline gap-y-1 flex-1">
-                <label className="font-bold w-32 flex-shrink-0 text-black">৫. স্থায়ী ঠিকানা :</label>
-                <span className="font-semibold mr-1 text-black">বাড়ি/গ্রাম :</span>
-                <input
-                  type="text"
-                  value={formData.permanentAddress.village}
-                  onChange={(e) => handleAddressChange('permanentAddress', 'village', e.target.value)}
-                  disabled={sameAsPresent}
-                  className="min-w-[140px] flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden disabled:opacity-70"
-                />
-                <span className="font-semibold mr-1 text-black">রোড :</span>
-                <input
-                  type="text"
-                  value={formData.permanentAddress.road}
-                  onChange={(e) => handleAddressChange('permanentAddress', 'road', e.target.value)}
-                  disabled={sameAsPresent}
-                  className="min-w-[90px] w-28 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden disabled:opacity-70"
-                />
-              </div>
-              <label className="text-[11px] font-sans font-medium text-black flex items-center gap-1 cursor-pointer ml-2">
-                <input
-                  type="checkbox"
-                  checked={sameAsPresent}
-                  onChange={(e) => handleToggleSameAsPresent(e.target.checked)}
-                  className="rounded text-black focus:ring-black"
-                />
-                বর্তমান ঠিকানার অনুরূপ
-              </label>
-            </div>
-            {!sameAsPresent && (
-              <div className="flex flex-wrap items-baseline gap-y-1 mt-1 pl-0 sm:pl-32">
-                <span className="font-semibold mr-1 text-black">পোঃ :</span>
-                <input
-                  type="text"
-                  value={formData.permanentAddress.postOffice}
-                  onChange={(e) => handleAddressChange('permanentAddress', 'postOffice', e.target.value)}
-                  className="w-24 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden"
-                />
-                <span className="font-semibold mr-1 text-black">থানা :</span>
-                <input
-                  type="text"
-                  value={formData.permanentAddress.thana}
-                  onChange={(e) => handleAddressChange('permanentAddress', 'thana', e.target.value)}
-                  className="w-28 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden"
-                />
-                <span className="font-semibold mr-1 text-black">জেলা :</span>
-                <input
-                  type="text"
-                  value={formData.permanentAddress.district}
-                  onChange={(e) => handleAddressChange('permanentAddress', 'district', e.target.value)}
-                  className="w-28 bg-transparent border-b border-dotted border-black px-2 py-0.5 text-black focus:outline-hidden"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* ৬. জন্ম তারিখ ও রক্তের গ্রুপ */}
+          {/* ৫. জন্ম তারিখ ও রক্তের গ্রুপ */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-center">
             <div className="flex items-center gap-1 flex-wrap">
-              <label className="font-bold w-32 flex-shrink-0 text-black">৬. জন্ম তারিখ :</label>
+              <label className="font-bold w-32 flex-shrink-0 text-black">৫. জন্ম তারিখ :</label>
               <span className="text-[11px] text-black">দিন :</span>
               <input
                 type="text"
@@ -878,10 +813,10 @@ export const FamilyForm = ({
             </div>
           </div>
 
-          {/* ৭. জাতীয়তা & ধর্ম */}
+          {/* ৬. জাতীয়তা & ধর্ম */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-baseline">
             <div className="flex items-baseline">
-              <label className="font-bold w-32 flex-shrink-0 text-black">৭. জাতীয়তা :</label>
+              <label className="font-bold w-32 flex-shrink-0 text-black">৬. জাতীয়তা :</label>
               <input
                 type="text"
                 value={formData.nationality}
@@ -900,10 +835,10 @@ export const FamilyForm = ({
             </div>
           </div>
 
-          {/* ৮. জাতীয় পরিচয়পত্র নং */}
+          {/* ৭. জাতীয় পরিচয়পত্র নং */}
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <label className="font-bold w-32 flex-shrink-0 text-black">৮. জাতীয় পরিচয়পত্র নং :</label>
+              <label className="font-bold w-32 flex-shrink-0 text-black">৭. জাতীয় পরিচয়পত্র নং :</label>
               {renderDigitInputBoxes(
                 formData.nidNumber,
                 (val) => handleInputChange('nidNumber', val),
@@ -913,10 +848,10 @@ export const FamilyForm = ({
             </div>
           </div>
 
-          {/* ৯. জন্ম সনদ & পাসপোর্ট নং */}
+          {/* ৮. জন্ম সনদ & পাসপোর্ট নং */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-baseline">
             <div className="flex items-baseline">
-              <label className="font-bold w-32 flex-shrink-0 text-black">৯. জন্ম সনদ :</label>
+              <label className="font-bold w-32 flex-shrink-0 text-black">৮. জন্ম সনদ :</label>
               <input
                 type="text"
                 value={formData.birthCertificateNo}
@@ -935,9 +870,9 @@ export const FamilyForm = ({
             </div>
           </div>
 
-          {/* ১০. শিক্ষাগত যোগ্যতা */}
+          {/* ৯. শিক্ষাগত যোগ্যতা */}
           <div className="flex items-baseline">
-            <label className="font-bold w-32 flex-shrink-0 text-black">১০. শিক্ষাগত যোগ্যতা :</label>
+            <label className="font-bold w-32 flex-shrink-0 text-black">৯. শিক্ষাগত যোগ্যতা :</label>
             <input
               type="text"
               value={formData.educationalQualification}
@@ -946,11 +881,11 @@ export const FamilyForm = ({
             />
           </div>
 
-          {/* ১১. মোবাইল নাম্বার & বিকল্প নাম্বার */}
+          {/* ১০. মোবাইল নাম্বার & বিকল্প নাম্বার */}
           <div className="space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
               <label className="font-bold w-32 flex-shrink-0 text-black">
-                ১১. মোবাইল নাম্বার <span className="text-rose-600">*</span> :
+                ১০. মোবাইল নাম্বার <span className="text-rose-600">*</span> :
               </label>
               {renderDigitInputBoxes(
                 formData.mobileNumber,
