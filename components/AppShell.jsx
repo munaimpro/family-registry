@@ -5,7 +5,7 @@ import { AppProvider, useApp } from '../lib/AppContext';
 import { Navbar } from './Navbar';
 import { PrintableForm } from './PrintableForm';
 import { ImportModal } from './ImportModal';
-import { ToastContainer } from 'react-toastify';
+import { Toaster } from 'react-hot-toast';
 import { HeartHandshake } from 'lucide-react';
 import { getAppSettings } from '../lib/storage';
 
@@ -48,18 +48,7 @@ function ShellContent({ children }) {
     <div className="min-h-screen bg-[#F4F6F4] text-slate-800 flex flex-col font-sans selection:bg-[#1B8A44] selection:text-white">
       {/* Toast Notifications */}
       {mounted && (
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
+        <Toaster position="top-center" />
       )}
 
       {/* Main Navbar with Next.js App Router Navigation */}
@@ -70,7 +59,7 @@ function ShellContent({ children }) {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 pb-20 md:pb-8">
+      <main className="flex-1 pt-[68px] lg:pt-[116px] pb-[72px] md:pb-8">
         {/* Printable Modal View Overlay */}
         {printingRecord && (
           <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 p-2 sm:p-4 md:p-8 flex items-start justify-center backdrop-blur-xs">
