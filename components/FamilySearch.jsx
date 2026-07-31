@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { searchRecords } from '../lib/storage';
-import { 
-  Search, 
-  Heart, 
-  Phone, 
-  MapPin, 
-  Users, 
-  FileText, 
-  Printer, 
-  Eye, 
-  Edit2, 
+import { searchRecords, isHeadOfAnyRecord } from '../lib/storage';
+import {
+  Search,
+  Heart,
+  Phone,
+  MapPin,
+  Users,
+  FileText,
+  Printer,
+  Eye,
+  Edit2,
   RotateCcw,
   Plus,
   User,
@@ -29,23 +29,16 @@ export const FamilySearch = ({
   onEditRecord,
   onPrintRecord,
   onAddNew,
-  initialBloodGroup = '',
 }) => {
   const [nameQuery, setNameQuery] = useState('');
   const [formNoQuery, setFormNoQuery] = useState('');
   const [generalQuery, setGeneralQuery] = useState('');
-  const [selectedBloodGroup, setSelectedBloodGroup] = useState(initialBloodGroup);
+  const [selectedBloodGroup, setSelectedBloodGroup] = useState('');
   const [filterType, setFilterType] = useState('all'); // 'all', 'external', 'regular'
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
-
-  // Sync when initialBloodGroup changes (e.g. navigated from home page)
-  useEffect(() => {
-    setSelectedBloodGroup(initialBloodGroup);
-    setCurrentPage(1);
-  }, [initialBloodGroup]);
 
   // Search logic
   const searchedRecords = searchRecords(records, {
@@ -217,32 +210,29 @@ export const FamilySearch = ({
             <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-300">
               <button
                 onClick={() => handleFilterTypeChange('all')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
-                  filterType === 'all'
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${filterType === 'all'
                     ? 'bg-[#0F2C59] text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 সকল মেম্বার
               </button>
               <button
                 onClick={() => handleFilterTypeChange('external')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${
-                  filterType === 'external'
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'external'
                     ? 'bg-amber-600 text-white shadow-xs'
                     : 'text-amber-800 hover:text-amber-900'
-                }`}
+                  }`}
               >
                 <span>এক্সটার্নাল মেম্বার</span>
                 <span className="text-[9px] bg-amber-800 text-white font-mono px-1 rounded uppercase">External</span>
               </button>
               <button
                 onClick={() => handleFilterTypeChange('regular')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
-                  filterType === 'regular'
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${filterType === 'regular'
                     ? 'bg-[#1B8A44] text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 রেগুলার মেম্বার
               </button>
@@ -267,17 +257,16 @@ export const FamilySearch = ({
 
           <div className="flex flex-wrap gap-1">
             {bloodGroups.map(bg => {
-              const count = records.filter(r => r.bloodGroup === bg || (r.members && r.members.some(m => m.bloodGroup === bg))).length;
+              const count = records.filter(r => r.bloodGroup === bg || (r.members && r.members.some(m => m.bloodGroup === bg && !isHeadOfAnyRecord(m.name, records, r.id)))).length;
               if (count === 0) return null;
               return (
                 <button
                   key={bg}
                   onClick={() => setSelectedBloodGroup(selectedBloodGroup === bg ? '' : bg)}
-                  className={`px-2 py-0.5 rounded text-[11px] font-bold border transition cursor-pointer ${
-                    selectedBloodGroup === bg
+                  className={`px-2 py-0.5 rounded text-[11px] font-bold border transition cursor-pointer ${selectedBloodGroup === bg
                       ? 'bg-rose-600 text-white border-rose-500 shadow-xs'
                       : 'bg-rose-50 text-rose-700 border-rose-200 hover:border-rose-400'
-                  }`}
+                    }`}
                 >
                   {bg}: {count}
                 </button>
@@ -311,6 +300,7 @@ export const FamilySearch = ({
               let matchedMember = null;
               if (query && rec.members && rec.members.length > 0) {
                 matchedMember = rec.members.find(m => {
+                  if (isHeadOfAnyRecord(m.name, records, rec.id)) return false;
                   const mName = (m.name || '').toLowerCase();
                   const mRel = (m.relation || '').toLowerCase();
                   const mMob = (m.mobileNumber || '').toLowerCase();
@@ -392,11 +382,10 @@ export const FamilySearch = ({
                             return (
                               <span
                                 key={idx}
-                                className={`px-2 py-0.5 text-[11px] rounded border font-medium ${
-                                  isThisMatched
+                                className={`px-2 py-0.5 text-[11px] rounded border font-medium ${isThisMatched
                                     ? 'bg-emerald-100 text-emerald-900 border-emerald-400 font-bold'
                                     : 'bg-slate-100 text-slate-700 border-slate-200'
-                                }`}
+                                  }`}
                               >
                                 {m.name} ({m.relation})
                               </span>
@@ -464,11 +453,10 @@ export const FamilySearch = ({
                   <button
                     key={pg}
                     onClick={() => setCurrentPage(pg)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition cursor-pointer border ${
-                      validCurrentPage === pg
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition cursor-pointer border ${validCurrentPage === pg
                         ? 'bg-[#0F2C59] text-white border-[#0F2C59] shadow-xs'
                         : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
-                    }`}
+                      }`}
                   >
                     {pg}
                   </button>
