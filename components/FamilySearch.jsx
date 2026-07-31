@@ -29,16 +29,23 @@ export const FamilySearch = ({
   onEditRecord,
   onPrintRecord,
   onAddNew,
+  initialBloodGroup = ''
 }) => {
   const [nameQuery, setNameQuery] = useState('');
   const [formNoQuery, setFormNoQuery] = useState('');
   const [generalQuery, setGeneralQuery] = useState('');
-  const [selectedBloodGroup, setSelectedBloodGroup] = useState('');
+  const [selectedBloodGroup, setSelectedBloodGroup] = useState(initialBloodGroup);
   const [filterType, setFilterType] = useState('all'); // 'all', 'external', 'regular'
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
+
+  useEffect(() => {
+    if (initialBloodGroup) {
+      setSelectedBloodGroup(initialBloodGroup);
+    }
+  }, [initialBloodGroup]);
 
   // Search logic
   const searchedRecords = searchRecords(records, {
@@ -295,16 +302,30 @@ export const FamilySearch = ({
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {paginatedRecords.map((rec) => {
-              // Check if search query matched a family member (spouse / children / heir)
               const query = (nameQuery || generalQuery).trim().toLowerCase();
               let matchedMember = null;
-              if (query && rec.members && rec.members.length > 0) {
+              if ((query || selectedBloodGroup) && rec.members && rec.members.length > 0) {
                 matchedMember = rec.members.find(m => {
                   if (isHeadOfAnyRecord(m.name, records, rec.id)) return false;
-                  const mName = (m.name || '').toLowerCase();
-                  const mRel = (m.relation || '').toLowerCase();
-                  const mMob = (m.mobileNumber || '').toLowerCase();
-                  return mName.includes(query) || mRel.includes(query) || mMob.includes(query);
+                  
+                  let matchesQuery = false;
+                  if (query) {
+                    const mName = (m.name || '').toLowerCase();
+                    const mRel = (m.relation || '').toLowerCase();
+                    const mMob = (m.mobileNumber || '').toLowerCase();
+                    matchesQuery = mName.includes(query) || mRel.includes(query) || mMob.includes(query);
+                  }
+
+                  let matchesBlood = false;
+                  if (selectedBloodGroup) {
+                    matchesBlood = m.bloodGroup === selectedBloodGroup;
+                  }
+
+                  if (query && selectedBloodGroup) return matchesQuery || matchesBlood;
+                  if (query) return matchesQuery;
+                  if (selectedBloodGroup) return matchesBlood;
+                  
+                  return false;
                 });
               }
 
