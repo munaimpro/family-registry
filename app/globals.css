@@ -1,5 +1,25 @@
 @import "tailwindcss";
 
+/* ─── Custom Breakpoint: xs (480px) ─────────────────────────────── */
+@custom-media --xs (min-width: 480px);
+
+/* ─── Navbar height CSS variable (used by mobile drawer) ────────── */
+:root {
+  --navbar-height: 68px;   /* single-row header height on mobile/tablet */
+}
+
+@media (min-width: 1024px) {  /* lg */
+  :root {
+    --navbar-height: 116px; /* two-row header height on desktop */
+  }
+}
+
+/* ─── Drawer slide-down animation ───────────────────────────────── */
+@keyframes drawerSlideIn {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(0);     }
+}
+
 /* ─── Global Font Setup ────────────────────────────────────────────── */
 /* Inter handles Latin/English glyphs; Hind Siliguri handles Bangla.   */
 /* The browser automatically picks the right font per character range. */

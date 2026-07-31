@@ -59,7 +59,7 @@ function ShellContent({ children }) {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 pt-16 md:pt-28 pb-20 md:pb-8">
+      <main className="flex-1 pt-[68px] lg:pt-[116px] pb-[72px] md:pb-8">
         {/* Printable Modal View Overlay */}
         {printingRecord && (
           <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 p-2 sm:p-4 md:p-8 flex items-start justify-center backdrop-blur-xs">
