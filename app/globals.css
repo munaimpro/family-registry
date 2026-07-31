@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
 /* ─── Custom Breakpoint: xs (480px) ─────────────────────────────── */
-@custom-media --xs (min-width: 480px);
+/* Tailwind v4: register xs as a usable breakpoint prefix (e.g. xs:flex) */
+@theme {
+  --breakpoint-xs: 480px;
+}
 
 /* ─── Navbar height CSS variable (used by mobile drawer) ────────── */
 :root {
