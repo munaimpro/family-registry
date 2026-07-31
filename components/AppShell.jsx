@@ -48,7 +48,22 @@ function ShellContent({ children }) {
     <div className="min-h-screen bg-[#F4F6F4] text-slate-800 flex flex-col font-sans selection:bg-[#1B8A44] selection:text-white">
       {/* Toast Notifications */}
       {mounted && (
-        <Toaster position="top-center" />
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: '#ffffff',
+              color: '#1e293b',
+              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+              borderRadius: '0.75rem',
+              padding: '12px 16px',
+              fontSize: '14px',
+              fontWeight: 500,
+            },
+          }}
+        />
       )}
 
       {/* Main Navbar with Next.js App Router Navigation */}
@@ -59,7 +74,7 @@ function ShellContent({ children }) {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 pt-[68px] lg:pt-[116px] pb-[72px] md:pb-8">
+      <main className="flex-1 pb-20 md:pb-8">
         {/* Printable Modal View Overlay */}
         {printingRecord && (
           <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 p-2 sm:p-4 md:p-8 flex items-start justify-center backdrop-blur-xs">
