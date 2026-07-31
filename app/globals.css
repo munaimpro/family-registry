@@ -1,6 +1,32 @@
 @import "tailwindcss";
 
+/* ─── Global Font Setup ────────────────────────────────────────────── */
+/* Inter handles Latin/English glyphs; Hind Siliguri handles Bangla.   */
+/* The browser automatically picks the right font per character range. */
 
+body {
+  /* Inter first → covers Latin; Hind Siliguri → covers Bengali */
+  font-family: var(--font-inter), var(--font-hind-siliguri), sans-serif;
+}
+
+/* Explicitly target common Bangla text elements */
+:lang(bn),
+[lang="bn"],
+.font-bangla {
+  font-family: var(--font-hind-siliguri), sans-serif;
+}
+
+/* Explicitly target common English/Latin text elements */
+.font-english,
+input,
+textarea,
+select,
+code,
+pre {
+  font-family: var(--font-inter), var(--font-hind-siliguri), sans-serif;
+}
+
+/* ─── Touch and scrollbar utilities ──────────────────────────────── */
 /* Touch and scrollbar utilities */
 .scrollbar-none {
   -ms-overflow-style: none;

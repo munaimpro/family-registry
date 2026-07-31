@@ -5,22 +5,22 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useApp } from '../lib/AppContext';
 import { getAppSettings } from '../lib/storage';
-import { 
-  Heart, 
-  Search, 
-  PlusCircle, 
-  Users, 
-  ShieldCheck, 
-  PhoneCall, 
-  Activity, 
-  Sparkles, 
-  ArrowRight, 
-  CheckCircle2, 
-  Droplet, 
-  Clock, 
-  UserPlus, 
-  HeartHandshake, 
-  Award, 
+import {
+  Heart,
+  Search,
+  PlusCircle,
+  Users,
+  ShieldCheck,
+  PhoneCall,
+  Activity,
+  Sparkles,
+  ArrowRight,
+  CheckCircle2,
+  Droplet,
+  Clock,
+  UserPlus,
+  HeartHandshake,
+  Award,
   HelpCircle,
   FileText
 } from 'lucide-react';
@@ -39,7 +39,7 @@ export default function HomePage() {
       setLogo(settings?.logo || '');
       setAppTitle(settings?.appTitle || 'স্মার্ট ডিজিটাল ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
       setFoundationName(settings?.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ');
-      setAddress(settings?.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
+      setAddress(settings?.address || 'ফইল্যাতলী, উত্তর গৌবিন্দরখীল, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম, বাংলাদেশ');
     };
     handleSettingsUpdate();
     window.addEventListener('omskp_settings_updated', handleSettingsUpdate);
@@ -48,7 +48,7 @@ export default function HomePage() {
 
   // Calculate statistics from records
   const totalFamilies = records.length;
-  
+
   // Total members including head + family members
   const totalMembers = records.reduce((acc, rec) => {
     return acc + 1 + (rec.members ? rec.members.length : 0);
@@ -85,7 +85,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans selection:bg-[#1B8A44] selection:text-white">
-      
+
       {/* 1. TOP BISMILLAH BANNER */}
       <div className="bg-[#0A1D3B] text-white py-4 px-4 text-center border-b border-[#1B8A44]/40 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/20 via-[#1B8A44]/20 to-emerald-900/20 pointer-events-none"></div>
@@ -105,9 +105,9 @@ export default function HomePage() {
       <section className="relative bg-gradient-to-b from-[#0F2C59] via-[#113366] to-[#0A1D3B] text-white pt-8 pb-16 px-4 overflow-hidden border-b-4 border-[#1B8A44]">
         {/* Background Decorative Pattern */}
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#1B8A44_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
-        
+
         <div className="max-w-6xl mx-auto relative z-10 text-center">
-          
+
           {/* Main Title: Foundation Name & Organization */}
           <div className="mb-6">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white font-serif tracking-tight leading-tight">
@@ -235,7 +235,7 @@ export default function HomePage() {
 
       {/* 4. BLOOD DONATION BENEFITS SECTION (রক্তদানের উপকারিতা) */}
       <section className="py-16 px-4 max-w-6xl mx-auto">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-1.5 bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full mb-3">
@@ -264,7 +264,7 @@ export default function HomePage() {
 
         {/* 6 Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          
+
           {/* Benefit Card 1 */}
           <div className="bg-white border-2 border-slate-200 hover:border-rose-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4 group-hover:bg-rose-600 group-hover:text-white transition">
@@ -350,7 +350,7 @@ export default function HomePage() {
       {/* 5. DIGITAL DIRECTORY SERVICES SECTION */}
       <section className="bg-white py-16 px-4 border-t border-b border-slate-200">
         <div className="max-w-6xl mx-auto">
-          
+
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-bold text-[#1B8A44] uppercase tracking-wider bg-emerald-100 px-3 py-1 rounded-full">
               আমাদের সেবাসমূহ
@@ -361,7 +361,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
+
             {/* Service 1 */}
             <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-3">
               <div className="w-14 h-14 bg-[#0F2C59] text-white rounded-2xl flex items-center justify-center mx-auto shadow-md">
