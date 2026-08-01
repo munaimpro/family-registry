@@ -2,15 +2,15 @@
 
 import React, { useState } from 'react';
 import { PrintableForm } from './PrintableForm';
-import { 
-  Printer, 
-  Phone, 
-  MapPin, 
-  Heart, 
-  Users, 
-  Briefcase, 
-  CheckCircle2, 
-  Clock, 
+import {
+  Printer,
+  Phone,
+  MapPin,
+  Heart,
+  Users,
+  Briefcase,
+  CheckCircle2,
+  Clock,
   ChevronLeft,
   Edit
 } from 'lucide-react';
@@ -46,25 +46,22 @@ export const FamilyProfile = ({
           <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-300">
             <button
               onClick={() => setActiveView('profile')}
-              className={`px-3 py-1.5 rounded-md text-xs font-bold transition cursor-pointer ${
-                activeView === 'profile' ? 'bg-[#0F2C59] text-white' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`px-3 py-1.5 rounded-md text-xs font-bold transition cursor-pointer ${activeView === 'profile' ? 'bg-[#0F2C59] text-white' : 'text-slate-600 hover:text-slate-900'
+                }`}
             >
               প্রোফাইল
             </button>
             <button
               onClick={() => setActiveView('members')}
-              className={`px-3 py-1.5 rounded-md text-xs font-bold transition cursor-pointer ${
-                activeView === 'members' ? 'bg-[#0F2C59] text-white' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`px-3 py-1.5 rounded-md text-xs font-bold transition cursor-pointer ${activeView === 'members' ? 'bg-[#0F2C59] text-white' : 'text-slate-600 hover:text-slate-900'
+                }`}
             >
               ওয়ারিশবৃন্দ ({record.members.length})
             </button>
             <button
               onClick={() => setActiveView('printable')}
-              className={`px-3 py-1.5 rounded-md text-xs font-bold transition cursor-pointer flex items-center gap-1 ${
-                activeView === 'printable' ? 'bg-[#1B8A44] text-white' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`px-3 py-1.5 rounded-md text-xs font-bold transition cursor-pointer flex items-center gap-1 ${activeView === 'printable' ? 'bg-[#1B8A44] text-white' : 'text-slate-600 hover:text-slate-900'
+                }`}
             >
               <Printer size={14} /> অফিসিয়াল ফরম
             </button>
@@ -216,15 +213,7 @@ export const FamilyProfile = ({
                         External Member
                       </span>
                     )}
-                    {record.status === 'verified' ? (
-                      <span className="px-2.5 py-0.5 bg-[#1B8A44] text-white border border-[#62C255] rounded-full text-xs font-bold flex items-center gap-1">
-                        <CheckCircle2 size={12} /> যাচাইকৃত
-                      </span>
-                    ) : (
-                      <span className="px-2.5 py-0.5 bg-amber-600 text-white rounded-full text-xs font-bold flex items-center gap-1">
-                        <Clock size={12} /> অপেক্ষমাণ
-                      </span>
-                    )}
+
                   </div>
                   <p className="text-sm text-emerald-200 font-bold mt-1 flex items-center gap-2">
                     <Briefcase size={14} /> {record.headOccupation || 'পেশা প্রদান করা হয়নি'}

@@ -3,18 +3,18 @@
 import React, { useState } from 'react';
 import { deleteRecordById, saveSingleRecord, saveRecords, INITIAL_SAMPLE_RECORDS } from '../lib/storage';
 import toast from 'react-hot-toast';
-import { 
-  Users, 
-  Heart, 
-  ShieldCheck, 
-  Download, 
-  Upload, 
-  Trash2, 
-  Edit, 
-  Printer, 
-  CheckCircle2, 
-  Clock, 
-  FileSpreadsheet, 
+import {
+  Users,
+  Heart,
+  ShieldCheck,
+  Download,
+  Upload,
+  Trash2,
+  Edit,
+  Printer,
+  CheckCircle2,
+  Clock,
+  FileSpreadsheet,
   RotateCcw,
   Search,
   Check,
@@ -58,13 +58,13 @@ export const AdminDashboard = ({
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
   // Toggle Verification Status
-  const handleToggleStatus = (record) => {
-    const newStatus = record.status === 'verified' ? 'pending' : 'verified';
-    const updated = { ...record, status: newStatus };
-    saveSingleRecord(updated);
-    onRefreshData();
-    toast.success(`স্ট্যাটাস পরিবর্তন করা হয়েছে: ${newStatus === 'verified' ? 'যাচাইকৃত' : 'অপেক্ষমাণ'}`);
-  };
+  // const handleToggleStatus = (record) => {
+  //   const newStatus = record.status === 'verified' ? 'pending' : 'verified';
+  //   const updated = { ...record, status: newStatus };
+  //   saveSingleRecord(updated);
+  //   onRefreshData();
+  //   toast.success(`স্ট্যাটাস পরিবর্তন করা হয়েছে: ${newStatus === 'verified' ? 'যাচাইকৃত' : 'অপেক্ষমাণ'}`);
+  // };
 
   // Delete Action
   const handleDelete = (id) => {
@@ -130,7 +130,7 @@ export const AdminDashboard = ({
     }
   };
 
-  const filtered = records.filter(r => 
+  const filtered = records.filter(r =>
     r.headName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     r.formNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
     r.memberNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -139,7 +139,7 @@ export const AdminDashboard = ({
 
   return (
     <div className="max-w-7xl mx-auto my-6 px-4 space-y-8">
-      
+
       {/* Top Header & Admin Tools Banner */}
       <div className="bg-[#0F2C59] text-white p-6 rounded-2xl shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b-4 border-[#1B8A44]">
         <div>
@@ -210,7 +210,7 @@ export const AdminDashboard = ({
           <div>
             <span className="text-xs text-slate-500 block mb-1 font-bold">যাচাইকৃত পরিবার</span>
             <span className="text-3xl font-black text-indigo-600 font-mono">{verifiedCount}</span>
-            <span className="text-[10px] text-slate-500 block mt-1">যাচাই এর হার {totalFamilies ? Math.round((verifiedCount/totalFamilies)*100) : 0}%</span>
+            <span className="text-[10px] text-slate-500 block mt-1">যাচাই এর হার {totalFamilies ? Math.round((verifiedCount / totalFamilies) * 100) : 0}%</span>
           </div>
           <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-200">
             <CheckCircle2 size={28} />
@@ -290,7 +290,7 @@ export const AdminDashboard = ({
               {filtered.map((rec, idx) => (
                 <tr key={rec.id} className="hover:bg-slate-50 transition">
                   <td className="p-3 text-center text-slate-500 font-mono">{idx + 1}</td>
-                  
+
                   <td className="p-3">
                     <span className="font-mono font-bold text-[#0F2C59] block">{rec.formNo}</span>
                     <span className="font-mono text-[10px] text-slate-500">
@@ -315,7 +315,7 @@ export const AdminDashboard = ({
                     {rec.members.length + 1} জন
                   </td>
 
-                  <td className="p-3">
+                  {/* <td className="p-3">
                     <button
                       onClick={() => handleToggleStatus(rec)}
                       className={`px-2.5 py-1 rounded-full text-[10px] font-bold border flex items-center gap-1 transition cursor-pointer ${
@@ -328,7 +328,7 @@ export const AdminDashboard = ({
                       {rec.status === 'verified' ? <Check size={12} /> : <Clock size={12} />}
                       {rec.status === 'verified' ? 'যাচাইকৃত' : 'অপেক্ষমাণ'}
                     </button>
-                  </td>
+                  </td> */}
 
                   <td className="p-3 text-right">
                     <div className="flex justify-end items-center gap-1.5">

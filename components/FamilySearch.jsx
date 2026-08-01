@@ -240,7 +240,6 @@ export const FamilySearch = ({
                   }`}
               >
                 <span>এক্সটার্নাল মেম্বার</span>
-                <span className="text-[9px] bg-amber-800 text-white font-mono px-1 rounded uppercase">External</span>
               </button>
               <button
                 onClick={() => handleFilterTypeChange('regular')}
