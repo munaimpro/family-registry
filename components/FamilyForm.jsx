@@ -599,11 +599,11 @@ export const FamilyForm = ({
         {/* Numbered Input Form Section */}
         <div className="space-y-3.5 text-xs text-black">
 
-          {/* ১. নাম & পেশা */}
+          {/* ১. সদস্য/সদস্যা & পেশা */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-baseline">
             <div className="md:col-span-2 flex items-baseline">
               <label className="font-bold w-32 flex-shrink-0 text-black">
-                ১. নাম <span className="text-rose-600">*</span> :
+                ১. সদস্য/সদস্যা <span className="text-rose-600">*</span> :
               </label>
               <input
                 type="text"
@@ -933,7 +933,7 @@ export const FamilyForm = ({
             <thead>
               <tr className="border-b border-black font-bold text-black bg-slate-50/50">
                 <th className="border border-black p-1.5 w-10">ক্রমিক নং</th>
-                <th className="border border-black p-1.5 min-w-[160px] sm:min-w-[180px]">নাম</th>
+                <th className="border border-black p-1.5 min-w-[160px] sm:min-w-[180px]">সদস্য/সদস্যা</th>
                 <th className="border border-black p-1.5 w-28">জন্ম তারিখ<br /><span className="text-[9px] font-normal">(দিন/মাস/বছর)</span></th>
                 <th className="border border-black p-1.5 w-20">রক্তের গ্রুপ</th>
                 <th className="border border-black p-1.5 min-w-[160px]">রক্তদানের তারিখ<br /><span className="text-[9px] font-normal">(একাধিক তারিখ)</span></th>

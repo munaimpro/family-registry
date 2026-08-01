@@ -203,10 +203,10 @@ export const PrintableForm = ({ record, onClose }) => {
 
         {/* Main Personal Info List */}
         <div className="space-y-2 text-xs text-black">
-          {/* 1. নাম & পেশা */}
+          {/* 1. সদস্য/সদস্যা & পেশা */}
           <div className="grid grid-cols-3 gap-2 items-baseline">
             <div className="col-span-2 flex items-baseline">
-              <span className="font-bold w-28 flex-shrink-0 text-black">১. নাম :</span>
+              <span className="font-bold w-28 flex-shrink-0 text-black">১. সদস্য/সদস্যা :</span>
               <div className="border-b border-dotted border-black flex-1 font-semibold px-1 text-xs text-black flex items-center gap-2 flex-wrap">
                 <span>{record.headName}</span>
               </div>
@@ -376,7 +376,7 @@ export const PrintableForm = ({ record, onClose }) => {
             <thead>
               <tr className="border-b border-black font-bold text-black bg-slate-50">
                 <th className="border border-black p-0.5 w-6">ক্রম</th>
-                <th className="border border-black p-0.5">নাম</th>
+                <th className="border border-black p-0.5">সদস্য/সদস্যা</th>
                 <th className="border border-black p-0.5 w-16">জন্ম তারিখ</th>
                 <th className="border border-black p-0.5 w-10">রক্ত</th>
                 <th className="border border-black p-0.5 w-20">রক্তদান</th>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { searchRecords, isHeadOfAnyRecord } from '../lib/storage';
 import {
   Search,
@@ -31,6 +32,7 @@ export const FamilySearch = ({
   onAddNew,
   initialBloodGroup = ''
 }) => {
+  const router = useRouter();
   const [nameQuery, setNameQuery] = useState('');
   const [formNoQuery, setFormNoQuery] = useState('');
   const [generalQuery, setGeneralQuery] = useState('');
@@ -58,7 +60,13 @@ export const FamilySearch = ({
   const handleNameChange = (val) => { setNameQuery(val); setCurrentPage(1); };
   const handleFormNoChange = (val) => { setFormNoQuery(val); setCurrentPage(1); };
   const handleGeneralChange = (val) => { setGeneralQuery(val); setCurrentPage(1); };
-  const handleBloodChange = (val) => { setSelectedBloodGroup(val); setCurrentPage(1); };
+  const handleBloodChange = (val) => {
+    setSelectedBloodGroup(val);
+    setCurrentPage(1);
+    if (val) {
+      router.push(`/member/blood-group?bloodGroup=${encodeURIComponent(val)}`);
+    }
+  };
   const handleFilterTypeChange = (val) => { setFilterType(val); setCurrentPage(1); };
 
   // Apply filterType
@@ -218,8 +226,8 @@ export const FamilySearch = ({
               <button
                 onClick={() => handleFilterTypeChange('all')}
                 className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${filterType === 'all'
-                    ? 'bg-[#0F2C59] text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[#0F2C59] text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
                   }`}
               >
                 সকল মেম্বার
@@ -227,8 +235,8 @@ export const FamilySearch = ({
               <button
                 onClick={() => handleFilterTypeChange('external')}
                 className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'external'
-                    ? 'bg-amber-600 text-white shadow-xs'
-                    : 'text-amber-800 hover:text-amber-900'
+                  ? 'bg-amber-600 text-white shadow-xs'
+                  : 'text-amber-800 hover:text-amber-900'
                   }`}
               >
                 <span>এক্সটার্নাল মেম্বার</span>
@@ -237,8 +245,8 @@ export const FamilySearch = ({
               <button
                 onClick={() => handleFilterTypeChange('regular')}
                 className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${filterType === 'regular'
-                    ? 'bg-[#1B8A44] text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[#1B8A44] text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
                   }`}
               >
                 রেগুলার মেম্বার
@@ -262,7 +270,7 @@ export const FamilySearch = ({
             {filterType === 'external' && <span className="ml-1 text-amber-700 font-bold">(কেবল External Members)</span>}
           </span>
 
-          <div className="flex flex-wrap gap-1">
+          {/* <div className="flex flex-wrap gap-1">
             {bloodGroups.map(bg => {
               const count = records.filter(r => r.bloodGroup === bg || (r.members && r.members.some(m => m.bloodGroup === bg && !isHeadOfAnyRecord(m.name, records, r.id)))).length;
               if (count === 0) return null;
@@ -279,7 +287,7 @@ export const FamilySearch = ({
                 </button>
               );
             })}
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -307,7 +315,7 @@ export const FamilySearch = ({
               if ((query || selectedBloodGroup) && rec.members && rec.members.length > 0) {
                 matchedMember = rec.members.find(m => {
                   if (isHeadOfAnyRecord(m.name, records, rec.id)) return false;
-                  
+
                   let matchesQuery = false;
                   if (query) {
                     const mName = (m.name || '').toLowerCase();
@@ -324,7 +332,7 @@ export const FamilySearch = ({
                   if (query && selectedBloodGroup) return matchesQuery || matchesBlood;
                   if (query) return matchesQuery;
                   if (selectedBloodGroup) return matchesBlood;
-                  
+
                   return false;
                 });
               }
@@ -404,8 +412,8 @@ export const FamilySearch = ({
                               <span
                                 key={idx}
                                 className={`px-2 py-0.5 text-[11px] rounded border font-medium ${isThisMatched
-                                    ? 'bg-emerald-100 text-emerald-900 border-emerald-400 font-bold'
-                                    : 'bg-slate-100 text-slate-700 border-slate-200'
+                                  ? 'bg-emerald-100 text-emerald-900 border-emerald-400 font-bold'
+                                  : 'bg-slate-100 text-slate-700 border-slate-200'
                                   }`}
                               >
                                 {m.name} ({m.relation})
@@ -475,8 +483,8 @@ export const FamilySearch = ({
                     key={pg}
                     onClick={() => setCurrentPage(pg)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition cursor-pointer border ${validCurrentPage === pg
-                        ? 'bg-[#0F2C59] text-white border-[#0F2C59] shadow-xs'
-                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                      ? 'bg-[#0F2C59] text-white border-[#0F2C59] shadow-xs'
+                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
                       }`}
                   >
                     {pg}
