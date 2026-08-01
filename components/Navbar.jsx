@@ -155,8 +155,8 @@ export const Navbar = ({
                   : 'text-emerald-100 hover:bg-white/10 hover:text-white'
                   }`}
               >
-                <Search size={15} />
-                <span>অনুসন্ধান ও তালিকা</span>
+                <Heart size={18} />
+                <span>রক্তদাতা খুজুন</span>
                 {recordCount > 0 && (
                   <span className="ml-0.5 bg-[#0F2C59] text-[#62C255] text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.5 rounded-full font-mono font-bold border border-[#1B8A44]">
                     {recordCount}
@@ -253,7 +253,7 @@ export const Navbar = ({
               >
                 <div className="flex items-center gap-2.5">
                   <Home size={18} />
-                  <span>হোম পেজ</span>
+                  <span>হোম</span>
                 </div>
               </Link>
 
