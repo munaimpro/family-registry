@@ -19,7 +19,8 @@ import {
   User,
   Settings,
   LogOut,
-  UserPlus
+  UserPlus,
+  Heart
 } from 'lucide-react';
 
 export const Navbar = ({
@@ -94,7 +95,7 @@ export const Navbar = ({
                   {appTitle}
                 </h1>
                 <p className="text-[10px] sm:text-xs text-emerald-200 font-sans truncate">
-                  {foundationName} • {address}
+                  {address}
                 </p>
               </div>
             </Link>
@@ -139,8 +140,8 @@ export const Navbar = ({
               <Link
                 href="/"
                 className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/'
-                    ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                    : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                  ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
                   }`}
               >
                 <Home size={15} />
@@ -150,8 +151,8 @@ export const Navbar = ({
               <Link
                 href="/member"
                 className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/member'
-                    ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                    : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                  ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
                   }`}
               >
                 <Search size={15} />
@@ -166,8 +167,8 @@ export const Navbar = ({
               <Link
                 href="/new-form"
                 className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/new-form'
-                    ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                    : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                  ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
                   }`}
               >
                 <PlusCircle size={15} />
@@ -177,8 +178,8 @@ export const Navbar = ({
               <Link
                 href="/admin"
                 className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin'
-                    ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                    : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                  ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
                   }`}
               >
                 <ShieldCheck size={15} />
@@ -188,8 +189,8 @@ export const Navbar = ({
               <Link
                 href="/admin/profile"
                 className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin/profile'
-                    ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                    : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                  ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
                   }`}
               >
                 <User size={15} />
@@ -199,8 +200,8 @@ export const Navbar = ({
               <Link
                 href="/admin/settings"
                 className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin/settings'
-                    ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                    : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                  ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
                   }`}
               >
                 <Settings size={15} />
@@ -246,8 +247,8 @@ export const Navbar = ({
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-between transition min-h-[44px] ${pathname === '/'
-                    ? 'bg-[#1B8A44] text-white shadow-md'
-                    : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                  ? 'bg-[#1B8A44] text-white shadow-md'
+                  : 'text-emerald-100 bg-white/5 hover:bg-white/10'
                   }`}
               >
                 <div className="flex items-center gap-2.5">
@@ -260,13 +261,13 @@ export const Navbar = ({
                 href="/member"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-between transition min-h-[44px] ${pathname === '/member'
-                    ? 'bg-[#1B8A44] text-white shadow-md'
-                    : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                  ? 'bg-[#1B8A44] text-white shadow-md'
+                  : 'text-emerald-100 bg-white/5 hover:bg-white/10'
                   }`}
               >
                 <div className="flex items-center gap-2.5">
-                  <Search size={18} />
-                  <span>পরিবার অনুসন্ধান ও তালিকা</span>
+                  <Heart size={18} />
+                  <span>রক্তদাতা খুজুন</span>
                 </div>
                 {recordCount > 0 && (
                   <span className="bg-[#0F2C59] text-[#62C255] text-xs px-2.5 py-0.5 rounded-full font-mono font-bold border border-[#1B8A44]">
@@ -279,8 +280,8 @@ export const Navbar = ({
                 href="/new-form"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/new-form'
-                    ? 'bg-[#1B8A44] text-white shadow-md'
-                    : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                  ? 'bg-[#1B8A44] text-white shadow-md'
+                  : 'text-emerald-100 bg-white/5 hover:bg-white/10'
                   }`}
               >
                 <PlusCircle size={18} />
@@ -291,8 +292,8 @@ export const Navbar = ({
                 href="/admin"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin'
-                    ? 'bg-[#1B8A44] text-white shadow-md'
-                    : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                  ? 'bg-[#1B8A44] text-white shadow-md'
+                  : 'text-emerald-100 bg-white/5 hover:bg-white/10'
                   }`}
               >
                 <ShieldCheck size={18} />
@@ -303,8 +304,8 @@ export const Navbar = ({
                 href="/admin/profile"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin/profile'
-                    ? 'bg-[#1B8A44] text-white shadow-md'
-                    : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                  ? 'bg-[#1B8A44] text-white shadow-md'
+                  : 'text-emerald-100 bg-white/5 hover:bg-white/10'
                   }`}
               >
                 <User size={18} />
@@ -315,8 +316,8 @@ export const Navbar = ({
                 href="/admin/settings"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin/settings'
-                    ? 'bg-[#1B8A44] text-white shadow-md'
-                    : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                  ? 'bg-[#1B8A44] text-white shadow-md'
+                  : 'text-emerald-100 bg-white/5 hover:bg-white/10'
                   }`}
               >
                 <Settings size={18} />
