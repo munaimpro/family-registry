@@ -282,7 +282,6 @@ export const AdminDashboard = ({
                 <th className="p-3">মোবাইল</th>
                 <th className="p-3">রক্তের গ্রুপ</th>
                 <th className="p-3">সদস্য</th>
-                <th className="p-3">স্ট্যাটাস</th>
                 <th className="p-3 text-right">অ্যাকশন</th>
               </tr>
             </thead>
