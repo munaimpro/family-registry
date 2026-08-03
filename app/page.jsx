@@ -63,8 +63,8 @@ export default function HomePage() {
     return acc + count;
   }, 0);
 
-  // External members count
-  const externalMembersCount = records.filter(r => r.isExternalMember).length;
+  // Special members count (Moholla, Blood Donor, Temporary)
+  const specialMembersCount = records.filter(r => r.isMohollaMember || r.isBloodDonorMember || r.isTemporaryMember).length;
 
   // Counts by blood group
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
@@ -169,10 +169,10 @@ export default function HomePage() {
 
             <div className="p-3 text-center border-r border-white/10 last:border-0">
               <div className="text-2xl sm:text-3xl md:text-4xl font-black text-amber-300 font-mono">
-                {externalMembersCount}
+                {specialMembersCount}
               </div>
               <div className="text-xs text-slate-300 font-medium mt-1 flex items-center justify-center gap-1">
-                <UserPlus size={12} className="text-amber-400" /> এক্সটার্নাল মেম্বার
+                <UserPlus size={12} className="text-amber-400" /> বিশেষ সদস্য
               </div>
             </div>
 
@@ -394,10 +394,10 @@ export default function HomePage() {
                 <UserPlus size={28} />
               </div>
               <h3 className="text-lg font-bold text-[#0F2C59] font-serif">
-                ৩. এক্সটার্নাল মেম্বার সাবস্ক্রিপশন
+                ৩. বিশেষ সদস্য নিবন্ধন
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                ওয়ার্ডের বাইরে বসবাসকারী বা প্রবাসী শুভাকাঙ্ক্ষীদের জন্য বিশেষ &quot;External Member&quot; ট্যাগ সহ ডাইরেক্টরি অন্তর্ভুক্তি।
+                মহল্লা সদস্য, রক্ত দাতা সদস্য, এবং ভাড়াটিয়া/অস্থায়ী সদস্যদের জন্য বিশেষ সদস্য ট্যাগ সহ ডাইরেক্টরি অন্তর্ভুক্তি।
               </p>
             </div>
 

@@ -187,9 +187,23 @@ export const PrintableForm = ({ record, onClose }) => {
                 {record.memberNo ? record.memberNo.replace('OMSKP-', '') : '—'}
               </span>
             </div>
-            {record.isExternalMember && (
-              <div className="border-2 border-black px-2 py-0.5 font-mono font-extrabold text-[10px] text-black tracking-wider uppercase bg-slate-100">
-                External Member
+            {(record.isMohollaMember || record.isBloodDonorMember || record.isTemporaryMember) && (
+              <div className="flex gap-1">
+                {record.isMohollaMember && (
+                  <div className="border-2 border-black px-2 py-0.5 font-mono font-extrabold text-[10px] text-black tracking-wider uppercase bg-slate-100">
+                    মহল্লা সদস্য
+                  </div>
+                )}
+                {record.isBloodDonorMember && (
+                  <div className="border-2 border-black px-2 py-0.5 font-mono font-extrabold text-[10px] text-black tracking-wider uppercase bg-slate-100">
+                    রক্ত দাতা সদস্য
+                  </div>
+                )}
+                {record.isTemporaryMember && (
+                  <div className="border-2 border-black px-2 py-0.5 font-mono font-extrabold text-[10px] text-black tracking-wider uppercase bg-slate-100">
+                    ভাড়াটিয়া/অস্থায়ী সদস্য
+                  </div>
+                )}
               </div>
             )}
             <div className="flex items-center gap-1">

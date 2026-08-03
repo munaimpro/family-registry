@@ -37,7 +37,7 @@ export const FamilySearch = ({
   const [formNoQuery, setFormNoQuery] = useState('');
   const [generalQuery, setGeneralQuery] = useState('');
   const [selectedBloodGroup, setSelectedBloodGroup] = useState(initialBloodGroup);
-  const [filterType, setFilterType] = useState('all'); // 'all', 'external', 'regular'
+  const [filterType, setFilterType] = useState('all'); // 'all', 'moholla', 'bloodDonor', 'temporary', 'regular'
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -71,8 +71,10 @@ export const FamilySearch = ({
 
   // Apply filterType
   const filteredRecords = searchedRecords.filter(rec => {
-    if (filterType === 'external') return Boolean(rec.isExternalMember);
-    if (filterType === 'regular') return !rec.isExternalMember;
+    if (filterType === 'moholla') return Boolean(rec.isMohollaMember);
+    if (filterType === 'bloodDonor') return Boolean(rec.isBloodDonorMember);
+    if (filterType === 'temporary') return Boolean(rec.isTemporaryMember);
+    if (filterType === 'regular') return !rec.isMohollaMember && !rec.isBloodDonorMember && !rec.isTemporaryMember;
     return true;
   });
 
@@ -222,7 +224,7 @@ export const FamilySearch = ({
             <span className="text-xs font-bold text-slate-700 flex items-center gap-1">
               <UserCheck size={14} className="text-[#1B8A44]" /> মেম্বার টাইপ:
             </span>
-            <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-300">
+            <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-300 flex-wrap gap-1">
               <button
                 onClick={() => handleFilterTypeChange('all')}
                 className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${filterType === 'all'
@@ -233,13 +235,31 @@ export const FamilySearch = ({
                 সকল মেম্বার
               </button>
               <button
-                onClick={() => handleFilterTypeChange('external')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'external'
-                  ? 'bg-amber-600 text-white shadow-xs'
-                  : 'text-amber-800 hover:text-amber-900'
+                onClick={() => handleFilterTypeChange('moholla')}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'moholla'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-emerald-800 hover:text-emerald-900'
                   }`}
               >
-                <span>এক্সটার্নাল মেম্বার</span>
+                <span>মহল্লা সদস্য</span>
+              </button>
+              <button
+                onClick={() => handleFilterTypeChange('bloodDonor')}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'bloodDonor'
+                  ? 'bg-rose-600 text-white shadow-xs'
+                  : 'text-rose-800 hover:text-rose-900'
+                  }`}
+              >
+                <span>রক্ত দাতা সদস্য</span>
+              </button>
+              <button
+                onClick={() => handleFilterTypeChange('temporary')}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'temporary'
+                  ? 'bg-purple-600 text-white shadow-xs'
+                  : 'text-purple-800 hover:text-purple-900'
+                  }`}
+              >
+                <span>ভাড়াটিয়া/অস্থায়ী সদস্য</span>
               </button>
               <button
                 onClick={() => handleFilterTypeChange('regular')}
@@ -266,7 +286,9 @@ export const FamilySearch = ({
         <div className="mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2">
           <span>
             সর্বমোট প্রাপ্ত ফলাফল: <strong className="text-[#1B8A44] font-mono text-sm">{totalRecords}</strong> টি পরিবার
-            {filterType === 'external' && <span className="ml-1 text-amber-700 font-bold">(কেবল External Members)</span>}
+            {filterType === 'moholla' && <span className="ml-1 text-emerald-700 font-bold">(কেবল মহল্লা সদস্য)</span>}
+            {filterType === 'bloodDonor' && <span className="ml-1 text-rose-700 font-bold">(কেবল রক্ত দাতা সদস্য)</span>}
+            {filterType === 'temporary' && <span className="ml-1 text-purple-700 font-bold">(কেবল ভাড়াটিয়া/অস্থায়ী সদস্য)</span>}
           </span>
 
           {/* <div className="flex flex-wrap gap-1">
@@ -349,9 +371,19 @@ export const FamilySearch = ({
                           <span className="text-[11px] uppercase font-mono font-bold tracking-wider text-[#0F2C59] bg-[#EBF5EE] px-2.5 py-1 rounded-md border border-[#1B8A44]/30 inline-block">
                             ফরম নং: {rec.formNo}
                           </span>
-                          {rec.isExternalMember && (
-                            <span className="px-2 py-0.5 text-[10px] font-mono font-extrabold bg-amber-500 text-white rounded uppercase tracking-wider shadow-2xs">
-                              External Member
+                          {rec.isMohollaMember && (
+                            <span className="px-2 py-0.5 text-[10px] font-mono font-extrabold bg-emerald-500 text-white rounded uppercase tracking-wider shadow-2xs">
+                              মহল্লা সদস্য
+                            </span>
+                          )}
+                          {rec.isBloodDonorMember && (
+                            <span className="px-2 py-0.5 text-[10px] font-mono font-extrabold bg-rose-500 text-white rounded uppercase tracking-wider shadow-2xs">
+                              রক্ত দাতা সদস্য
+                            </span>
+                          )}
+                          {rec.isTemporaryMember && (
+                            <span className="px-2 py-0.5 text-[10px] font-mono font-extrabold bg-purple-500 text-white rounded uppercase tracking-wider shadow-2xs">
+                              ভাড়াটিয়া/অস্থায়ী সদস্য
                             </span>
                           )}
                         </div>

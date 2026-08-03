@@ -569,19 +569,49 @@ export const FamilyForm = ({
               </div>
             </div>
 
-            {/* External Member Checkbox Field */}
-            <div className="flex items-center gap-2 bg-amber-50 border border-amber-300 px-3 py-1.5 rounded-lg shadow-2xs my-1 sm:my-0">
-              <input
-                type="checkbox"
-                id="isExternalMemberCheckbox"
-                checked={Boolean(formData.isExternalMember)}
-                onChange={(e) => handleInputChange('isExternalMember', e.target.checked)}
-                className="w-4 h-4 text-amber-600 rounded border-slate-400 focus:ring-amber-500 cursor-pointer"
-              />
-              <label htmlFor="isExternalMemberCheckbox" className="font-bold text-amber-900 text-xs sm:text-sm cursor-pointer select-none flex items-center gap-1.5">
-                <span>এক্সটার্নাল মেম্বার</span>
-                <span className="text-[10px] bg-amber-600 text-white font-bold px-1.5 py-0.5 rounded tracking-wide font-mono uppercase">External Member</span>
-              </label>
+            {/* Membership Type Checkbox Fields */}
+            <div className="flex flex-wrap items-center gap-2 bg-amber-50 border border-amber-300 px-3 py-1.5 rounded-lg shadow-sm my-1 sm:my-0">
+              {/* Moholla Member */}
+              <div className="flex items-center gap-1.5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  id="isMohollaMemberCheckbox"
+                  checked={Boolean(formData.isMohollaMember)}
+                  onChange={(e) => handleInputChange('isMohollaMember', e.target.checked)}
+                  className="w-4 h-4 text-emerald-600 rounded border-slate-400 focus:ring-emerald-500 cursor-pointer"
+                />
+                <label htmlFor="isMohollaMemberCheckbox" className="font-bold text-emerald-900 text-xs sm:text-sm cursor-pointer select-none flex items-center gap-1">
+                  মহল্লা সদস্য
+                </label>
+              </div>
+
+              {/* Blood Donor Member */}
+              <div className="flex items-center gap-1.5 cursor-pointer border-l border-amber-300 pl-2">
+                <input
+                  type="checkbox"
+                  id="isBloodDonorMemberCheckbox"
+                  checked={Boolean(formData.isBloodDonorMember)}
+                  onChange={(e) => handleInputChange('isBloodDonorMember', e.target.checked)}
+                  className="w-4 h-4 text-rose-600 rounded border-slate-400 focus:ring-rose-500 cursor-pointer"
+                />
+                <label htmlFor="isBloodDonorMemberCheckbox" className="font-bold text-rose-900 text-xs sm:text-sm cursor-pointer select-none flex items-center gap-1">
+                  রক্ত দাতা সদস্য
+                </label>
+              </div>
+
+              {/* Temporary Member */}
+              <div className="flex items-center gap-1.5 cursor-pointer border-l border-amber-300 pl-2">
+                <input
+                  type="checkbox"
+                  id="isTemporaryMemberCheckbox"
+                  checked={Boolean(formData.isTemporaryMember)}
+                  onChange={(e) => handleInputChange('isTemporaryMember', e.target.checked)}
+                  className="w-4 h-4 text-purple-600 rounded border-slate-400 focus:ring-purple-500 cursor-pointer"
+                />
+                <label htmlFor="isTemporaryMemberCheckbox" className="font-bold text-purple-900 text-xs sm:text-sm cursor-pointer select-none flex items-center gap-1">
+                  ভাড়াটিয়া/অস্থায়ী সদস্য
+                </label>
+              </div>
             </div>
 
             <div className="flex items-center gap-1.5">
