@@ -49,13 +49,37 @@ export const FamilySearch = ({
     }
   }, [initialBloodGroup]);
 
-  // Search logic
-  const searchedRecords = searchRecords(records, {
-    nameQuery,
-    formNoQuery,
-    generalQuery,
-    selectedBloodGroup
-  });
+  const [dbRecords, setDbRecords] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      setIsLoading(true);
+      try {
+        const queryParams = new URLSearchParams();
+        const searchInput = (nameQuery || generalQuery).trim();
+        if (searchInput) queryParams.append('search', searchInput);
+        if (formNoQuery) queryParams.append('formNo', formNoQuery);
+        if (selectedBloodGroup) queryParams.append('bloodGroup', selectedBloodGroup);
+        if (filterType !== 'all') queryParams.append('filterType', filterType);
+        
+        const response = await fetch(`http://localhost:8000/families?${queryParams.toString()}`);
+        if (response.ok) {
+          const data = await response.json();
+          setDbRecords(data);
+        }
+      } catch (error) {
+        console.error("Error fetching records:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    const timeoutId = setTimeout(() => {
+      fetchRecords();
+    }, 300);
+    return () => clearTimeout(timeoutId);
+  }, [nameQuery, generalQuery, formNoQuery, selectedBloodGroup, filterType]);
 
   const handleNameChange = (val) => { setNameQuery(val); setCurrentPage(1); };
   const handleFormNoChange = (val) => { setFormNoQuery(val); setCurrentPage(1); };
@@ -69,14 +93,8 @@ export const FamilySearch = ({
   };
   const handleFilterTypeChange = (val) => { setFilterType(val); setCurrentPage(1); };
 
-  // Apply filterType
-  const filteredRecords = searchedRecords.filter(rec => {
-    if (filterType === 'moholla') return Boolean(rec.isMohollaMember);
-    if (filterType === 'bloodDonor') return Boolean(rec.isBloodDonorMember);
-    if (filterType === 'temporary') return Boolean(rec.isTemporaryMember);
-    if (filterType === 'regular') return !rec.isMohollaMember && !rec.isBloodDonorMember && !rec.isTemporaryMember;
-    return true;
-  });
+  // dbRecords is already filtered by backend
+  const filteredRecords = dbRecords;
 
   // Calculate pagination
   const totalRecords = filteredRecords.length;
@@ -313,7 +331,15 @@ export const FamilySearch = ({
       </div>
 
       {/* Grid of Family Cards */}
-      {filteredRecords.length === 0 ? (
+      {isLoading ? (
+        <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1B8A44] mx-auto mb-3"></div>
+          <h3 className="text-lg font-bold text-slate-800">তথ্য লোড হচ্ছে...</h3>
+          <p className="text-xs text-slate-500 mt-1">
+            অনুগ্রহ করে অপেক্ষা করুন, সার্ভার থেকে ডাটা আনা হচ্ছে।
+          </p>
+        </div>
+      ) : filteredRecords.length === 0 ? (
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
           <FileText size={48} className="mx-auto text-slate-400 mb-3" />
           <h3 className="text-lg font-bold text-slate-800">কোন পরিবারের তথ্য পাওয়া যায়নি</h3>

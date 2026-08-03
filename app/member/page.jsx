@@ -14,7 +14,7 @@ function MemberDirectoryContent() {
   const initialBloodGroup = searchParams.get('bloodGroup') || '';
 
   const handleEdit = (record) => {
-    router.push(`/new-form/${record.id}`);
+    router.push(`/new-form/${record._id || record.id}`);
   };
 
   const handleAddNew = () => {
@@ -22,7 +22,7 @@ function MemberDirectoryContent() {
   };
 
   const handleSelectRecord = (record) => {
-    router.push(`/member-profile/${record.id}`);
+    router.push(`/member-profile/${record._id || record.id}`);
   };
 
   return (

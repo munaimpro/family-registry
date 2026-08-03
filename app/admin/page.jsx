@@ -16,7 +16,7 @@ export default function AdminPage() {
   } = useApp();
 
   const handleEdit = (record) => {
-    router.push(`/new-form/${record.id}`);
+    router.push(`/new-form/${record._id || record.id}`);
   };
 
   const handleAddNew = () => {
