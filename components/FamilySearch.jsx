@@ -62,8 +62,8 @@ export const FamilySearch = ({
         if (formNoQuery) queryParams.append('formNo', formNoQuery);
         if (selectedBloodGroup) queryParams.append('bloodGroup', selectedBloodGroup);
         if (filterType !== 'all') queryParams.append('filterType', filterType);
-        
-        const response = await fetch(`http://localhost:8000/families?${queryParams.toString()}`);
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families?${queryParams.toString()}`);
         if (response.ok) {
           const data = await response.json();
           setDbRecords(data);
@@ -74,7 +74,7 @@ export const FamilySearch = ({
         setIsLoading(false);
       }
     };
-    
+
     const timeoutId = setTimeout(() => {
       fetchRecords();
     }, 300);

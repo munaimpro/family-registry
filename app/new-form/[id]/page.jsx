@@ -27,7 +27,7 @@ export default function EditFormPage() {
     const fetchRecord = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost:8000/families/${editId}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families/${editId}`);
         if (response.ok) {
           const data = await response.json();
           setEditingRecord(data);
@@ -48,7 +48,7 @@ export default function EditFormPage() {
   const handleSaveSuccess = async (savedRecord) => {
     try {
       const recordId = editingRecord?._id || editId;
-      const response = await fetch(`http://localhost:8000/families/${recordId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families/${recordId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

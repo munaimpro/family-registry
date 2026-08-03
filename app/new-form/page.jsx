@@ -22,10 +22,10 @@ function NewFormContent() {
       // But if the backend hasn't generated an _id yet (using old local data), we might need to handle it.
       // Assuming editingRecord has _id if it came from backend.
       const recordId = editingRecord ? (editingRecord._id || editingRecord.id) : null;
-      const url = isEdit 
-        ? `http://localhost:8000/families/${recordId}` 
-        : `http://localhost:8000/families`;
-      
+      const url = isEdit
+        ? `${process.env.NEXT_PUBLIC_SERVER_URL}/families/${recordId}`
+        : `${process.env.NEXT_PUBLIC_SERVER_URL}/families`;
+
       const method = isEdit ? 'PATCH' : 'POST';
 
       const response = await fetch(url, {

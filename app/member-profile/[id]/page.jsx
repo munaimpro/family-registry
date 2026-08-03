@@ -25,7 +25,7 @@ export default function MemberProfilePage() {
     const fetchRecord = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost:8000/families/${id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families/${id}`);
         if (response.ok) {
           const data = await response.json();
           setRecord(data);
