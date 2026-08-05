@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { deleteRecordById, saveSingleRecord, saveRecords, INITIAL_SAMPLE_RECORDS } from '../lib/storage';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import {
   Users,
   Heart,
@@ -18,11 +18,14 @@ import {
   RotateCcw,
   Search,
   Check,
-  UserPlus
+  UserPlus,
+  Loader2
 } from 'lucide-react';
 
 export const AdminDashboard = ({
   records,
+  dashboardStats,
+  loadingStats,
   onRefreshData,
   onEditRecord,
   onPrintRecord,
@@ -31,55 +34,171 @@ export const AdminDashboard = ({
   onExportBackup,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterBloodGroup, setFilterBloodGroup] = useState('');
+  const [filterType, setFilterType] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
 
-  // Compute Stats
+  const [apiFamilies, setApiFamilies] = useState(null);
+  const [loadingTable, setLoadingTable] = useState(false);
+
+  // Native fetch for dynamic table list
+  const fetchFamilies = useCallback(async () => {
+    setLoadingTable(true);
+    try {
+      const params = new URLSearchParams();
+      if (searchTerm) params.append('search', searchTerm);
+      if (filterBloodGroup) params.append('bloodGroup', filterBloodGroup);
+      if (filterType) params.append('filterType', filterType);
+      if (filterStatus) params.append('status', filterStatus);
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families?${params.toString()}`);
+      if (res.ok) {
+        const isFallback = res.headers.get('x-fallback') === 'true';
+        const data = await res.json();
+        if (Array.isArray(data) && (!isFallback || data.length > 0)) {
+          setApiFamilies(data);
+          setLoadingTable(false);
+          return;
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching families from API:', err);
+    }
+    setApiFamilies(null);
+    setLoadingTable(false);
+  }, [searchTerm, filterBloodGroup, filterType, filterStatus]);
+
+  useEffect(() => {
+    let active = true;
+    const loadData = async () => {
+      setLoadingTable(true);
+      try {
+        const params = new URLSearchParams();
+        if (searchTerm) params.append('search', searchTerm);
+        if (filterBloodGroup) params.append('bloodGroup', filterBloodGroup);
+        if (filterType) params.append('filterType', filterType);
+        if (filterStatus) params.append('status', filterStatus);
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families?${params.toString()}`);
+        if (res.ok && active) {
+          const isFallback = res.headers.get('x-fallback') === 'true';
+          const data = await res.json();
+          if (Array.isArray(data) && (!isFallback || data.length > 0)) {
+            setApiFamilies(data);
+            setLoadingTable(false);
+            return;
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching families from API:', err);
+      }
+      if (active) {
+        setApiFamilies(null);
+        setLoadingTable(false);
+      }
+    };
+
+    loadData();
+
+    return () => {
+      active = false;
+    };
+  }, [searchTerm, filterBloodGroup, filterType, filterStatus, records]);
+
+  // Compute Local Fallback Stats
   const totalFamilies = records.length;
   let totalMembers = 0;
   const bloodGroupCounts = {};
   let verifiedCount = 0;
+  let localSpecialMembers = 0;
 
   records.forEach(r => {
-    totalMembers += 1 + r.members.length; // head + members
+    totalMembers += 1 + (r.members ? r.members.length : 0); // head + members
     if (r.status === 'verified') verifiedCount++;
+    if (r.isMohollaMember || r.isBloodDonorMember || r.isTemporaryMember) {
+      localSpecialMembers++;
+    }
 
     // Head blood group
     if (r.bloodGroup) {
       bloodGroupCounts[r.bloodGroup] = (bloodGroupCounts[r.bloodGroup] || 0) + 1;
     }
     // Members blood group
-    r.members.forEach(m => {
-      if (m.bloodGroup) {
-        bloodGroupCounts[m.bloodGroup] = (bloodGroupCounts[m.bloodGroup] || 0) + 1;
-      }
-    });
+    if (Array.isArray(r.members)) {
+      r.members.forEach(m => {
+        if (m.bloodGroup) {
+          bloodGroupCounts[m.bloodGroup] = (bloodGroupCounts[m.bloodGroup] || 0) + 1;
+        }
+      });
+    }
   });
+
+  const displayTotalFamilies = (dashboardStats && typeof dashboardStats.totalFamilies === 'number' && !dashboardStats.isFallback)
+    ? dashboardStats.totalFamilies
+    : totalFamilies;
+
+  const displayTotalMembers = (dashboardStats && typeof dashboardStats.totalMembers === 'number' && !dashboardStats.isFallback)
+    ? dashboardStats.totalMembers
+    : totalMembers;
+
+  const displayVerifiedCount = (dashboardStats && typeof dashboardStats.verifiedCount === 'number' && !dashboardStats.isFallback)
+    ? dashboardStats.verifiedCount
+    : verifiedCount;
+
+  const displaySpecialMembersCount = (dashboardStats && typeof dashboardStats.specialMembersCount === 'number' && !dashboardStats.isFallback)
+    ? dashboardStats.specialMembersCount
+    : localSpecialMembers;
 
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
-  // Toggle Verification Status
-  // const handleToggleStatus = (record) => {
-  //   const newStatus = record.status === 'verified' ? 'pending' : 'verified';
-  //   const updated = { ...record, status: newStatus };
-  //   saveSingleRecord(updated);
-  //   onRefreshData();
-  //   toast.success(`স্ট্যাটাস পরিবর্তন করা হয়েছে: ${newStatus === 'verified' ? 'যাচাইকৃত' : 'অপেক্ষমাণ'}`);
-  // };
-
-  // Delete Action
-  const handleDelete = (id) => {
-    if (deleteRecordById(id)) {
-      onRefreshData();
-      toast.success('রেকর্ডটি সফলভাবে মুছে ফেলা হয়েছে');
-      setDeleteConfirmId(null);
-    } else {
-      toast.error('রেকর্ড মুছতে সমস্যা হয়েছে');
+  // Toggle Verification Status via MongoDB API
+  const handleToggleStatus = async (record) => {
+    const recId = record._id || record.id;
+    const newStatus = record.status === 'verified' ? 'pending' : 'verified';
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families/${recId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (res.ok) {
+        toast.success(`স্ট্যাটাস পরিবর্তন করা হয়েছে: ${newStatus === 'verified' ? 'যাচাইকৃত' : 'অপেক্ষমাণ'}`);
+      }
+    } catch (err) {
+      console.error('Error updating status via API:', err);
     }
+    saveSingleRecord({ ...record, status: newStatus });
+    if (onRefreshData) onRefreshData();
+    fetchFamilies();
+  };
+
+  // Native API Delete Action
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families/${id}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        toast.success('রেকর্ডটি সফলভাবে মুছে ফেলা হয়েছে');
+      } else {
+        toast.error('রেকর্ড মুছতে সমস্যা হয়েছে');
+      }
+    } catch (err) {
+      console.error('API delete failed:', err);
+      toast.error('নেটওয়ার্ক সমস্যা');
+    }
+
+    deleteRecordById(id);
+    if (onRefreshData) onRefreshData();
+    fetchFamilies();
+    setDeleteConfirmId(null);
   };
 
   // Export CSV
   const exportToCSV = () => {
-    if (records.length === 0) {
+    const listToExport = apiFamilies !== null ? apiFamilies : records;
+    if (listToExport.length === 0) {
       toast('ডাউনলোডের জন্য কোন ডেটা নেই', { icon: '⚠️' });
       return;
     }
@@ -97,17 +216,17 @@ export const AdminDashboard = ({
       'স্ট্যাটাস'
     ];
 
-    const rows = records.map(r => [
-      r.formNo,
-      r.memberNo,
-      `"${r.headName}"`,
-      `"${r.headOccupation}"`,
-      `"${r.fatherOrHusbandName}"`,
-      `"${r.mobileNumber}"`,
-      r.bloodGroup,
-      `"${r.presentAddress.village}, ${r.presentAddress.road}"`,
-      r.members.length,
-      r.status
+    const rows = listToExport.map(r => [
+      r.formNo || '',
+      r.memberNo || '',
+      `"${r.headName || ''}"`,
+      `"${r.headOccupation || ''}"`,
+      `"${r.fatherOrHusbandName || ''}"`,
+      `"${r.mobileNumber || ''}"`,
+      r.bloodGroup || '',
+      `"${r.presentAddress?.village || ''}, ${r.presentAddress?.road || ''}"`,
+      Array.isArray(r.members) ? r.members.length : 0,
+      r.status || ''
     ]);
 
     const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
@@ -125,17 +244,39 @@ export const AdminDashboard = ({
   const handleResetSampleData = () => {
     if (window.confirm('আপনি কি নিশ্চিত যে ডেমো স্যাম্পল ডেটাতে রিসেট করতে চান? বর্তমান সব পরিবর্তন মুছে যাবে।')) {
       saveRecords(INITIAL_SAMPLE_RECORDS);
-      onRefreshData();
-      toast.success('স্যাম্পল ডেটায় রিসেট সম্পূর্ণ হয়েছে');
+      if (onRefreshData) onRefreshData();
+      fetchFamilies();
+      toast('স্যাম্পল ডেটায় রিসেট সম্পূর্ণ হয়েছে', { icon: 'ℹ️' });
     }
   };
 
-  const filtered = records.filter(r =>
-    r.headName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    r.formNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    r.memberNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    r.mobileNumber.includes(searchTerm)
-  );
+  // List to display in the table
+  const displayedList = apiFamilies !== null ? apiFamilies : records.filter(r => {
+    const term = searchTerm.toLowerCase().trim();
+    const matchesSearch = !term ||
+      (r.headName && r.headName.toLowerCase().includes(term)) ||
+      (r.formNo && r.formNo.toLowerCase().includes(term)) ||
+      (r.memberNo && r.memberNo.toLowerCase().includes(term)) ||
+      (r.mobileNumber && r.mobileNumber.includes(term)) ||
+      (r.nidNumber && r.nidNumber.includes(term)) ||
+      (r.presentAddress?.village && r.presentAddress.village.toLowerCase().includes(term)) ||
+      (Array.isArray(r.members) && r.members.some(m =>
+        (m.name && m.name.toLowerCase().includes(term)) ||
+        (m.mobileNumber && m.mobileNumber.includes(term))
+      ));
+
+    const matchesBloodGroup = !filterBloodGroup || r.bloodGroup === filterBloodGroup || (Array.isArray(r.members) && r.members.some(m => m.bloodGroup === filterBloodGroup));
+
+    const matchesStatus = !filterStatus || r.status === filterStatus;
+
+    let matchesFilterType = true;
+    if (filterType === 'moholla') matchesFilterType = !!r.isMohollaMember;
+    else if (filterType === 'bloodDonor') matchesFilterType = !!r.isBloodDonorMember;
+    else if (filterType === 'temporary') matchesFilterType = !!r.isTemporaryMember;
+    else if (filterType === 'regular') matchesFilterType = !r.isMohollaMember && !r.isBloodDonorMember && !r.isTemporaryMember;
+
+    return matchesSearch && matchesBloodGroup && matchesStatus && matchesFilterType;
+  });
 
   return (
     <div className="max-w-7xl mx-auto my-6 px-4 space-y-8">
@@ -185,7 +326,7 @@ export const AdminDashboard = ({
         <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
             <span className="text-xs text-slate-500 block mb-1 font-bold">নিবন্ধিত মোট পরিবার</span>
-            <span className="text-3xl font-black text-[#1B8A44] font-mono">{totalFamilies}</span>
+            <span className="text-3xl font-black text-[#1B8A44] font-mono">{displayTotalFamilies}</span>
             <span className="text-[10px] text-slate-500 block mt-1">ফরম ডাটাবেজ</span>
           </div>
           <div className="p-3 bg-[#EBF5EE] text-[#1B8A44] rounded-xl border border-[#1B8A44]/30">
@@ -197,7 +338,7 @@ export const AdminDashboard = ({
         <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
             <span className="text-xs text-slate-500 block mb-1 font-bold">মোট জনসংখ্যা / ওয়ারিশ</span>
-            <span className="text-3xl font-black text-[#0F2C59] font-mono">{totalMembers}</span>
+            <span className="text-3xl font-black text-[#0F2C59] font-mono">{displayTotalMembers}</span>
             <span className="text-[10px] text-slate-500 block mt-1">পরিবার প্রধান + সদস্য</span>
           </div>
           <div className="p-3 bg-indigo-50 text-[#0F2C59] rounded-xl border border-indigo-200">
@@ -209,22 +350,22 @@ export const AdminDashboard = ({
         <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
             <span className="text-xs text-slate-500 block mb-1 font-bold">যাচাইকৃত পরিবার</span>
-            <span className="text-3xl font-black text-indigo-600 font-mono">{verifiedCount}</span>
-            <span className="text-[10px] text-slate-500 block mt-1">যাচাই এর হার {totalFamilies ? Math.round((verifiedCount / totalFamilies) * 100) : 0}%</span>
+            <span className="text-3xl font-black text-indigo-600 font-mono">{displayVerifiedCount}</span>
+            <span className="text-[10px] text-slate-500 block mt-1">যাচাই এর হার {displayTotalFamilies ? Math.round((displayVerifiedCount / displayTotalFamilies) * 100) : 0}%</span>
           </div>
           <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-200">
             <CheckCircle2 size={28} />
           </div>
         </div>
 
-        {/* Blood Donor Pool */}
+        {/* Special Members / Blood Donor Pool */}
         <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
-            <span className="text-xs text-slate-500 block mb-1 font-bold">সংগৃহীত রক্তের ডোনার</span>
+            <span className="text-xs text-slate-500 block mb-1 font-bold">বিশেষ / ডোনার সদস্য</span>
             <span className="text-3xl font-black text-rose-600 font-mono">
-              {Object.values(bloodGroupCounts).reduce((a, b) => a + b, 0)}
+              {displaySpecialMembersCount || Object.values(bloodGroupCounts).reduce((a, b) => a + b, 0)}
             </span>
-            <span className="text-[10px] text-slate-500 block mt-1">ব্লাড গ্রুপ রেজিস্ট্রি</span>
+            <span className="text-[10px] text-slate-500 block mt-1">মহল্লা / রক্তদাতা / স্থায়ী</span>
           </div>
           <div className="p-3 bg-rose-50 text-rose-600 rounded-xl border border-rose-200">
             <Heart size={28} />
@@ -251,21 +392,61 @@ export const AdminDashboard = ({
       {/* Records Management Data Table */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl shadow-md overflow-hidden">
         {/* Table Toolbar */}
-        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-50">
-          <div className="relative w-full sm:w-80">
-            <Search size={16} className="absolute left-3 top-2.5 text-slate-400" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="অ্যাডমিন টেবিল ফিল্টার (নাম, ফরম নং)..."
-              className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 focus:outline-hidden"
-            />
+        <div className="p-4 border-b border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-slate-50">
+          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            <div className="relative w-full sm:w-64">
+              <Search size={16} className="absolute left-3 top-2.5 text-slate-400" />
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="অ্যাডমিন টেবিল ফিল্টার (নাম, ফরম নং)..."
+                className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 focus:outline-hidden"
+              />
+            </div>
+
+            {/* <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-800 focus:outline-hidden cursor-pointer"
+            >
+              <option value="">সকল স্ট্যাটাস</option>
+              <option value="verified">যাচাইকৃত</option>
+              <option value="pending">অপেক্ষমাণ</option>
+            </select> */}
+
+            <select
+              value={filterBloodGroup}
+              onChange={(e) => setFilterBloodGroup(e.target.value)}
+              className="px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-800 focus:outline-hidden cursor-pointer"
+            >
+              <option value="">সকল ব্লাড গ্রুপ</option>
+              {bloodGroups.map(bg => (
+                <option key={bg} value={bg}>{bg}</option>
+              ))}
+            </select>
+
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-800 focus:outline-hidden cursor-pointer"
+            >
+              <option value="">সকল ক্যাটাগরি</option>
+              <option value="moholla">মহল্লা সদস্য</option>
+              <option value="bloodDonor">রক্তদাতা সদস্য</option>
+              <option value="temporary">অস্থায়ী সদস্য</option>
+            </select>
+
+            {loadingTable && (
+              <span className="flex items-center gap-1 text-xs text-slate-500 font-medium">
+                <Loader2 size={14} className="animate-spin text-[#1B8A44]" /> লোড হচ্ছে...
+              </span>
+            )}
           </div>
 
           <button
             onClick={handleResetSampleData}
-            className="text-xs text-slate-600 hover:text-amber-700 font-bold flex items-center gap-1 transition cursor-pointer"
+            className="text-xs text-slate-600 hover:text-amber-700 font-bold flex items-center gap-1 transition cursor-pointer self-end md:self-auto"
           >
             <RotateCcw size={14} /> ডেমো স্যাম্পল ডেটায় রিসেট করুন
           </button>
@@ -282,99 +463,108 @@ export const AdminDashboard = ({
                 <th className="p-3">মোবাইল</th>
                 <th className="p-3">রক্তের গ্রুপ</th>
                 <th className="p-3">সদস্য</th>
+                {/* <th className="p-3">স্ট্যাটাস</th> */}
                 <th className="p-3 text-right">অ্যাকশন</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
-              {filtered.map((rec, idx) => (
-                <tr key={rec.id} className="hover:bg-slate-50 transition">
-                  <td className="p-3 text-center text-slate-500 font-mono">{idx + 1}</td>
-
-                  <td className="p-3">
-                    <span className="font-mono font-bold text-[#0F2C59] block">{rec.formNo}</span>
-                    <span className="font-mono text-[10px] text-slate-500">
-                      {rec.memberNo?.startsWith('OMSKP-') ? rec.memberNo : `OMSKP-${rec.memberNo || ''}`}
-                    </span>
-                  </td>
-
-                  <td className="p-3">
-                    <span className="font-bold text-slate-900 block">{rec.headName}</span>
-                    <span className="text-[11px] text-slate-500">{rec.headOccupation}</span>
-                  </td>
-
-                  <td className="p-3 font-mono text-[#1B8A44] font-bold">
-                    {rec.mobileNumber}
-                  </td>
-
-                  <td className="p-3 font-bold text-rose-600">
-                    {rec.bloodGroup || '—'}
-                  </td>
-
-                  <td className="p-3 text-[#0F2C59] font-bold font-mono">
-                    {rec.members.length + 1} জন
-                  </td>
-
-                  {/* <td className="p-3">
-                    <button
-                      onClick={() => handleToggleStatus(rec)}
-                      className={`px-2.5 py-1 rounded-full text-[10px] font-bold border flex items-center gap-1 transition cursor-pointer ${
-                        rec.status === 'verified'
-                          ? 'bg-[#EBF5EE] text-[#1B8A44] border-[#1B8A44]/40 hover:bg-emerald-100'
-                          : 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
-                      }`}
-                      title="স্ট্যাটাস পরিবর্তন করতে ক্লিক করুন"
-                    >
-                      {rec.status === 'verified' ? <Check size={12} /> : <Clock size={12} />}
-                      {rec.status === 'verified' ? 'যাচাইকৃত' : 'অপেক্ষমাণ'}
-                    </button>
-                  </td> */}
-
-                  <td className="p-3 text-right">
-                    <div className="flex justify-end items-center gap-1.5">
-                      <button
-                        onClick={() => onPrintRecord(rec)}
-                        className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded transition cursor-pointer border border-slate-300"
-                        title="প্রিন্ট ফরম"
-                      >
-                        <Printer size={15} />
-                      </button>
-
-                      <button
-                        onClick={() => onEditRecord(rec)}
-                        className="p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded transition cursor-pointer border border-amber-200"
-                        title="সম্পাদনা"
-                      >
-                        <Edit size={15} />
-                      </button>
-
-                      {deleteConfirmId === rec.id ? (
-                        <div className="flex items-center gap-1 bg-rose-50 p-1 rounded border border-rose-300">
-                          <button
-                            onClick={() => handleDelete(rec.id)}
-                            className="px-2 py-0.5 bg-rose-600 text-white rounded text-[10px] font-bold cursor-pointer"
-                          >
-                            হ্যাঁ
-                          </button>
-                          <button
-                            onClick={() => setDeleteConfirmId(null)}
-                            className="px-2 py-0.5 bg-slate-200 text-slate-700 rounded text-[10px] cursor-pointer"
-                          >
-                            না
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => setDeleteConfirmId(rec.id)}
-                          className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded transition cursor-pointer border border-rose-200"
-                          title="মুছুন"
-                        >
-                          <Trash2 size={15} />
-                        </button>
-                      )}
-                    </div>
+              {displayedList.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="p-8 text-center text-slate-500 font-medium">
+                    কোন পরিবার বা রেকর্ড পাওয়া যায়নি
                   </td>
                 </tr>
-              ))}
+              ) : (
+                displayedList.map((rec, idx) => {
+                  const recId = rec._id;
+                  return (
+                    <tr key={recId || idx} className="hover:bg-slate-50 transition">
+                      <td className="p-3 text-center text-slate-500 font-mono">{idx + 1}</td>
+
+                      <td className="p-3">
+                        <span className="font-mono font-bold text-[#0F2C59] block">{rec.formNo || '—'}</span>
+                        <span className="font-mono text-[10px] text-slate-500">{rec.memberNo || '—'}</span>
+                      </td>
+
+                      <td className="p-3">
+                        <span className="font-bold text-slate-900 block">{rec.headName || '—'}</span>
+                        <span className="text-[11px] text-slate-500">{rec.headOccupation || '—'}</span>
+                      </td>
+
+                      <td className="p-3 font-mono text-[#1B8A44] font-bold">
+                        {rec.mobileNumber || '—'}
+                      </td>
+
+                      <td className="p-3 font-bold text-rose-600">
+                        {rec.bloodGroup || '—'}
+                      </td>
+
+                      <td className="p-3 text-[#0F2C59] font-bold font-mono">
+                        {(Array.isArray(rec.members) ? rec.members.length : 0) + 1} জন
+                      </td>
+
+                      {/* <td className="p-3">
+                        <button
+                          onClick={() => handleToggleStatus(rec)}
+                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold border flex items-center gap-1 transition cursor-pointer ${rec.status === 'verified'
+                            ? 'bg-[#EBF5EE] text-[#1B8A44] border-[#1B8A44]/40 hover:bg-emerald-100'
+                            : 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
+                            }`}
+                          title="স্ট্যাটাস পরিবর্তন করতে ক্লিক করুন"
+                        >
+                          {rec.status === 'verified' ? <Check size={12} /> : <Clock size={12} />}
+                          {rec.status === 'verified' ? 'যাচাইকৃত' : 'অপেক্ষমাণ'}
+                        </button>
+                      </td> */}
+
+                      <td className="p-3 text-right">
+                        <div className="flex justify-end items-center gap-1.5">
+                          <button
+                            onClick={() => onPrintRecord(rec)}
+                            className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded transition cursor-pointer border border-slate-300"
+                            title="প্রিন্ট ফরম"
+                          >
+                            <Printer size={15} />
+                          </button>
+
+                          <button
+                            onClick={() => onEditRecord(rec)}
+                            className="p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded transition cursor-pointer border border-amber-200"
+                            title="সম্পাদনা"
+                          >
+                            <Edit size={15} />
+                          </button>
+
+                          {deleteConfirmId === recId ? (
+                            <div className="flex items-center gap-1 bg-rose-50 p-1 rounded border border-rose-300">
+                              <button
+                                onClick={() => handleDelete(recId)}
+                                className="px-2 py-0.5 bg-rose-600 text-white rounded text-[10px] font-bold cursor-pointer"
+                              >
+                                হ্যাঁ
+                              </button>
+                              <button
+                                onClick={() => setDeleteConfirmId(null)}
+                                className="px-2 py-0.5 bg-slate-200 text-slate-700 rounded text-[10px] cursor-pointer"
+                              >
+                                না
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => setDeleteConfirmId(recId)}
+                              className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded transition cursor-pointer border border-rose-200"
+                              title="মুছুন"
+                            >
+                              <Trash2 size={15} />
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
