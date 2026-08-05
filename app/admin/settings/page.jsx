@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from '../../../lib/auth-client';
 import { getAppSettings, saveAppSettings } from '../../../lib/storage';
+import { toast } from 'react-hot-toast';
 import { Settings, Upload, CheckCircle2, ArrowLeft, Trash2, HeartHandshake } from 'lucide-react';
 import Link from 'next/link';
-import toast from 'react-hot-toast';
 
 export default function AdminSettingsPage() {
   const router = useRouter();
@@ -17,14 +17,18 @@ export default function AdminSettingsPage() {
   const [foundationName, setFoundationName] = useState(() => settings.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ');
   const [formTitle, setFormTitle] = useState(() => settings.formTitle || 'পরিবার শুমারি ও তথ্য নিবন্ধন ফরম');
   const [address, setAddress] = useState(() => settings.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
-
+  const [hotline, setHotline] = useState(() => settings.hotline || '০১৮১৯-০০০০০০');
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
 
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     if (file.size > 2 * 1024 * 1024) {
-      setError('ছবির সাইজ ২ এমবির কম হতে হবে।');
+      const errMsg = 'ছবির সাইজ ২ এমবির কম হতে হবে।';
+      setError(errMsg);
+      toast.error(errMsg);
       return;
     }
 
@@ -33,10 +37,14 @@ export default function AdminSettingsPage() {
       const result = uploadEvent.target?.result;
       if (typeof result === 'string') {
         setLogo(result);
+        setError('');
+        toast.success('লোগো সিলেক্ট করা হয়েছে!');
       }
     };
     reader.onerror = () => {
-      toast.error('ফাইল পড়তে সমস্যা হয়েছে।');
+      const errMsg = 'ফাইল পড়তে সমস্যা হয়েছে।';
+      setError(errMsg);
+      toast.error(errMsg);
     };
     reader.readAsDataURL(file);
   };
@@ -44,10 +52,16 @@ export default function AdminSettingsPage() {
   const handleSave = (e) => {
     e.preventDefault();
     try {
-      saveAppSettings({ logo, appTitle, foundationName, formTitle, address });
-      toast.success('সেটিংস সফলভাবে সংরক্ষিত হয়েছে!');
+      saveAppSettings({ logo, appTitle, foundationName, formTitle, address, hotline });
+      setSuccess(true);
+      toast.success('সেটিংস সফলভাবে সংরক্ষণ করা হয়েছে!');
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
     } catch (err) {
-      toast.error('সেটিংস সংরক্ষণ করতে সমস্যা হয়েছে।');
+      const errMsg = 'সেটিংস সংরক্ষণ করতে সমস্যা হয়েছে।';
+      setError(errMsg);
+      toast.error(errMsg);
     }
   };
 
@@ -95,6 +109,18 @@ export default function AdminSettingsPage() {
           </div>
 
           <div className="p-6 sm:p-8 space-y-6">
+            {error && (
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 text-[#1B8A44] text-xs rounded-xl font-medium flex items-center gap-2">
+                <CheckCircle2 size={16} /> সেটিংস সফলভাবে সংরক্ষিত হয়েছে! সাইট ও ইনপুট ফরে লোগো আপডেট করা হয়েছে।
+              </div>
+            )}
+
             <form onSubmit={handleSave} className="space-y-6">
               <div>
                 <label className="block text-sm font-bold text-slate-800 mb-2">
@@ -216,6 +242,23 @@ export default function AdminSettingsPage() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="যেমন: উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-sans font-medium"
+                />
+              </div>
+
+              {/* Hotline / Phone Number */}
+              <div>
+                <label className="block text-sm font-bold text-slate-800 mb-1">
+                  হটলাইন / ফোন নম্বর (Hotline / Phone Number)
+                </label>
+                <p className="text-xs text-slate-500 mb-2">
+                  জরুরি রক্তের প্রয়োজনে হোম পেজের লাল হটলাইন বাটন এবং যোগাযোগের তথ্যে এই নম্বরটি ব্যবহৃত হবে।
+                </p>
+                <input
+                  type="text"
+                  value={hotline}
+                  onChange={(e) => setHotline(e.target.value)}
+                  placeholder="যেমন: ০১৮১৯-০০০০০০"
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-sans font-medium"
                 />
               </div>

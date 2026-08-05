@@ -23,6 +23,7 @@ function ShellContent({ children }) {
   const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
   const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম');
   const [mounted, setMounted] = useState(false);
+  const dev = `${process.env.NEXT_PUBLIC_DEVELOPER_NAME}`;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -37,10 +38,26 @@ function ShellContent({ children }) {
     };
     updateSettings();
 
+    const handleContextMenu = (e) => {
+      e.preventDefault();
+    };
+
+    const handleCopy = (e) => {
+      const tag = e.target?.tagName?.toLowerCase();
+      if (tag !== 'input' && tag !== 'textarea') {
+        e.preventDefault();
+      }
+    };
+
     window.addEventListener('omskp_settings_updated', updateSettings);
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('copy', handleCopy);
+
     return () => {
       clearTimeout(timer);
       window.removeEventListener('omskp_settings_updated', updateSettings);
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('copy', handleCopy);
     };
   }, []);
 
@@ -100,15 +117,27 @@ function ShellContent({ children }) {
       />
 
       {/* Footer */}
-      <footer className="bg-[#0F2C59] border-t-2 border-[#1B8A44] py-6 text-center text-xs text-slate-200 print:hidden mb-14 md:mb-0">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2">
-          <div className="flex items-center gap-2 text-emerald-300 font-serif font-bold">
-            <HeartHandshake size={18} />
-            {foundationName}
+      <footer className="bg-[#0F2C59] border-t-2 border-[#1B8A44] py-5 text-slate-200 print:hidden mb-14 md:mb-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+
+          {/* Top Section: Foundation Name & Address side-by-side on desktop */}
+          <div className="flex flex-col lg:flex-row items-center gap-2 sm:gap-4 text-xs justify-between">
+            <div className="flex items-center gap-2 text-emerald-300 font-serif font-bold text-sm tracking-wide">
+              <HeartHandshake size={18} className="text-emerald-400 shrink-0" />
+              <span>{foundationName}</span>
+            </div>
+
+            <p className="text-slate-300/90 text-xs">
+              {address} • সর্বস্বত্ব সংরক্ষিত
+            </p>
           </div>
-          <p className="text-emerald-100">
-            {address} • সর্বস্বত্ব সংরক্ষিত
-          </p>
+
+          {/* Bottom Section: Developer Credit at the end */}
+          {/* <div className="text-[11px] text-slate-300/80 tracking-width font-medium flex items-center justify-center lg:justify-end gap-1.5 shrink-0 mt-4 w-full">
+            <span>Developed by</span>
+            <span className="text-emerald-400 font-semibold"><a href="https://munaimpro.vercel.app" target='_blank'>{process.env.NEXT_PUBLIC_DEVELOPER_NAME}</a></span>
+          </div> */}
+
         </div>
       </footer>
     </div>

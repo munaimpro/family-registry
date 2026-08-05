@@ -8,19 +8,28 @@
 
 /* ─── Navbar height CSS variable (used by mobile drawer) ────────── */
 :root {
-  --navbar-height: 68px;   /* single-row header height on mobile/tablet */
+  --navbar-height: 68px;
+  /* single-row header height on mobile/tablet */
 }
 
-@media (min-width: 1024px) {  /* lg */
+@media (min-width: 1024px) {
+
+  /* lg */
   :root {
-    --navbar-height: 116px; /* two-row header height on desktop */
+    --navbar-height: 116px;
+    /* two-row header height on desktop */
   }
 }
 
 /* ─── Drawer slide-down animation ───────────────────────────────── */
 @keyframes drawerSlideIn {
-  from { transform: translateY(-100%); }
-  to   { transform: translateY(0);     }
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
 }
 
 /* ─── Global Font Setup ────────────────────────────────────────────── */
@@ -30,7 +39,21 @@
 body {
   /* Inter first → covers Latin; Hind Siliguri → covers Bengali */
   font-family: var(--font-inter), var(--font-hind-siliguri), sans-serif;
+  /* -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; */
 }
+
+/* Allow text selection inside input fields and textareas so form filling works */
+/* input,
+textarea,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+} */
 
 /* Explicitly target common Bangla text elements */
 :lang(bn),
@@ -55,6 +78,7 @@ pre {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
@@ -69,15 +93,21 @@ html {
     size: A4 portrait;
     margin: 8mm;
   }
+
   body {
     background-color: #ffffff !important;
     color: #000000 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-  header, footer, nav, .print\:hidden {
+
+  header,
+  footer,
+  nav,
+  .print\:hidden {
     display: none !important;
   }
+
   .printable-container {
     width: 100% !important;
     max-width: 100% !important;
@@ -87,4 +117,3 @@ html {
     background: #ffffff !important;
   }
 }
-
