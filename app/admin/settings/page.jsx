@@ -36,7 +36,7 @@ export default function AdminSettingsPage() {
     const fetchSettings = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${NEXT_PUBLIC_SERVER_URL}/admin/settings`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/settings`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ export default function AdminSettingsPage() {
     };
 
     try {
-      const response = await fetch(`${NEXT_PUBLIC_SERVER_URL}/admin/settings`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/settings`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
