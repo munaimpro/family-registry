@@ -2,14 +2,15 @@
 
 export const dynamic = 'force-dynamic';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession, signOut, changePassword, updateUser } from '../../../lib/auth-client';
-import { User, Lock, Shield, LogOut, KeyRound, CheckCircle2, ArrowLeft, Upload, Settings } from 'lucide-react';
+import { User, Lock, Shield, LogOut, KeyRound, ArrowLeft, Upload, Settings } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
 export default function AdminProfilePage() {
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const { data: session, isPending } = useSession();
   const user = session?.user;
@@ -22,6 +23,10 @@ export default function AdminProfilePage() {
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const activeAvatar = uploadedAvatar || user?.image || '';
 
   const handleAvatarUpload = (e) => {
@@ -29,7 +34,7 @@ export default function AdminProfilePage() {
     if (!file) return;
 
     if (file.size > 2 * 1024 * 1024) {
-      setPasswordError('ছবির সাইজ ২ এমবির কম হতে হবে।');
+      toast.error('ছবির সাইজ ২ এমবির কম হতে হবে।');
       return;
     }
 
@@ -40,7 +45,7 @@ export default function AdminProfilePage() {
         setUploadedAvatar(result);
 
         try {
-          const { data, error } = await updateUser({
+          const { error } = await updateUser({
             image: result
           });
 
@@ -64,19 +69,19 @@ export default function AdminProfilePage() {
     setPasswordSuccess(false);
 
     if (newPassword !== confirmPassword) {
-      setPasswordError('নতুন পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড মিলছে না।');
+      toast.error('নতুন পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড মিলছে না।');
       return;
     }
 
     if (newPassword.length < 6) {
-      setPasswordError('নতুন পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');
+      toast.error('নতুন পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');
       return;
     }
 
     setLoading(true);
 
     try {
-      const { data, error } = await changePassword({
+      const { error } = await changePassword({
         currentPassword,
         newPassword,
         revokeOtherSessions: true,
@@ -102,7 +107,8 @@ export default function AdminProfilePage() {
     router.push('/signin');
   };
 
-  if (isPending) {
+  // Prevent prerendering issues on Next.js build
+  if (!mounted || isPending) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-slate-500 text-sm animate-pulse font-medium">লোড হচ্ছে...</div>
@@ -168,12 +174,12 @@ export default function AdminProfilePage() {
 
           <div className="p-6 sm:p-8 space-y-6">
             <h2 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
-              <KeyRound size={18} className="text-[#1B8A44]" /> পাসওয়ার্ড পরিবর্তন করুন (Change Password)
+              <KeyRound size={18} className="text-[#1B8A44]" /> পাসওয়ার্ড পরিবর্তন করুন (Change Password)
             </h2>
 
             <form onSubmit={handlePasswordChange} className="space-y-4 max-w-lg">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">বর্তমান পাসওয়ার্ড (Current Password)</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">বর্তমান পাসওয়ার্ড (Current Password)</label>
                 <div className="relative">
                   <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
                   <input
@@ -187,7 +193,7 @@ export default function AdminProfilePage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">নতুন পাসওয়ার্ড (New Password)</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">নতুন পাসওয়ার্ড (New Password)</label>
                 <div className="relative">
                   <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
                   <input
@@ -201,7 +207,7 @@ export default function AdminProfilePage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">নতুন পাসওয়ার্ড নিশ্চিত করুন (Confirm New Password)</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">নতুন পাসওয়ার্ড নিশ্চিত করুন (Confirm New Password)</label>
                 <div className="relative">
                   <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
                   <input
@@ -219,7 +225,7 @@ export default function AdminProfilePage() {
                 disabled={loading}
                 className="py-3 px-6 bg-[#1B8A44] hover:bg-[#156d35] text-white font-bold rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
-                {loading ? 'পরিবর্তন হচ্ছে...' : 'পাসওয়ার্ড আপডেট করুন'}
+                {loading ? 'পরিবর্তন হচ্ছে...' : 'পাসওয়ার্ড আপডেট করুন'}
               </button>
             </form>
           </div>

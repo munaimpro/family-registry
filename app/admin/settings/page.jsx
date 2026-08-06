@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+export const dynamic = 'force-dynamic';
+
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from '../../../lib/auth-client';
 import { getAppSettings, saveAppSettings } from '../../../lib/storage';
@@ -9,17 +11,32 @@ import { Settings, Upload, CheckCircle2, ArrowLeft, Trash2, HeartHandshake } fro
 import Link from 'next/link';
 
 export default function AdminSettingsPage() {
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const { data: session, isPending } = useSession();
-  const settings = getAppSettings();
-  const [logo, setLogo] = useState(() => settings.logo || '');
-  const [appTitle, setAppTitle] = useState(() => settings.appTitle || 'স্মার্ট পরিবার ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
-  const [foundationName, setFoundationName] = useState(() => settings.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ');
-  const [formTitle, setFormTitle] = useState(() => settings.formTitle || 'পরিবার শুমারি ও তথ্য নিবন্ধন ফরম');
-  const [address, setAddress] = useState(() => settings.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
-  const [hotline, setHotline] = useState(() => settings.hotline || '০১৮১৯-০০০০০০');
+
+  const [logo, setLogo] = useState('');
+  const [appTitle, setAppTitle] = useState('স্মার্ট পরিবার ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
+  const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
+  const [formTitle, setFormTitle] = useState('পরিবার শুমারি ও তথ্য নিবন্ধন ফরম');
+  const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
+  const [hotline, setHotline] = useState('০১৮১৯-০০০০০০');
+
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    setMounted(true);
+    const settings = getAppSettings();
+    if (settings) {
+      if (settings.logo) setLogo(settings.logo);
+      if (settings.appTitle) setAppTitle(settings.appTitle);
+      if (settings.foundationName) setFoundationName(settings.foundationName);
+      if (settings.formTitle) setFormTitle(settings.formTitle);
+      if (settings.address) setAddress(settings.address);
+      if (settings.hotline) setHotline(settings.hotline);
+    }
+  }, []);
 
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
@@ -38,11 +55,11 @@ export default function AdminSettingsPage() {
       if (typeof result === 'string') {
         setLogo(result);
         setError('');
-        toast.success('লোগো সিলেক্ট করা হয়েছে!');
+        toast.success('লোগো সিলেক্ট করা হয়েছে!');
       }
     };
     reader.onerror = () => {
-      const errMsg = 'ফাইল পড়তে সমস্যা হয়েছে।';
+      const errMsg = 'ফাইল পড়তে সমস্যা হয়েছে।';
       setError(errMsg);
       toast.error(errMsg);
     };
@@ -54,12 +71,12 @@ export default function AdminSettingsPage() {
     try {
       saveAppSettings({ logo, appTitle, foundationName, formTitle, address, hotline });
       setSuccess(true);
-      toast.success('সেটিংস সফলভাবে সংরক্ষণ করা হয়েছে!');
+      toast.success('সেটিংস সফলভাবে সংরক্ষণ করা হয়েছে!');
       setTimeout(() => {
         setSuccess(false);
       }, 3000);
     } catch (err) {
-      const errMsg = 'সেটিংস সংরক্ষণ করতে সমস্যা হয়েছে।';
+      const errMsg = 'সেটিংস সংরক্ষণ করতে সমস্যা হয়েছে।';
       setError(errMsg);
       toast.error(errMsg);
     }
@@ -69,7 +86,7 @@ export default function AdminSettingsPage() {
     setLogo('');
   };
 
-  if (isPending) {
+  if (!mounted || isPending) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-slate-500 text-sm animate-pulse font-medium">লোড হচ্ছে...</div>
@@ -117,7 +134,7 @@ export default function AdminSettingsPage() {
 
             {success && (
               <div className="p-3 bg-emerald-50 border border-emerald-200 text-[#1B8A44] text-xs rounded-xl font-medium flex items-center gap-2">
-                <CheckCircle2 size={16} /> সেটিংস সফলভাবে সংরক্ষিত হয়েছে! সাইট ও ইনপুট ফরে লোগো আপডেট করা হয়েছে।
+                <CheckCircle2 size={16} /> সেটিংস সফলভাবে সংরক্ষিত হয়েছে! সাইট ও ইনপুট ফরে লোগো আপডেট করা হয়েছে।
               </div>
             )}
 
@@ -127,7 +144,7 @@ export default function AdminSettingsPage() {
                   সাইট এবং ফরমের লোগো (Site & Form Logo)
                 </label>
                 <p className="text-xs text-slate-500 mb-4">
-                  এই লোগোটি স্বয়ংক্রিয়ভাবে মূল নেভবার, ইনপুট ফরম এবং প্রিন্টেবল ফর্মে প্রদর্শিত হবে।
+                  এই লোগোটি স্বয়ংক্রিয়ভাবে মূল নেভবার, ইনপুট ফরম এবং প্রিন্টেবল ফর্মে প্রদর্শিত হবে।
                 </p>
 
                 {/* Logo Preview & Upload Box */}
@@ -161,7 +178,7 @@ export default function AdminSettingsPage() {
                       )}
                     </div>
                     <p className="text-[11px] text-slate-400">
-                      সাজেস্টেড ফরম্যাট: PNG, JPG বা SVG (সর্বোচ্চ ২ MB, গোল আকৃতির জন্য স্কয়ার ছবি শ্রেয়)
+                      সাজেস্টেড ফরম্যাট: PNG, JPG বা SVG (সর্বোচ্চ ২ MB, গোল আকৃতির জন্য স্কয়ার ছবি শ্রেয়)
                     </p>
                   </div>
                 </div>
@@ -190,7 +207,7 @@ export default function AdminSettingsPage() {
                   type="text"
                   value={appTitle}
                   onChange={(e) => setAppTitle(e.target.value)}
-                  placeholder="যেমন: স্মার্ট পরিবার ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক"
+                  placeholder="যেমন: স্মার্ট পরিবার ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক"
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-sans font-medium"
                 />
               </div>
@@ -207,7 +224,7 @@ export default function AdminSettingsPage() {
                   type="text"
                   value={foundationName}
                   onChange={(e) => setFoundationName(e.target.value)}
-                  placeholder="যেমন: অলি মিয়া সমাজ কল্যাণ পরিষদ"
+                  placeholder="যেমন: অলি মিয়া সমাজ কল্যাণ পরিষদ"
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-sans font-medium"
                 />
               </div>
@@ -241,7 +258,7 @@ export default function AdminSettingsPage() {
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  placeholder="যেমন: উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম"
+                  placeholder="যেমন: উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম"
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden font-sans font-medium"
                 />
               </div>
@@ -252,7 +269,7 @@ export default function AdminSettingsPage() {
                   হটলাইন / ফোন নম্বর (Hotline / Phone Number)
                 </label>
                 <p className="text-xs text-slate-500 mb-2">
-                  জরুরি রক্তের প্রয়োজনে হোম পেজের লাল হটলাইন বাটন এবং যোগাযোগের তথ্যে এই নম্বরটি ব্যবহৃত হবে।
+                  জরুরি রক্তের প্রয়োজনে হোম পেজের লাল হটলাইন বাটন এবং যোগাযোগের তথ্যে এই নম্বরটি ব্যবহৃত হবে।
                 </p>
                 <input
                   type="text"
