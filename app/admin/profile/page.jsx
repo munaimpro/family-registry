@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession, signOut, changePassword } from '../../../lib/auth-client';
-import { getUserProfile, saveUserProfile } from '../../../lib/storage';
+import { useSession, signOut, changePassword, updateUser } from '../../../lib/auth-client';
 import { User, Lock, Shield, LogOut, KeyRound, CheckCircle2, ArrowLeft, Upload, Settings } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
@@ -11,9 +10,7 @@ import toast from 'react-hot-toast';
 export default function AdminProfilePage() {
   const router = useRouter();
   const { data: session, isPending } = useSession();
-
-  const userEmail = session?.user?.email;
-  const storedProfile = userEmail ? getUserProfile(userEmail) : { avatar: '' };
+  const user = session?.user;
 
   const [uploadedAvatar, setUploadedAvatar] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -23,7 +20,7 @@ export default function AdminProfilePage() {
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const activeAvatar = uploadedAvatar || storedProfile.avatar || '';
+  const activeAvatar = uploadedAvatar || user?.image || '';
 
   const handleAvatarUpload = (e) => {
     const file = e.target.files?.[0];
@@ -35,13 +32,24 @@ export default function AdminProfilePage() {
     }
 
     const reader = new FileReader();
-    reader.onload = (uploadEvent) => {
+    reader.onload = async (uploadEvent) => {
       const result = uploadEvent.target?.result;
       if (typeof result === 'string') {
         setUploadedAvatar(result);
-        if (userEmail) {
-          saveUserProfile(userEmail, { avatar: result });
-          toast.success('প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে!');
+
+        try {
+          const { data, error } = await updateUser({
+            image: result
+          });
+
+          if (error) {
+            toast.error(error.message || 'প্রোফাইল ছবি আপডেট করতে ব্যর্থ হয়েছে।');
+            setUploadedAvatar('');
+          } else {
+            toast.success('প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে!');
+          }
+        } catch (err) {
+          toast.error('একটি অপ্রত্যাশিত ত্রুটি ঘটেছে।');
         }
       }
     };
@@ -99,8 +107,6 @@ export default function AdminProfilePage() {
       </div>
     );
   }
-
-  const user = session?.user;
 
   return (
     <div className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
@@ -170,7 +176,6 @@ export default function AdminProfilePage() {
                   <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
                   <input
                     type="password"
-                    required
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     placeholder="••••••••"
@@ -185,7 +190,6 @@ export default function AdminProfilePage() {
                   <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
                   <input
                     type="password"
-                    required
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="••••••••"
@@ -200,7 +204,6 @@ export default function AdminProfilePage() {
                   <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
                   <input
                     type="password"
-                    required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••"
