@@ -29,8 +29,10 @@ export default function SignupPage() {
 
       if (error) {
         setError(error.message || 'নিবন্ধন করতে সমস্যা হয়েছে। পুনরায় চেষ্টা করুন।');
+        console.log("error", error.message);
       } else {
         setSuccess(true);
+        console.log("data", data);
         setTimeout(() => {
           window.location.href = '/';
         }, 800);

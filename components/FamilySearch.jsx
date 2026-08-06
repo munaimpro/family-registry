@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { searchRecords, isHeadOfAnyRecord } from '../lib/storage';
+import { useSession } from '../lib/auth-client';
 import {
   Search,
   Heart,
@@ -33,6 +34,8 @@ export const FamilySearch = ({
   initialBloodGroup = ''
 }) => {
   const router = useRouter();
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user;
   const [nameQuery, setNameQuery] = useState('');
   const [formNoQuery, setFormNoQuery] = useState('');
   const [generalQuery, setGeneralQuery] = useState('');
@@ -129,12 +132,14 @@ export const FamilySearch = ({
             </p>
           </div>
 
-          <button
-            onClick={onAddNew}
-            className="px-4 py-2 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md transition cursor-pointer self-stretch lg:self-auto justify-center"
-          >
-            <Plus size={16} /> নতুন ফ্যামিলি যুক্ত করুন
-          </button>
+          {isLoggedIn && (
+            <button
+              onClick={onAddNew}
+              className="px-4 py-2 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md transition cursor-pointer self-stretch lg:self-auto justify-center"
+            >
+              <Plus size={16} /> নতুন ফ্যামিলি যুক্ত করুন
+            </button>
+          )}
         </div>
 
         {/* Input Controls */}
@@ -490,7 +495,7 @@ export const FamilySearch = ({
                   {/* Card Action Footer */}
                   <div className="pt-3 border-t border-slate-100 flex justify-between items-center gap-2">
                     <button
-                      onClick={() => onSelectRecord(rec)}
+                      onClick={() => isLoggedIn ? onSelectRecord(rec) : router.push('/signin')}
                       className="flex-1 py-2 bg-[#0F2C59] hover:bg-[#1B365D] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs"
                     >
                       <Eye size={14} /> প্রোফাইল দেখুন
@@ -504,13 +509,15 @@ export const FamilySearch = ({
                       <Printer size={16} />
                     </button>
 
-                    <button
-                      onClick={() => onEditRecord(rec)}
-                      className="p-2 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-xl text-xs transition cursor-pointer border border-amber-200"
-                      title="সম্পাদনা করুন"
-                    >
-                      <Edit2 size={16} />
-                    </button>
+                    {isLoggedIn && (
+                      <button
+                        onClick={() => onEditRecord(rec)}
+                        className="p-2 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-xl text-xs transition cursor-pointer border border-amber-200"
+                        title="সম্পাদনা করুন"
+                      >
+                        <Edit2 size={16} />
+                      </button>
+                    )}
                   </div>
                 </div>
               );

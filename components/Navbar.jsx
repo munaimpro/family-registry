@@ -164,49 +164,53 @@ export const Navbar = ({
                 )}
               </Link>
 
-              <Link
-                href="/new-form"
-                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/new-form'
-                  ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                  }`}
-              >
-                <PlusCircle size={15} />
-                <span>নতুন ইনপুট ফরম</span>
-              </Link>
+              {isLoggedIn && (
+                <>
+                  <Link
+                    href="/new-form"
+                    className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/new-form'
+                      ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                      : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                      }`}
+                  >
+                    <PlusCircle size={15} />
+                    <span>নতুন ইনপুট ফরম</span>
+                  </Link>
 
-              <Link
-                href="/admin"
-                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin'
-                  ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                  }`}
-              >
-                <ShieldCheck size={15} />
-                <span>অ্যাডমিন ড্যাশবোর্ড</span>
-              </Link>
+                  <Link
+                    href="/admin"
+                    className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin'
+                      ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                      : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                      }`}
+                  >
+                    <ShieldCheck size={15} />
+                    <span>অ্যাডমিন ড্যাশবোর্ড</span>
+                  </Link>
 
-              <Link
-                href="/admin/profile"
-                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin/profile'
-                  ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                  }`}
-              >
-                <User size={15} />
-                <span>প্রোফাইল</span>
-              </Link>
+                  <Link
+                    href="/admin/profile"
+                    className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin/profile'
+                      ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                      : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                      }`}
+                  >
+                    <User size={15} />
+                    <span>প্রোফাইল</span>
+                  </Link>
 
-              <Link
-                href="/admin/settings"
-                className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin/settings'
-                  ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
-                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
-                  }`}
-              >
-                <Settings size={15} />
-                <span>সেটিংস</span>
-              </Link>
+                  <Link
+                    href="/admin/settings"
+                    className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/admin/settings'
+                      ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                      : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                      }`}
+                  >
+                    <Settings size={15} />
+                    <span>সেটিংস</span>
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Auth Buttons */}
@@ -276,53 +280,57 @@ export const Navbar = ({
                 )}
               </Link>
 
-              <Link
-                href="/new-form"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/new-form'
-                  ? 'bg-[#1B8A44] text-white shadow-md'
-                  : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                  }`}
-              >
-                <PlusCircle size={18} />
-                <span>নতুন তথ্য ইনপুট ফরম</span>
-              </Link>
+              {isLoggedIn && (
+                <>
+                  <Link
+                    href="/new-form"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/new-form'
+                      ? 'bg-[#1B8A44] text-white shadow-md'
+                      : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                      }`}
+                  >
+                    <PlusCircle size={18} />
+                    <span>নতুন তথ্য ইনপুট ফরম</span>
+                  </Link>
 
-              <Link
-                href="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin'
-                  ? 'bg-[#1B8A44] text-white shadow-md'
-                  : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                  }`}
-              >
-                <ShieldCheck size={18} />
-                <span>অ্যাডমিন ড্যাশবোর্ড</span>
-              </Link>
+                  <Link
+                    href="/admin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin'
+                      ? 'bg-[#1B8A44] text-white shadow-md'
+                      : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                      }`}
+                  >
+                    <ShieldCheck size={18} />
+                    <span>অ্যাডমিন ড্যাশবোর্ড</span>
+                  </Link>
 
-              <Link
-                href="/admin/profile"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin/profile'
-                  ? 'bg-[#1B8A44] text-white shadow-md'
-                  : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                  }`}
-              >
-                <User size={18} />
-                <span>প্রোফাইল (Profile)</span>
-              </Link>
+                  <Link
+                    href="/admin/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin/profile'
+                      ? 'bg-[#1B8A44] text-white shadow-md'
+                      : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                      }`}
+                  >
+                    <User size={18} />
+                    <span>প্রোফাইল (Profile)</span>
+                  </Link>
 
-              <Link
-                href="/admin/settings"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin/settings'
-                  ? 'bg-[#1B8A44] text-white shadow-md'
-                  : 'text-emerald-100 bg-white/5 hover:bg-white/10'
-                  }`}
-              >
-                <Settings size={18} />
-                <span>সেটিংস (Settings)</span>
-              </Link>
+                  <Link
+                    href="/admin/settings"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2.5 transition min-h-[44px] ${pathname === '/admin/settings'
+                      ? 'bg-[#1B8A44] text-white shadow-md'
+                      : 'text-emerald-100 bg-white/5 hover:bg-white/10'
+                      }`}
+                  >
+                    <Settings size={18} />
+                    <span>সেটিংস (Settings)</span>
+                  </Link>
+                </>
+              )}
 
               {!isLoggedIn ? (
                 <div className="grid grid-cols-2 gap-2 pt-1">
@@ -362,7 +370,7 @@ export const Navbar = ({
 
       {/* Fixed Mobile Bottom Navigation Bar (Phone & Tablet < 768px) */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0F2C59] border-t-2 border-[#1B8A44] md:hidden shadow-2xl backdrop-blur-md bg-opacity-95">
-        <div className="grid grid-cols-6 h-14">
+        <div className={`grid h-14 ${isLoggedIn ? 'grid-cols-6' : 'grid-cols-2'}`}>
           <Link
             href="/"
             className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
@@ -381,41 +389,45 @@ export const Navbar = ({
             <span>তালিকা</span>
           </Link>
 
-          <Link
-            href="/new-form"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/new-form' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-              }`}
-          >
-            <PlusCircle size={15} />
-            <span>নতুন ফরম</span>
-          </Link>
+          {isLoggedIn && (
+            <>
+              <Link
+                href="/new-form"
+                className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/new-form' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+                  }`}
+              >
+                <PlusCircle size={15} />
+                <span>নতুন ফরম</span>
+              </Link>
 
-          <Link
-            href="/admin"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/admin' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-              }`}
-          >
-            <ShieldCheck size={15} />
-            <span>অ্যাডমিন</span>
-          </Link>
+              <Link
+                href="/admin"
+                className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/admin' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+                  }`}
+              >
+                <ShieldCheck size={15} />
+                <span>অ্যাডমিন</span>
+              </Link>
 
-          <Link
-            href="/admin/profile"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/admin/profile' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-              }`}
-          >
-            <User size={15} />
-            <span>প্রোফাইল</span>
-          </Link>
+              <Link
+                href="/admin/profile"
+                className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/admin/profile' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+                  }`}
+              >
+                <User size={15} />
+                <span>প্রোফাইল</span>
+              </Link>
 
-          <Link
-            href="/admin/settings"
-            className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/admin/settings' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
-              }`}
-          >
-            <Settings size={15} />
-            <span>সেটিংস</span>
-          </Link>
+              <Link
+                href="/admin/settings"
+                className={`flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-bold transition ${pathname === '/admin/settings' ? 'text-[#62C255] bg-white/10' : 'text-slate-300 hover:text-white'
+                  }`}
+              >
+                <Settings size={15} />
+                <span>সেটিংস</span>
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </>
