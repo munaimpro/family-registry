@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession, signOut } from '../lib/auth-client';
-import { getAppSettings } from '../lib/storage';
 import {
   Home,
   Search,
@@ -33,25 +32,35 @@ export const Navbar = ({
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logo, setLogo] = useState('');
-  const [appTitle, setAppTitle] = useState('স্মার্ট পরিবার ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
-  const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
-  const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম');
+  const [appTitle, setAppTitle] = useState('স্মার্ট পরিবার ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
+  const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
+  const [address, setAddress] = useState('উত্তর গৌবিন্দারখীল, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম');
 
   useEffect(() => {
-    const updateSettings = () => {
-      const settings = getAppSettings();
-      if (settings) {
-        setLogo(settings.logo || '');
-        if (settings.appTitle) setAppTitle(settings.appTitle);
-        if (settings.foundationName) setFoundationName(settings.foundationName);
-        if (settings.address) setAddress(settings.address);
+    // Native Fetch API দিয়ে API থেকে সেটিংস ডেটা আনবে
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/admin/settings');
+        if (response.ok) {
+          const data = await response.json();
+          if (data) {
+            if (data.logo) setLogo(data.logo);
+            if (data.appTitle) setAppTitle(data.appTitle);
+            if (data.foundationName) setFoundationName(data.foundationName);
+            if (data.address) setAddress(data.address);
+          }
+        }
+      } catch (error) {
+        console.error('Settings fetch error:', error);
       }
     };
-    updateSettings();
 
-    window.addEventListener('omskp_settings_updated', updateSettings);
+    fetchSettings();
+
+    // অ্যাপের অন্য কোথাও সেটিংস আপডেট হলে যেন লাইভ রিফ্রেশ হয়
+    window.addEventListener('omskp_settings_updated', fetchSettings);
     return () => {
-      window.removeEventListener('omskp_settings_updated', updateSettings);
+      window.removeEventListener('omskp_settings_updated', fetchSettings);
     };
   }, []);
 

@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useApp } from '../lib/AppContext';
-import { getAppSettings } from '../lib/storage';
 import {
   Heart,
   Search,
@@ -17,58 +16,80 @@ import {
   ArrowRight,
   CheckCircle2,
   Droplet,
-  Clock,
-  UserPlus,
-  HeartHandshake,
   Award,
-  HelpCircle,
-  FileText
+  UserPlus,
+  HeartHandshake
 } from 'lucide-react';
 
 export default function HomePage() {
   const router = useRouter();
   const { records } = useApp();
   const [logo, setLogo] = useState('');
-  const [appTitle, setAppTitle] = useState('স্মার্ট ডিজিটাল ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
-  const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
-  const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
+  const [appTitle, setAppTitle] = useState('স্মার্ট ডিজিটাল ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
+  const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
+  const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
   const [hotline, setHotline] = useState('০১৮১৯-০০০০০০');
 
+  // Dashboard Stats State
+  const [stats, setStats] = useState({
+    totalFamilies: 0,
+    verifiedCount: 0,
+    totalMembers: 0,
+    specialMembersCount: 0
+  });
+
   useEffect(() => {
-    const handleSettingsUpdate = () => {
-      const settings = getAppSettings();
-      setLogo(settings?.logo || '');
-      setAppTitle(settings?.appTitle || 'স্মার্ট ডিজিটাল ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
-      setFoundationName(settings?.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ');
-      setAddress(settings?.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
-      setHotline(settings?.hotline || '০১৮১৯-০০০০০০');
+    // Native Fetch API দিয়ে API থেকে সেটিংস ডেটা ফেচ করা
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/settings`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data) {
+            if (data.logo) setLogo(data.logo);
+            if (data.appTitle) setAppTitle(data.appTitle);
+            if (data.foundationName) setFoundationName(data.foundationName);
+            if (data.address) setAddress(data.address);
+            if (data.hotline) setHotline(data.hotline);
+          }
+        }
+      } catch (error) {
+        console.error('Settings fetch error:', error);
+      }
     };
-    handleSettingsUpdate();
+
+    // Dashboard Stats ফেচ করা
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/dashboard-stats`);
+        if (response.ok) {
+          const data = await response.json();
+          setStats({
+            totalFamilies: data.totalFamilies || 0,
+            verifiedCount: data.verifiedCount || 0,
+            totalMembers: data.totalMembers || 0,
+            specialMembersCount: data.specialMembersCount || 0
+          });
+        }
+      } catch (error) {
+        console.error('Stats fetch error:', error);
+      }
+    };
+
+    fetchSettings();
+    fetchStats();
+
+    // অ্যাপের অন্য কোথাও সেটিংস আপডেট হলে যেন লাইভ রিফ্রেশ হয়
+    const handleSettingsUpdate = () => {
+      fetchSettings();
+      fetchStats();
+    };
+
     window.addEventListener('omskp_settings_updated', handleSettingsUpdate);
     return () => window.removeEventListener('omskp_settings_updated', handleSettingsUpdate);
   }, []);
 
-  // Calculate statistics from records
-  const totalFamilies = records.length;
-
-  // Total members including head + family members
-  const totalMembers = records.reduce((acc, rec) => {
-    return acc + 1 + (rec.members ? rec.members.length : 0);
-  }, 0);
-
-  // Total blood donors (heads with blood group + family members with blood group)
-  const totalDonors = records.reduce((acc, rec) => {
-    let count = rec.bloodGroup ? 1 : 0;
-    if (rec.members) {
-      count += rec.members.filter(m => m.bloodGroup).length;
-    }
-    return acc + count;
-  }, 0);
-
-  // External members count
-  const externalMembersCount = records.filter(r => r.isExternalMember).length;
-
-  // Counts by blood group
+  // Counts by blood group from local records context
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
   const bloodCounts = bloodGroups.reduce((acc, bg) => {
     let count = records.filter(r => r.bloodGroup === bg).length;
@@ -105,20 +126,18 @@ export default function HomePage() {
 
       {/* 2. HERO SECTION */}
       <section className="relative bg-gradient-to-b from-[#0F2C59] via-[#113366] to-[#0A1D3B] text-white pt-8 pb-16 px-4 overflow-hidden border-b-4 border-[#1B8A44]">
-        {/* Background Decorative Pattern */}
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#1B8A44_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
 
         <div className="max-w-6xl mx-auto relative z-10 text-center">
 
-          {/* Main Title: Foundation Name & Organization */}
-          <div className="mb-6">
+          <div className="mb-6 space-y-3">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white font-serif tracking-tight leading-tight">
               {foundationName}
             </h1>
           </div>
 
           <p className="text-sm sm:text-base md:text-lg text-emerald-100/90 max-w-3xl mx-auto font-normal leading-relaxed mb-8">
-            আমাদের লক্ষ পরিবার ডিজিটাল রেজিস্ট্রি ব্যবস্থা, জরুরি ব্লাড ডোনার ডিরেক্টরি এবং সর্বস্তরের মানুষের সামাজিক কল্যাণে নিয়োজিত এক আধুনিক ডিজিটাল প্ল্যাটফর্ম।
+            আমাদের লক্ষ পরিবার ডিজিটাল রেজিস্ট্রি ব্যবস্থা, জরুরি ব্লাড ডোনার ডিরেক্টরি এবং সর্বস্তরের মানুষের সামাজিক কল্যাণে নিয়োজিত এক আধুনিক ডিজিটাল প্ল্যাটফর্ম।
           </p>
 
           {/* Primary Action Buttons */}
@@ -149,11 +168,11 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* SaaS Statistics Bar */}
+          {/* Dynamic Statistics Bar (API Driven) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto bg-white/10 backdrop-blur-md border border-white/15 p-4 rounded-2xl shadow-2xl">
             <div className="p-3 text-center border-r border-white/10 last:border-0">
               <div className="text-2xl sm:text-3xl md:text-4xl font-black text-emerald-300 font-mono">
-                {totalFamilies}
+                {stats.totalFamilies}
               </div>
               <div className="text-xs text-slate-300 font-medium mt-1 flex items-center justify-center gap-1">
                 <Users size={12} className="text-emerald-400" /> নিবন্ধিত পরিবার
@@ -162,25 +181,25 @@ export default function HomePage() {
 
             <div className="p-3 text-center border-r border-white/10 last:border-0">
               <div className="text-2xl sm:text-3xl md:text-4xl font-black text-rose-300 font-mono">
-                {totalDonors}
+                {stats.verifiedCount}
               </div>
               <div className="text-xs text-slate-300 font-medium mt-1 flex items-center justify-center gap-1">
-                <Heart size={12} className="text-rose-400 fill-rose-400" /> সক্রিয় রক্তদাতা
+                <Heart size={12} className="text-rose-400 fill-rose-400" /> যাচাইকৃত পরিবার
               </div>
             </div>
 
             <div className="p-3 text-center border-r border-white/10 last:border-0">
               <div className="text-2xl sm:text-3xl md:text-4xl font-black text-amber-300 font-mono">
-                {externalMembersCount}
+                {stats.specialMembersCount}
               </div>
               <div className="text-xs text-slate-300 font-medium mt-1 flex items-center justify-center gap-1">
-                <UserPlus size={12} className="text-amber-400" /> এক্সটার্নাল মেম্বার
+                <UserPlus size={12} className="text-amber-400" /> অস্থায়ী সদস্য
               </div>
             </div>
 
             <div className="p-3 text-center">
               <div className="text-2xl sm:text-3xl md:text-4xl font-black text-emerald-300 font-mono">
-                {totalMembers}
+                {stats.totalMembers}
               </div>
               <div className="text-xs text-slate-300 font-medium mt-1 flex items-center justify-center gap-1">
                 <Activity size={12} className="text-emerald-400" /> সর্বমোট নাগরিক
@@ -201,7 +220,7 @@ export default function HomePage() {
               </div>
               <div>
                 <h3 className="text-base sm:text-lg font-bold text-slate-900 font-serif">
-                  রক্তের গ্রুপ অনুযায়ী রক্তদাতা খুঁজুন
+                  রক্তের গ্রুপ অনুযায়ী রক্তদাতা খুঁজুন
                 </h3>
                 <p className="text-xs text-slate-500">
                   নিচের যেকোন রক্তের গ্রুপে ক্লিক করে সরাসরি নিবন্ধিত রক্তদাতাদের তালিকা দেখুন
@@ -235,10 +254,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. BLOOD DONATION BENEFITS SECTION (রক্তদানের উপকারিতা) */}
+      {/* 4. BLOOD DONATION BENEFITS SECTION */}
       <section className="py-16 px-4 max-w-6xl mx-auto">
-
-        {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-1.5 bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full mb-3">
             <Heart size={14} className="fill-rose-600 text-rose-600" />
@@ -248,26 +265,22 @@ export default function HomePage() {
             রক্তদানের শারীরিক, মানসিক ও সামাজিক উপকারিতা
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 mt-2">
-            এক ব্যাগ রক্ত কেবল একটি জীবনই বাঁচায় না, বরং রক্তদাতার নিজের স্বাস্থ্যের জন্যও অত্যন্ত উপকারী।
+            এক ব্যাগ রক্ত কেবল একটি জীবনই বাঁচায় না, বরং রক্তদাতার নিজের স্বাস্থ্যের জন্যও অত্যন্ত উপকারী।
           </p>
         </div>
 
-        {/* Quranic Verse / Spiritual Quote Highlight Box */}
         <div className="bg-gradient-to-r from-emerald-900 to-[#0F2C59] text-white p-6 sm:p-8 rounded-2xl shadow-xl mb-12 relative overflow-hidden border-2 border-[#1B8A44]">
           <div className="relative z-10 text-center max-w-3xl mx-auto space-y-3">
             <p className="text-emerald-300 font-serif text-lg sm:text-xl font-bold italic">
-              &quot;মুমূর্ষু মানুষের পাশে দাঁড়ানো এবং রক্তদান করা মহত্তম মানবিক কাজগুলির একটি।&quot;
+              &quot;মুমূর্ষু মানুষের পাশে দাঁড়ানো এবং রক্তদান করা মহত্তম মানবিক কাজগুলির একটি।&quot;
             </p>
             <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed font-sans">
-              &quot;যে ব্যক্তি একজন মানুষের জীবন বাঁচালো, সে যেন সমগ্র মানবজাতিকে বাঁচালো।&quot; — (সূরা আল-মায়িদাহ: ৩২)
+              &quot;যে ব্যক্তি একজন মানুষের জীবন বাঁচালো, সে যেন সমগ্র মানবজাতিকে বাঁচালো।&quot; — (সূরা আল-মায়িদাহ: ৩২)
             </p>
           </div>
         </div>
 
-        {/* 6 Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          {/* Benefit Card 1 */}
           <div className="bg-white border-2 border-slate-200 hover:border-rose-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4 group-hover:bg-rose-600 group-hover:text-white transition">
               <Activity size={24} />
@@ -276,11 +289,10 @@ export default function HomePage() {
               ১. হৃৎপিণ্ড সুস্থ রাখে (Heart Health)
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              নিয়মিত রক্তদানে রক্তে অতিরিক্ত আয়রন জমতে পারে না। ফলে রক্তনালী পরিষ্কার থাকে এবং হার্ট অ্যাটাক ও স্ট্রোকের ঝুঁকি বহুগুণ হ্রাস পায়।
+              নিয়মিত রক্তদানে রক্তে অতিরিক্ত আয়রন জমতে পারে না। ফলে রক্তনালী পরিষ্কার থাকে এবং হার্ট অ্যাটাক ও স্ট্রোকের ঝুঁকি বহুগুণ হ্রাস পায়।
             </p>
           </div>
 
-          {/* Benefit Card 2 */}
           <div className="bg-white border-2 border-slate-200 hover:border-emerald-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4 group-hover:bg-[#1B8A44] group-hover:text-white transition">
               <Sparkles size={24} />
@@ -289,11 +301,10 @@ export default function HomePage() {
               ২. নতুন রক্তকণিকা সৃষ্টি (Cell Regeneration)
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              রক্তদানের ২৪ থেকে ৪৮ ঘণ্টার মধ্যে শরীরে নতুন রক্তকণিকা ও প্লাজমা তৈরি হওয়া শুরু হয়, যা শরীরের রোগ প্রতিরোধ ক্ষমতা বৃদ্ধিতে সহায়ক।
+              রক্তদানের ২৪ থেকে ৪৮ ঘণ্টার মধ্যে শরীরে নতুন রক্তকণিকা ও প্লাজমা তৈরি হওয়া শুরু হয়, যা শরীরের রোগ প্রতিরোধ ক্ষমতা বৃদ্ধিতে সহায়ক।
             </p>
           </div>
 
-          {/* Benefit Card 3 */}
           <div className="bg-white border-2 border-slate-200 hover:border-blue-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition">
               <CheckCircle2 size={24} />
@@ -302,24 +313,22 @@ export default function HomePage() {
               ৩. বিনামূল্যে স্বাস্থ্য পরীক্ষা (Free Screening)
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              রক্তদানের পূর্বে হিমোগ্লোবিন, রক্তচাপ, হেপাটাইটিস-বি ও সি, সিফিলিস ও এইচআইভি সহ ৫টি বড় রোগের স্বাস্থ্য পরীক্ষা সম্পূর্ণ বিনামূল্যে পাওয়া যায়।
+              রক্তদানের পূর্বে হিমোগ্লোবিন, রক্তচাপ, হেপাটাইটিস-বি ও সি, সিফিলিস ও এইচআইভি সহ ৫টি বড় রোগের স্বাস্থ্য পরীক্ষা সম্পূর্ণ বিনামূল্যে পাওয়া যায়।
             </p>
           </div>
 
-          {/* Benefit Card 4 */}
           <div className="bg-white border-2 border-slate-200 hover:border-amber-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4 group-hover:bg-amber-600 group-hover:text-white transition">
               <Award size={24} />
             </div>
             <h3 className="text-lg font-bold text-[#0F2C59] font-serif mb-2">
-              ৪. ক্যালোরি ক্ষয় ও ওজন নিয়ন্ত্রণ (Weight Management)
+              ৪. ক্যালোরি ক্ষয় ও ওজন নিয়ন্ত্রণ (Weight Management)
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              একবার রক্তদান করলে শরীরে প্রায় ৬৫০ ক্যালোরি বার্ন হয়, যা অতিরিক্ত চর্বি কমায় এবং ওজন নিয়ন্ত্রণে ভারসাম্য রক্ষা করে।
+              একবার রক্তদান করলে শরীরে প্রায় ৬৫০ ক্যালোরি বার্ন হয়, যা অতিরিক্ত চর্বি কমায় এবং ওজন নিয়ন্ত্রণে ভারসাম্য রক্ষা করে।
             </p>
           </div>
 
-          {/* Benefit Card 5 */}
           <div className="bg-white border-2 border-slate-200 hover:border-[#1B8A44] p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-[#1B8A44] flex items-center justify-center mb-4 group-hover:bg-[#1B8A44] group-hover:text-white transition">
               <HeartHandshake size={24} />
@@ -328,11 +337,10 @@ export default function HomePage() {
               ৫. আত্মিক প্রশান্তি ও সওয়াব (Mental Joy & Rewards)
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              একজন মুমূর্ষু রোগীর জীবন বাঁচাতে রক্তদানের মাধ্যমে যে আত্মতৃপ্তি ও পরম মানসিক শান্তি পাওয়া যায়, তা অসামান্য মানবিক ও দ্বীনি অনুভূতি।
+              একজন মুমূর্ষু রোগীর জীবন বাঁচাতে রক্তদানের মাধ্যমে যে আত্মতৃপ্তি ও পরম মানসিক শান্তি পাওয়া যায়, তা অসামান্য মানবিক ও দ্বীনি অনুভূতি।
             </p>
           </div>
 
-          {/* Benefit Card 6 */}
           <div className="bg-white border-2 border-slate-200 hover:border-indigo-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition">
               <ShieldCheck size={24} />
@@ -341,18 +349,15 @@ export default function HomePage() {
               ৬. ক্যানসার ও লিভার রোগের ঝুঁকি হ্রাস
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              শরীরে আয়রনের পরিমাণ সুষম থাকায় লিভার, ফুসফুস ও পাকস্থলীর ক্ষতিকর ক্যানসার কোষ সৃষ্টির সম্ভাবনা উল্লেখযোগ্য হারে হ্রাস পায়।
+              শরীরে আয়রনের পরিমাণ সুষম থাকায় লিভার, ফুসফুস ও পাকস্থলীর ক্ষতিকর ক্যানসার কোষ সৃষ্টির সম্ভাবনা উল্লেখযোগ্য হারে হ্রাস পায়।
             </p>
           </div>
-
         </div>
-
       </section>
 
       {/* 5. DIGITAL DIRECTORY SERVICES SECTION */}
       <section className="bg-white py-16 px-4 border-t border-b border-slate-200">
         <div className="max-w-6xl mx-auto">
-
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-bold text-[#1B8A44] uppercase tracking-wider bg-emerald-100 px-3 py-1 rounded-full">
               আমাদের সেবাসমূহ
@@ -363,8 +368,6 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-            {/* Service 1 */}
             <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-3">
               <div className="w-14 h-14 bg-[#0F2C59] text-white rounded-2xl flex items-center justify-center mx-auto shadow-md">
                 <Users size={28} />
@@ -373,11 +376,10 @@ export default function HomePage() {
                 ১. স্মার্ট পরিবার ডাইরেক্টরি
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                পটিয়া ৯নং ওয়ার্ডের স্থায়ী ও অস্থায়ী বাসিন্দাদের পরিবার প্রধান, স্ত্রী, পুত্র ও কন্যাদের সঠিক ডিজিটাল রেকর্ড ডাটাবেজ।
+                পটিয়া ৯নং ওয়ার্ডের স্থায়ী ও অস্থায়ী বাসিন্দাদের পরিবার প্রধান, স্ত্রী, পুত্র ও কন্যাদের সঠিক ডিজিটাল রেকর্ড ডাটাবেজ।
               </p>
             </div>
 
-            {/* Service 2 */}
             <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-3">
               <div className="w-14 h-14 bg-[#1B8A44] text-white rounded-2xl flex items-center justify-center mx-auto shadow-md">
                 <Heart size={28} className="fill-white" />
@@ -390,7 +392,6 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Service 3 */}
             <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-3">
               <div className="w-14 h-14 bg-amber-600 text-white rounded-2xl flex items-center justify-center mx-auto shadow-md">
                 <UserPlus size={28} />
@@ -399,12 +400,10 @@ export default function HomePage() {
                 ৩. এক্সটার্নাল মেম্বার সাবস্ক্রিপশন
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                ওয়ার্ডের বাইরে বসবাসকারী বা প্রবাসী শুভাকাঙ্ক্ষীদের জন্য বিশেষ &quot;External Member&quot; ট্যাগ সহ ডাইরেক্টরি অন্তর্ভুক্তি।
+                ওয়ার্ডের বাইরে বসবাসকারী বা প্রবাসী শুভাকাঙ্ক্ষীদের জন্য বিশেষ &quot;External Member&quot; ট্যাগ সহ ডাইরেক্টরি অন্তর্ভুক্তি।
               </p>
             </div>
-
           </div>
-
         </div>
       </section>
 
@@ -416,10 +415,10 @@ export default function HomePage() {
               Emergency Blood Support
             </span>
             <h3 className="text-2xl sm:text-3xl font-black font-serif text-white mt-2">
-              জরুরি রক্তের প্রয়োজনে আমরা আপনার পাশে আছি
+              জরুরি রক্তের প্রয়োজনে আমরা আপনার পাশে আছি
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
-              যে কোনো সময়ে রক্তের প্রয়োজন হলে সরাসরি আমাদের সদস্য ডাইরেক্টরিতে সার্চ করুন অথবা হটলাইনে যোগাযোগ করুন।
+              যে কোনো সময়ে রক্তের প্রয়োজন হলে সরাসরি আমাদের সদস্য ডাইরেক্টিতে সার্চ করুন অথবা হটলাইনে যোগাযোগ করুন।
             </p>
           </div>
 
