@@ -1,41 +1,15 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import React, { Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useApp } from '../../lib/AppContext';
-import { FamilySearch } from '../../components/FamilySearch';
 
-function MemberDirectoryContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const { records, setPrintingRecord } = useApp();
-
-  // Pre-filter by blood group when navigated from home page blood group buttons
-  const initialBloodGroup = searchParams.get('bloodGroup') || '';
-
-  const handleEdit = (record) => {
-    router.push(`/new-form/${record._id || record.id}`);
-  };
-
-  const handleAddNew = () => {
-    router.push('/new-form');
-  };
-
-  const handleSelectRecord = (record) => {
-    router.push(`/member-profile/${record._id || record.id}`);
-  };
-
-  return (
-    <FamilySearch
-      records={records}
-      onSelectRecord={handleSelectRecord}
-      onEditRecord={(rec) => handleEdit(rec)}
-      onPrintRecord={(rec) => setPrintingRecord(rec)}
-      onAddNew={handleAddNew}
-      initialBloodGroup={initialBloodGroup}
-    />
-  );
-}
+// MemberDirectoryContent uses useSession (Better Auth) which internally calls
+// useRef — this MUST be dynamically imported with ssr:false to prevent the
+// "Cannot read properties of null (reading 'useRef')" crash during prerendering.
+const MemberDirectoryContent = dynamic(
+  () => import('./MemberDirectoryContent'),
+  { ssr: false }
+);
 
 export default function MemberDirectoryPage() {
   return (

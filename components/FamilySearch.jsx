@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { searchRecords, isHeadOfAnyRecord } from '../lib/storage';
-import { useSession } from '../lib/auth-client';
 import {
   Search,
   Heart,
@@ -27,6 +26,7 @@ import {
 
 export const FamilySearch = ({
   records,
+  isLoggedIn = false,
   onSelectRecord,
   onEditRecord,
   onPrintRecord,
@@ -34,8 +34,6 @@ export const FamilySearch = ({
   initialBloodGroup = ''
 }) => {
   const router = useRouter();
-  const { data: session } = useSession();
-  const isLoggedIn = !!session?.user;
   const [nameQuery, setNameQuery] = useState('');
   const [formNoQuery, setFormNoQuery] = useState('');
   const [generalQuery, setGeneralQuery] = useState('');
