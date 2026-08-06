@@ -2,12 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { AppProvider, useApp } from '../lib/AppContext';
-import { Navbar } from './Navbar';
+import dynamic from 'next/dynamic';
 import { PrintableForm } from './PrintableForm';
 import { ImportModal } from './ImportModal';
 import { Toaster } from 'react-hot-toast';
 import { HeartHandshake } from 'lucide-react';
 import { getAppSettings } from '../lib/storage';
+
+const Navbar = dynamic(() => import('./Navbar').then(mod => ({ default: mod.Navbar })), {
+  ssr: false,
+});
 
 function ShellContent({ children }) {
   const {
