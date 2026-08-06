@@ -40,7 +40,7 @@ export const Navbar = ({
     // Native Fetch API দিয়ে API থেকে সেটিংস ডেটা আনবে
     const fetchSettings = async () => {
       try {
-        const response = await fetch('http://localhost:8000/admin/settings');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/settings`);
         if (response.ok) {
           const data = await response.json();
           if (data) {
