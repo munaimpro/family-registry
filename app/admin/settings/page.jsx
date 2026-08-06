@@ -5,10 +5,12 @@ export const dynamic = 'force-dynamic';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from '../../../lib/auth-client';
-import { getAppSettings, saveAppSettings } from '../../../lib/storage';
 import { toast } from 'react-hot-toast';
-import { Settings, Upload, CheckCircle2, ArrowLeft, Trash2, HeartHandshake } from 'lucide-react';
+import { Settings, Upload, CheckCircle2, ArrowLeft, Trash2, HeartHandshake, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+
+// আপনার ব্যাকএন্ডের আসল base URL এখানে দিন
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export default function AdminSettingsPage() {
   const [mounted, setMounted] = useState(false);
@@ -22,20 +24,49 @@ export default function AdminSettingsPage() {
   const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
   const [hotline, setHotline] = useState('০১৮১৯-০০০০০০');
 
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
+  // Backend থেকে Settings Data Load করা (GET Request)
   useEffect(() => {
     setMounted(true);
-    const settings = getAppSettings();
-    if (settings) {
-      if (settings.logo) setLogo(settings.logo);
-      if (settings.appTitle) setAppTitle(settings.appTitle);
-      if (settings.foundationName) setFoundationName(settings.foundationName);
-      if (settings.formTitle) setFormTitle(settings.formTitle);
-      if (settings.address) setAddress(settings.address);
-      if (settings.hotline) setHotline(settings.hotline);
-    }
+
+    const fetchSettings = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`${API_URL}/admin/settings`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error('ডাটা ফেচ করতে সমস্যা হয়েছে');
+        }
+
+        const data = await res.json();
+
+        // MongoDB থেকে প্রাপ্ত ডেটা স্টেট-এ সেট করা
+        if (data) {
+          if (data.logo) setLogo(data.logo);
+          if (data.appTitle) setAppTitle(data.appTitle);
+          if (data.foundationName) setFoundationName(data.foundationName);
+          if (data.formTitle) setFormTitle(data.formTitle);
+          if (data.address) setAddress(data.address);
+          if (data.hotline) setHotline(data.hotline);
+        }
+      } catch (err) {
+        console.error('Fetch Settings Error:', err);
+        setError('ডাটা লোড করতে সমস্যা হয়েছে।');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSettings();
   }, []);
 
   const handleImageUpload = (e) => {
@@ -66,19 +97,51 @@ export default function AdminSettingsPage() {
     reader.readAsDataURL(file);
   };
 
-  const handleSave = (e) => {
+  // Backend API-তে Settings Update করা (PATCH Request)
+  const handleSave = async (e) => {
     e.preventDefault();
+    setSaving(true);
+    setError('');
+    setSuccess(false);
+
+    const payload = {
+      logo,
+      appTitle,
+      foundationName,
+      formTitle,
+      address,
+      hotline,
+    };
+
     try {
-      saveAppSettings({ logo, appTitle, foundationName, formTitle, address, hotline });
-      setSuccess(true);
-      toast.success('সেটিংস সফলভাবে সংরক্ষণ করা হয়েছে!');
-      setTimeout(() => {
-        setSuccess(false);
-      }, 3000);
+      const response = await fetch(`${API_URL}/admin/settings`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('সেটিংস আপডেট করতে ব্যর্থ হয়েছে।');
+      }
+
+      const result = await response.json();
+
+      if (result) {
+        setSuccess(true);
+        toast.success('সেটিংস সফলভাবে সংরক্ষণ করা হয়েছে!');
+        setTimeout(() => {
+          setSuccess(false);
+        }, 3000);
+      }
     } catch (err) {
-      const errMsg = 'সেটিংস সংরক্ষণ করতে সমস্যা হয়েছে।';
+      console.error('Save Settings Error:', err);
+      const errMsg = err.message || 'সেটিংস সংরক্ষণ করতে সমস্যা হয়েছে।';
       setError(errMsg);
       toast.error(errMsg);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -86,10 +149,12 @@ export default function AdminSettingsPage() {
     setLogo('');
   };
 
-  if (!mounted || isPending) {
+  if (!mounted || isPending || loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-slate-500 text-sm animate-pulse font-medium">লোড হচ্ছে...</div>
+        <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
+          <Loader2 className="w-5 h-5 animate-spin text-[#1B8A44]" /> লোড হচ্ছে...
+        </div>
       </div>
     );
   }
@@ -283,9 +348,18 @@ export default function AdminSettingsPage() {
               <div className="pt-4 border-t border-slate-100 flex justify-end">
                 <button
                   type="submit"
-                  className="py-3 px-8 bg-[#1B8A44] hover:bg-[#156d35] text-white font-bold rounded-xl text-sm transition shadow-md cursor-pointer inline-flex items-center gap-2"
+                  disabled={saving}
+                  className="py-3 px-8 bg-[#1B8A44] hover:bg-[#156d35] text-white font-bold rounded-xl text-sm transition shadow-md cursor-pointer inline-flex items-center gap-2 disabled:opacity-50"
                 >
-                  <CheckCircle2 size={18} /> সেটিংস সংরক্ষণ করুন
+                  {saving ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" /> সেভ হচ্ছে...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 size={18} /> সেটিংস সংরক্ষণ করুন
+                    </>
+                  )}
                 </button>
               </div>
             </form>
