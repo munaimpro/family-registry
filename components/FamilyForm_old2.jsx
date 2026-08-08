@@ -8,9 +8,7 @@ import {
     Save,
     Printer,
     Heart,
-    HeartHandshake,
-    Upload,
-    X
+    HeartHandshake
 } from 'lucide-react';
 
 export const FamilyForm = ({
@@ -64,11 +62,9 @@ export const FamilyForm = ({
         if (initialData) {
             return {
                 ...initialData,
-                headImage: initialData.headImage || '',
                 bloodDonationDates: normalizeDates(initialData.bloodDonationDates),
                 members: (initialData.members || []).map(m => ({
                     ...m,
-                    image: m.image || '',
                     bloodDonationDates: normalizeDates(m.bloodDonationDates)
                 }))
             };
@@ -86,7 +82,6 @@ export const FamilyForm = ({
             memberNo: '',
             formNo: '',
             headName: '',
-            headImage: '',
             headOccupation: '',
             fatherOrHusbandName: '',
             fatherOrHusbandOccupation: '',
@@ -129,7 +124,6 @@ export const FamilyForm = ({
                     id: `mem-1`,
                     slNo: 1,
                     name: '',
-                    image: '',
                     gender: 'মহিলা',
                     dobOrAge: '',
                     bloodGroup: '',
@@ -144,7 +138,6 @@ export const FamilyForm = ({
                     id: `mem-2`,
                     slNo: 2,
                     name: '',
-                    image: '',
                     gender: 'পুরুষ',
                     dobOrAge: '',
                     bloodGroup: '',
@@ -162,33 +155,6 @@ export const FamilyForm = ({
     const [sameAsPresent, setSameAsPresent] = useState(true);
     const [headBloodDateInput, setHeadBloodDateInput] = useState('');
     const [memberBloodDateInputs, setMemberBloodDateInputs] = useState({});
-
-    // File Upload Handlers
-    const handleHeadImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData(prev => ({ ...prev, headImage: reader.result }));
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleMemberImageChange = (index, e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData(prev => {
-                    const updated = [...prev.members];
-                    updated[index] = { ...updated[index], image: reader.result };
-                    return { ...prev, members: updated };
-                });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
 
     // Synchronize DOB parts for boxed input
     const parseDobParts = (str) => {
@@ -370,7 +336,6 @@ export const FamilyForm = ({
             memberNo: 'M-1024',
             formNo: 'F-5012',
             headName: 'মোঃ রফিকুল ইসলাম',
-            headImage: '',
             headOccupation: 'ব্যবসায়ী',
             fatherOrHusbandName: 'মরহুম আব্দুল মজিদ',
             fatherOrHusbandOccupation: 'গৃহ শিক্ষক',
@@ -413,7 +378,6 @@ export const FamilyForm = ({
                     id: `mem-1`,
                     slNo: 1,
                     name: 'মোসাম্মৎ সুলতানা আক্তার',
-                    image: '',
                     gender: 'মহিলা',
                     dobOrAge: '12/04/1992',
                     bloodGroup: 'O+',
@@ -428,7 +392,6 @@ export const FamilyForm = ({
                     id: `mem-2`,
                     slNo: 2,
                     name: 'তানভীর ইসলাম তানিম',
-                    image: '',
                     gender: 'পুরুষ',
                     dobOrAge: '05/10/2015',
                     bloodGroup: 'B+',
@@ -443,7 +406,6 @@ export const FamilyForm = ({
                     id: `mem-3`,
                     slNo: 3,
                     name: 'আনিকা ইসলাম',
-                    image: '',
                     gender: 'মহিলা',
                     dobOrAge: '20/01/2019',
                     bloodGroup: 'B+',
@@ -475,7 +437,6 @@ export const FamilyForm = ({
                 id: `mem-${Date.now()}-${newSl}`,
                 slNo: newSl,
                 name: '',
-                image: '',
                 gender: 'পুরুষ',
                 dobOrAge: '',
                 bloodGroup: '',
@@ -686,38 +647,10 @@ export const FamilyForm = ({
 
                     {/* ১. সদস্য/সদস্যা & পেশা */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-baseline">
-                        <div className="md:col-span-2 flex items-center gap-2">
+                        <div className="md:col-span-2 flex items-baseline">
                             <label className="font-bold w-32 flex-shrink-0 text-black">
                                 ১. সদস্য/সদস্যা <span className="text-rose-600">*</span> :
                             </label>
-
-                            {/* Image Upload Option for Head Member */}
-                            <div className="relative flex-shrink-0">
-                                {formData.headImage ? (
-                                    <div className="relative w-10 h-10 border border-black rounded overflow-hidden group">
-                                        <img src={formData.headImage} alt="Head Member" className="w-full h-full object-cover" />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleInputChange('headImage', '')}
-                                            className="absolute top-0 right-0 bg-rose-600 text-white rounded-bl p-0.5 opacity-0 group-hover:opacity-100 transition print:hidden"
-                                            title="ছবি মুছুন"
-                                        >
-                                            <X size={10} />
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <label className="w-10 h-10 border border-dashed border-gray-400 rounded flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition print:hidden" title="ছবি আপলোড করুন">
-                                        <Upload size={14} className="text-gray-500" />
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={handleHeadImageChange}
-                                            className="hidden"
-                                        />
-                                    </label>
-                                )}
-                            </div>
-
                             <input
                                 type="text"
                                 required
@@ -1046,8 +979,8 @@ export const FamilyForm = ({
                         <thead>
                             <tr className="border-b border-black font-bold text-black bg-slate-50/50">
                                 <th className="border border-black p-1.5 w-10">ক্রমিক নং</th>
-                                <th className="border border-black p-1.5 min-w-[180px] sm:min-w-[200px]">সদস্য/সদস্যা</th>
-                                <th className="border border-black p-1.5 w-28">জন্ম তারিখ/বয়স<br /><span className="text-[9px] font-normal">(দিন/মাস/বছর)</span></th>
+                                <th className="border border-black p-1.5 min-w-[160px] sm:min-w-[180px]">সদস্য/সদস্যা</th>
+                                <th className="border border-black p-1.5 w-28">জন্ম তারিখ<br /><span className="text-[9px] font-normal">(দিন/মাস/বছর)</span></th>
                                 <th className="border border-black p-1.5 w-20">রক্তের গ্রুপ</th>
                                 <th className="border border-black p-1.5 min-w-[160px]">রক্তদানের তারিখ<br /><span className="text-[9px] font-normal">(একাধিক তারিখ)</span></th>
                                 <th className="border border-black p-1.5 min-w-[140px]">শিক্ষা প্রতিষ্ঠান/শ্রেণি/পেশা</th>
@@ -1061,45 +994,14 @@ export const FamilyForm = ({
                             {formData.members.map((member, idx) => (
                                 <tr key={member.id} className="transition">
                                     <td className="border border-black p-1 font-bold text-black">{idx + 1}.</td>
-
-                                    {/* Member Name + Image Upload */}
                                     <td className="border border-black p-1">
-                                        <div className="flex items-center gap-1.5">
-                                            <div className="relative flex-shrink-0">
-                                                {member.image ? (
-                                                    <div className="relative w-8 h-8 border border-black rounded overflow-hidden group">
-                                                        <img src={member.image} alt={member.name || 'Member'} className="w-full h-full object-cover" />
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleMemberChange(idx, 'image', '')}
-                                                            className="absolute top-0 right-0 bg-rose-600 text-white rounded-bl p-0.5 opacity-0 group-hover:opacity-100 transition print:hidden"
-                                                            title="ছবি মুছুন"
-                                                        >
-                                                            <X size={8} />
-                                                        </button>
-                                                    </div>
-                                                ) : (
-                                                    <label className="w-8 h-8 border border-dashed border-gray-400 rounded flex items-center justify-center cursor-pointer hover:bg-gray-50 transition print:hidden" title="ছবি আপলোড করুন">
-                                                        <Upload size={12} className="text-gray-500" />
-                                                        <input
-                                                            type="file"
-                                                            accept="image/*"
-                                                            onChange={(e) => handleMemberImageChange(idx, e)}
-                                                            className="hidden"
-                                                        />
-                                                    </label>
-                                                )}
-                                            </div>
-                                            <input
-                                                type="text"
-                                                value={member.name}
-                                                onChange={(e) => handleMemberChange(idx, 'name', e.target.value)}
-                                                className="w-full bg-transparent px-1 py-0.5 text-xs text-black font-medium focus:outline-hidden"
-                                            />
-                                        </div>
+                                        <input
+                                            type="text"
+                                            value={member.name}
+                                            onChange={(e) => handleMemberChange(idx, 'name', e.target.value)}
+                                            className="w-full bg-transparent px-1 py-0.5 text-xs text-black font-medium focus:outline-hidden"
+                                        />
                                     </td>
-
-                                    {/* DOB / Age */}
                                     <td className="border border-black p-1">
                                         <input
                                             type="text"
@@ -1108,7 +1010,6 @@ export const FamilyForm = ({
                                             className="w-full bg-transparent px-1 py-0.5 text-xs font-mono text-black focus:outline-hidden"
                                         />
                                     </td>
-
                                     <td className="border border-black p-1">
                                         <select
                                             value={member.bloodGroup}

@@ -13,35 +13,41 @@ function NewFormContent() {
   const editId = searchParams.get('edit');
   const { records, refreshRecords, setPrintingRecord } = useApp();
 
-  const editingRecord = editId ? records.find(r => r.id === editId) || null : null;
+  const editingRecord = editId ? records.find(r => r.id === editId || r._id === editId) || null : null;
 
   const handleSaveSuccess = async (savedRecord) => {
     try {
       const isEdit = !!editingRecord;
-      // If we are editing, we should have the _id from the backend, otherwise fallback to id.
-      // But if the backend hasn't generated an _id yet (using old local data), we might need to handle it.
-      // Assuming editingRecord has _id if it came from backend.
       const recordId = editingRecord ? (editingRecord._id || editingRecord.id) : null;
+
       const url = isEdit
         ? `${process.env.NEXT_PUBLIC_SERVER_URL}/families/${recordId}`
         : `${process.env.NEXT_PUBLIC_SERVER_URL}/families`;
 
       const method = isEdit ? 'PATCH' : 'POST';
 
+      // Clone savedRecord and remove _id from payload if it exists
+      const payload = { ...savedRecord };
+      delete payload._id;
+
       const response = await fetch(url, {
         method: method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(savedRecord),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         throw new Error('Failed to save record');
       }
 
-      // We still call refreshRecords to update local context if needed
-      refreshRecords();
+      // Sync local storage / state
+      // if (typeof saveSingleRecord === 'function') {
+      //   saveSingleRecord(savedRecord);
+      // }
+
+      await refreshRecords();
       toast.success('তথ্য সফলভাবে সংরক্ষিত হয়েছে!');
       router.push('/');
     } catch (error) {
@@ -57,7 +63,7 @@ function NewFormContent() {
   return (
     <div className="px-2 sm:px-4">
       <FamilyForm
-        key={editingRecord ? editingRecord.id : 'new-form-key'}
+        key={editingRecord ? (editingRecord._id || editingRecord.id) : 'new-form-key'}
         initialData={editingRecord}
         onSaveSuccess={handleSaveSuccess}
         onCancel={handleCancel}
@@ -69,11 +75,13 @@ function NewFormContent() {
 
 export default function NewFormPage() {
   return (
-    <Suspense fallback={
-      <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-10 w-10 border-4 border-[#1B8A44] border-t-transparent"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center py-20">
+          <div className="animate-spin rounded-full h-10 w-10 border-4 border-[#1B8A44] border-t-transparent"></div>
+        </div>
+      }
+    >
       <NewFormContent />
     </Suspense>
   );

@@ -11,7 +11,7 @@ function BloodGroupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { records } = useApp();
-  
+
   const bloodGroup = searchParams.get('bloodGroup');
 
   const [members, setMembers] = useState([]);
@@ -44,8 +44,8 @@ function BloodGroupContent() {
               id: m.id,
               recordId: rec.id,
               type: 'member',
-              name: m.name,
-              fatherName: 'প্রধান সদস্য: ' + rec.headName + ' (' + m.relation + ')',
+              name: m.name + ' (' + m.relation + ')',
+              fatherName: 'প্রধান সদস্য: ' + rec.headName,
               bloodGroup: m.bloodGroup,
               formNo: rec.formNo,
               mobile: m.mobileNumber
@@ -70,7 +70,7 @@ function BloodGroupContent() {
             মোট রক্তদাতা পাওয়া গেছে: <strong className="text-[#1B8A44] font-mono text-lg ml-1">{members.length}</strong> জন
           </p>
         </div>
-        <Link 
+        <Link
           href="/"
           className="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-sm font-bold transition shadow-xs border border-slate-300 whitespace-nowrap"
         >
@@ -80,7 +80,7 @@ function BloodGroupContent() {
 
       {!bloodGroup ? (
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
-           <h3 className="text-lg font-bold text-slate-800">কোন ব্লাড গ্রুপ নির্বাচন করা হয়নি</h3>
+          <h3 className="text-lg font-bold text-slate-800">কোন ব্লাড গ্রুপ নির্বাচন করা হয়নি</h3>
         </div>
       ) : members.length === 0 ? (
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
@@ -99,26 +99,26 @@ function BloodGroupContent() {
                       ফরম: {member.formNo}
                     </span>
                     {member.type === 'member' && (
-                       <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-200 shadow-xs">
-                         ফ্যামিলি মেম্বার
-                       </span>
+                      <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-200 shadow-xs">
+                        ফ্যামিলি মেম্বার
+                      </span>
                     )}
                   </div>
                   <span className="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-xl text-sm font-black flex items-center gap-1.5 shadow-xs flex-shrink-0 font-mono">
                     <Heart size={14} fill="currentColor" /> {member.bloodGroup}
                   </span>
                 </div>
-                
+
                 <h3 className="text-lg font-bold text-[#0F2C59] font-serif mb-3 group-hover:text-rose-700 transition-colors leading-snug">
                   {member.name}
                 </h3>
-                
+
                 <div className="space-y-1.5">
                   <p className="text-[13px] text-slate-600 font-medium flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                     {member.type === 'head' ? (
-                       <User size={15} className="text-[#1B8A44] flex-shrink-0 mt-0.5" />
+                      <User size={15} className="text-[#1B8A44] flex-shrink-0 mt-0.5" />
                     ) : (
-                       <Users size={15} className="text-emerald-600 flex-shrink-0 mt-0.5" />
+                      <Users size={15} className="text-emerald-600 flex-shrink-0 mt-0.5" />
                     )}
                     <span className="leading-snug">
                       {member.type === 'head' ? (
