@@ -132,15 +132,15 @@ function ShellContent({ children }) {
             </div>
 
             <p className="text-slate-300/90 text-xs">
-              {address} • সর্বস্বত্ব সংরক্ষিত
+              &copy; {address} • সর্বস্বত্ব সংরক্ষিত
             </p>
           </div>
 
           {/* Bottom Section: Developer Credit at the end */}
-          {/* <div className="text-[11px] text-slate-300/80 tracking-width font-medium flex items-center justify-center lg:justify-end gap-1.5 shrink-0 mt-4 w-full">
+          <div className="text-[11px] text-slate-300/80 tracking-width font-medium flex items-center justify-center lg:justify-end gap-1.5 shrink-0 mt-4 w-full border-t-1 border-[#1F3d6a] pt-3">
             <span>Developed by</span>
-            <span className="text-emerald-400 font-semibold"><a href="https://munaimpro.vercel.app" target='_blank'>{process.env.NEXT_PUBLIC_DEVELOPER_NAME}</a></span>
-          </div> */}
+            <span className="text-emerald-400 font-semibold"><a href="https://munaimpro.vercel.app" target='_blank'>{process.env.NEXT_PUBLIC_DEVELOPER_NAME}</a></span> | <span>August 8, 2026</span>
+          </div>
 
         </div>
       </footer>
