@@ -38,22 +38,22 @@
 
 body {
   /* Inter first → covers Latin; Hind Siliguri → covers Bengali */
-  font-family: var(--font-inter), var(--font-hind-siliguri), sans-serif;
-  /* -webkit-user-select: none;
+  font-family: var(--font-hind-siliguri), var(--font-noto-sans-bengali), var(--font-tiro-bangla), var(--font-inter), sans-serif;
+  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; */
+  user-select: none;
 }
 
 /* Allow text selection inside input fields and textareas so form filling works */
-/* input,
+input,
 textarea,
 [contenteditable="true"] {
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
   user-select: text;
-} */
+}
 
 /* Explicitly target common Bangla text elements */
 :lang(bn),

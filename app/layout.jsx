@@ -1,11 +1,25 @@
 import './globals.css';
 import { AppShell } from '../components/AppShell';
-import { Hind_Siliguri, Inter } from 'next/font/google';
+import { Hind_Siliguri, Inter, Noto_Sans_Bengali, Tiro_Bangla } from 'next/font/google';
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ['bengali', 'latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-hind-siliguri',
+  display: 'swap',
+});
+
+const notoSansBengali = Noto_Sans_Bengali({
+  subsets: ['bengali', 'latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-noto-sans-bengali',
+  display: 'swap',
+});
+
+const tiroBangla = Tiro_Bangla({
+  subsets: ['bengali', 'latin'],
+  weight: ['400'], // Tiro Bangla শুধুমাত্র 400 weight সাপোর্ট করে
+  variable: '--font-tiro-bangla',
   display: 'swap',
 });
 
@@ -38,8 +52,6 @@ export const metadata = {
       {
         property: 'og:image',
         url: 'https://omskp-blood-bank.vercel.app/og-image.png',
-        width: 1200,
-        height: 630,
         alt: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
       },
     ],
@@ -58,7 +70,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="bn" className={`${hindSiliguri.variable} ${inter.variable}`}>
+    <html
+      lang="bn"
+      className={`${hindSiliguri.variable} ${notoSansBengali.variable} ${tiroBangla.variable} ${inter.variable}`}
+    >
       <body suppressHydrationWarning>
         <AppShell>{children}</AppShell>
       </body>
