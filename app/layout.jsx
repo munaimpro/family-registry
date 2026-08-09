@@ -16,25 +16,27 @@ const inter = Inter({
   display: 'swap',
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://omskp.vercel.app';
+
 export const metadata = {
   title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
   description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://omskp.vercel.app'),
+  metadataBase: new URL(baseUrl),
   icons: {
     icon: '/icon.png',
     shortcut: '/icon.png',
     apple: '/icon.png',
   },
 
-  // opengraph image
+  // OpenGraph Metadata
   openGraph: {
     title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
     description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
-    url: metadata.metadataBase.toString(),
+    url: '/',
     siteName: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
     images: [
       {
-        url: metadata.metadataBase.toString() + "/icon.png",
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
@@ -43,11 +45,13 @@ export const metadata = {
     locale: 'bn_BD',
     type: 'website',
   },
+
+  // Twitter Card Metadata
   twitter: {
     card: 'summary_large_image',
     title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
     description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
-    images: [metadata.metadataBase.toString() + "/icon.png"],
+    images: ['/og-image.png'],
   },
 };
 
