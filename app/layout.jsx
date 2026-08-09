@@ -36,6 +36,7 @@ export const metadata = {
     siteName: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
     images: [
       {
+        property: 'og:image',
         url: 'https://omskp-blood-bank.vercel.app/og-image.png',
         width: 1200,
         height: 630,
@@ -51,7 +52,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
     description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
-    images: ['/og-image.png'],
+    images: ['https://omskp-blood-bank.vercel.app/og-image.png'],
   },
 };
 
