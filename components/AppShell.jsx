@@ -25,9 +25,8 @@ function ShellContent({ children }) {
   } = useApp();
 
   const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
-  const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম');
+  const [address, setAddress] = useState('উত্তর গৌবিন্দারখীল, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম');
   const [mounted, setMounted] = useState(false);
-  const dev = `${process.env.NEXT_PUBLIC_DEVELOPER_NAME}`;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -132,7 +131,7 @@ function ShellContent({ children }) {
             </div>
 
             <p className="text-slate-300/90 text-xs">
-              &copy; {address} • সর্বস্বত্ব সংরক্ষিত
+              &copy; {new Date().getFullYear()}  • সর্বস্বত্ব সংরক্ষিত
             </p>
           </div>
 

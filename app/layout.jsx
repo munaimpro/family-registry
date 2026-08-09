@@ -19,6 +19,34 @@ const inter = Inter({
 export const metadata = {
   title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
   description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://omskp.vercel.app'),
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
+  openGraph: {
+    title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
+    description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
+    url: '/',
+    siteName: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
+    images: [
+      {
+        url: '/icon.png',
+        width: 1200,
+        height: 630,
+        alt: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
+      },
+    ],
+    locale: 'bn_BD',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
+    description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
+    images: ['/icon.png'],
+  },
 };
 
 export default function RootLayout({ children }) {
