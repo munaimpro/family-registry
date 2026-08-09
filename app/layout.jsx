@@ -25,14 +25,16 @@ export const metadata = {
     shortcut: '/icon.png',
     apple: '/icon.png',
   },
+
+  // opengraph image
   openGraph: {
     title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
     description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
-    url: '/',
+    url: metadata.metadataBase.toString(),
     siteName: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
     images: [
       {
-        url: '/icon.png',
+        url: metadata.metadataBase.toString() + "/icon.png",
         width: 1200,
         height: 630,
         alt: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
@@ -45,7 +47,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
     description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
-    images: ['/icon.png'],
+    images: [metadata.metadataBase.toString() + "/icon.png"],
   },
 };
 
