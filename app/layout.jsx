@@ -36,7 +36,7 @@ export const metadata = {
     siteName: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://omskp.vercel.app/og-image.png',
         width: 1200,
         height: 630,
         alt: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
