@@ -25,9 +25,9 @@ export default function HomePage() {
   const router = useRouter();
   const { records } = useApp();
   const [logo, setLogo] = useState('');
-  const [appTitle, setAppTitle] = useState('স্মার্ট ডিজিটাল ডাইরেক্টরি ও সমাজ কল্যাণ নেটওয়ার্ক');
-  const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
-  const [address, setAddress] = useState('উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
+  const [appTitle, setAppTitle] = useState('');
+  const [foundationName, setFoundationName] = useState('');
+  const [address, setAddress] = useState('উত্তর গৌবিন্দরখীল, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম');
   const [hotline, setHotline] = useState('০১৮১৯-০০০০০০');
 
   // Dashboard Stats State

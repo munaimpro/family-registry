@@ -26,7 +26,7 @@ export default function SigninPage() {
         email: 'admin@omskp.org',
         password: 'password123',
         name: 'অ্যাডমিন (Admin)',
-      }).catch(() => {});
+      }).catch(() => { });
 
       const res = await signIn.email({
         email: 'admin@omskp.org',
@@ -65,7 +65,7 @@ export default function SigninPage() {
           email,
           password,
           name: email === 'admin@omskp.org' ? 'অ্যাডমিন (Admin)' : 'ব্যবহারকারী',
-        }).catch(() => {});
+        }).catch(() => { });
 
         res = await signIn.email({
           email,
@@ -100,7 +100,7 @@ export default function SigninPage() {
         </div>
 
         {/* Demo Credentials Quick Fill Banner */}
-        <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-3">
+        {/* <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-3">
           <div>
             <span className="text-xs font-bold text-[#1B8A44] flex items-center gap-1.5">
               <KeyRound size={15} /> ডেমো তথ্য
@@ -114,7 +114,7 @@ export default function SigninPage() {
           >
             ডেমো তথ্য বসান
           </button>
-        </div>
+        </div> */}
 
         {error && (
           <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">

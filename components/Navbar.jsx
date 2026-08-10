@@ -284,7 +284,7 @@ export const Navbar = ({
                 </div>
                 {recordCount > 0 && (
                   <span className="bg-[#0F2C59] text-[#62C255] text-xs px-2.5 py-0.5 rounded-full font-mono font-bold border border-[#1B8A44]">
-                    {recordCount} টি
+                    {recordCount}
                   </span>
                 )}
               </Link>

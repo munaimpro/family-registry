@@ -282,15 +282,6 @@ export const FamilySearch = ({
               >
                 <span>ভাড়াটিয়া/অস্থায়ী সদস্য</span>
               </button>
-              <button
-                onClick={() => handleFilterTypeChange('regular')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${filterType === 'regular'
-                  ? 'bg-[#1B8A44] text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-                  }`}
-              >
-                রেগুলার মেম্বার
-              </button>
             </div>
           </div>
 

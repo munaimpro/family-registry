@@ -24,7 +24,7 @@ function ShellContent({ children }) {
     handleExportBackup
   } = useApp();
 
-  const [foundationName, setFoundationName] = useState('অলি মিয়া সমাজ কল্যাণ পরিষদ');
+  const [foundationName, setFoundationName] = useState('লোডিং');
   const [address, setAddress] = useState('উত্তর গৌবিন্দারখীল, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম');
   const [mounted, setMounted] = useState(false);
 
