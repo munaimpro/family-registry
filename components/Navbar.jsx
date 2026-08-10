@@ -233,13 +233,13 @@ export const Navbar = ({
                     <LogIn size={15} />
                     <span>লগইন</span>
                   </Link>
-                  <Link
+                  {/* <Link
                     href="/signup"
                     className={`px-3 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] bg-white/10 hover:bg-white/20 text-white border border-white/20`}
                   >
                     <UserPlus size={15} />
                     <span>রেজিস্ট্রেশন</span>
-                  </Link>
+                  </Link> */}
                 </div>
               ) : (
                 <button
@@ -351,14 +351,14 @@ export const Navbar = ({
                     <LogIn size={18} />
                     <span>লগইন (Sign In)</span>
                   </Link>
-                  <Link
+                  {/* <Link
                     href="/signup"
                     onClick={() => setMobileMenuOpen(false)}
                     className="w-full px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition min-h-[44px] bg-white/10 text-white border border-white/20"
                   >
                     <UserPlus size={18} />
                     <span>রেজিস্ট্রেশন</span>
-                  </Link>
+                  </Link> */}
                 </div>
               ) : (
                 <button

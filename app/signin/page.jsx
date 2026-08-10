@@ -168,12 +168,12 @@ export default function SigninPage() {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-xs text-slate-500">
+        {/* <div className="mt-6 text-center text-xs text-slate-500">
           অ্যাকাউন্ট নেই?{' '}
           <Link href="/signup" className="text-[#1B8A44] font-bold hover:underline">
             নিবন্ধন করুন (Sign Up)
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

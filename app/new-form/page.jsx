@@ -63,6 +63,7 @@ function NewFormContent() {
   return (
     <div className="px-2 sm:px-4">
       <FamilyForm
+        records={records}
         key={editingRecord ? (editingRecord._id || editingRecord.id) : 'new-form-key'}
         initialData={editingRecord}
         onSaveSuccess={handleSaveSuccess}

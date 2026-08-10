@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 
 export const FamilyForm = ({
+    records,
     initialData,
     onSaveSuccess,
     onCancel,
@@ -159,6 +160,23 @@ export const FamilyForm = ({
         };
     });
 
+    useEffect(() => {
+        if (!initialData && records) {
+            console.log(records.length);
+
+            // ১ থেকে ৯ পর্যন্ত সংখ্যাগুলোকে 01, 02... এবং ১০+ হলে 10, 11... বানাবে
+            const nextCount = (records.length || 0) + 1;
+            const paddedNo = String(nextCount).padStart(2, '0');
+
+            setFormData(prev => ({
+                ...prev,
+                // prev.memberNo যদি খালি থাকে, কেবল তখনই অটো-জেনারেটেড ভ্যালু বসবে
+                memberNo: prev.memberNo ? prev.memberNo : `OMSKP-${paddedNo}`,
+                formNo: prev.formNo ? prev.formNo : paddedNo
+            }));
+        }
+    }, [records, initialData]);
+
     const [sameAsPresent, setSameAsPresent] = useState(true);
     const [headBloodDateInput, setHeadBloodDateInput] = useState('');
     const [memberBloodDateInputs, setMemberBloodDateInputs] = useState({});
@@ -233,15 +251,15 @@ export const FamilyForm = ({
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleToggleSameAsPresent = (checked) => {
-        setSameAsPresent(checked);
-        if (checked) {
-            setFormData(prev => ({
-                ...prev,
-                permanentAddress: { ...prev.presentAddress }
-            }));
-        }
-    };
+    // const handleToggleSameAsPresent = (checked) => {
+    //     setSameAsPresent(checked);
+    //     if (checked) {
+    //         setFormData(prev => ({
+    //             ...prev,
+    //             permanentAddress: { ...prev.presentAddress }
+    //         }));
+    //     }
+    // };
 
     const handleAddressChange = (subField, value) => {
         setFormData(prev => {
@@ -586,6 +604,7 @@ export const FamilyForm = ({
                             <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm">তারিখ :</label>
                             <div className="flex items-center gap-2">
                                 <input
+                                    readOnly
                                     type="text"
                                     maxLength={2}
                                     value={dateParts.dd}
@@ -593,6 +612,7 @@ export const FamilyForm = ({
                                     className="w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
                                 />
                                 <input
+                                    readOnly
                                     type="text"
                                     maxLength={2}
                                     value={dateParts.mm}
@@ -600,6 +620,7 @@ export const FamilyForm = ({
                                     className="w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
                                 />
                                 <input
+                                    readOnly
                                     type="text"
                                     maxLength={4}
                                     value={dateParts.yyyy}
@@ -616,6 +637,7 @@ export const FamilyForm = ({
                             <div className="flex items-center border border-black rounded-xs bg-white overflow-hidden">
                                 <span className="bg-gray-100 px-2 py-0.5 border-r border-black font-mono font-bold text-black text-xs">OMSKP-</span>
                                 <input
+                                    readOnly
                                     type="text"
                                     value={formData.memberNo ? formData.memberNo.replace('OMSKP-', '') : ''}
                                     onChange={(e) => handleInputChange('memberNo', e.target.value)}
@@ -672,8 +694,9 @@ export const FamilyForm = ({
                         <div className="flex items-center gap-1.5">
                             <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm">ফরম নং–</label>
                             <input
+                                readOnly
                                 type="text"
-                                value={formData.formNo}
+                                value={formData.formNo ? formData.formNo : ''}
                                 onChange={(e) => handleInputChange('formNo', e.target.value)}
                                 className="w-32 bg-white border border-black rounded-xs px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden"
                             />
