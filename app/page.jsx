@@ -103,7 +103,7 @@ export default function HomePage() {
   }, {});
 
   const handleBloodGroupClick = (bg) => {
-    router.push(`/member?bloodGroup=${encodeURIComponent(bg)}`);
+    router.push(`/member/blood-group?bloodGroup=${encodeURIComponent(bg)}`);
   };
 
   return (
