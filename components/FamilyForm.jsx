@@ -1091,7 +1091,7 @@ export const FamilyForm = ({
                 {/* Dynamic Heirs Pill Badge Section */}
                 <div className="mt-6 mb-3 text-center">
                     <span className="inline-block border border-black rounded-full px-8 py-1 font-bold text-sm text-black">
-                        সদস্যগণের তথ্য
+                        সদস্যগণের তথ্য/ওয়ারিশগণের তথ্য
                     </span>
                 </div>
 
@@ -1108,7 +1108,7 @@ export const FamilyForm = ({
                                 <th className="border border-black p-1.5 min-w-[160px]">রক্তদানের তারিখ<br /><span className="text-[9px] font-normal">(একাধিক তারিখ)</span></th>
                                 <th className="border border-black p-1.5 min-w-[140px]">শিক্ষা প্রতিষ্ঠান/শ্রেণি/পেশা</th>
                                 <th className="border border-black p-1.5 w-28">সম্পর্ক<br /><span className="text-[9px] font-normal">(স্ত্রী/পুত্র/কন্যা ইত্যাদি)</span></th>
-                                <th className="border border-black p-1.5 min-w-[120px]">NID</th>
+                                <th className="border border-black p-1.5 min-w-[120px]">NID/মৃত্যু সনদ নং</th>
                                 <th className="border border-black p-1.5 min-w-[130px]">বিশেষ তথ্য<br /><span className="text-[9px] font-normal">(রোগী, প্রবাসী, প্রতিবন্ধী, পৌষ্য)</span></th>
                                 <th className="border border-black p-1.5 w-10 print:hidden">মুছুন</th>
                             </tr>
@@ -1273,7 +1273,7 @@ export const FamilyForm = ({
                                         <input
                                             type="text"
                                             value={member.nidNumber || ''}
-                                            onChange={(e) => handleMemberChange(idx, 'nid', e.target.value)}
+                                            onChange={(e) => handleMemberChange(idx, 'nidNumber', e.target.value)}
                                             className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden font-mono text-center"
                                         />
                                     </td>

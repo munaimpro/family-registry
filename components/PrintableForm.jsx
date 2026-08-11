@@ -380,7 +380,7 @@ export const PrintableForm = ({ record, onClose }) => {
         {/* Section Title: ওয়ারিশগণের তথ্য Table Header Pill */}
         <div className="mt-4 mb-2 text-center">
           <span className="inline-block border border-black rounded-full px-6 py-0.5 font-bold text-xs text-black">
-            সদস্যগণের তথ্য
+            সদস্যগণের তথ্য/ওয়ারিশগণের তথ্য
           </span>
         </div>
 
@@ -396,7 +396,7 @@ export const PrintableForm = ({ record, onClose }) => {
                 <th className="border border-black p-0.5 w-20">রক্তদান</th>
                 <th className="border border-black p-0.5">শিক্ষা/পেশা</th>
                 <th className="border border-black p-0.5 w-16">সম্পর্ক</th>
-                <th className="border border-black p-0.5 w-24">NID</th>
+                <th className="border border-black p-0.5 w-24">NID/মৃত্যু সনদ নং</th>
                 <th className="border border-black p-0.5">বিশেষ তথ্য</th>
               </tr>
             </thead>
