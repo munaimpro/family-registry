@@ -10,8 +10,7 @@ import {
     Heart,
     HeartHandshake,
     Upload,
-    X,
-    GripVertical
+    X
 } from 'lucide-react';
 
 export const FamilyForm = ({
@@ -71,8 +70,6 @@ export const FamilyForm = ({
                 members: (initialData.members || []).map(m => ({
                     ...m,
                     image: m.image || '',
-                    selected: m.selected || false,
-                    isDeceased: m.isDeceased || false,
                     bloodDonationDates: normalizeDates(m.bloodDonationDates)
                 }))
             };
@@ -132,8 +129,6 @@ export const FamilyForm = ({
                 {
                     id: `mem-1`,
                     slNo: 1,
-                    selected: false,
-                    isDeceased: false,
                     name: '',
                     image: '',
                     gender: 'মহিলা',
@@ -149,8 +144,6 @@ export const FamilyForm = ({
                 {
                     id: `mem-2`,
                     slNo: 2,
-                    selected: false,
-                    isDeceased: false,
                     name: '',
                     image: '',
                     gender: 'পুরুষ',
@@ -171,11 +164,13 @@ export const FamilyForm = ({
         if (!initialData && records) {
             console.log(records.length);
 
+            // ১ থেকে ৯ পর্যন্ত সংখ্যাগুলোকে 01, 02... এবং ১০+ হলে 10, 11... বানাবে
             const nextCount = (records.length || 0) + 1;
             const paddedNo = String(nextCount).padStart(2, '0');
 
             setFormData(prev => ({
                 ...prev,
+                // prev.memberNo যদি খালি থাকে, কেবল তখনই অটো-জেনারেটেড ভ্যালু বসবে
                 memberNo: prev.memberNo ? prev.memberNo : `OMSKP-${paddedNo}`,
                 formNo: prev.formNo ? prev.formNo : paddedNo
             }));
@@ -185,9 +180,6 @@ export const FamilyForm = ({
     const [sameAsPresent, setSameAsPresent] = useState(true);
     const [headBloodDateInput, setHeadBloodDateInput] = useState('');
     const [memberBloodDateInputs, setMemberBloodDateInputs] = useState({});
-
-    // Drag & Drop State
-    const [draggedIndex, setDraggedIndex] = useState(null);
 
     // File Upload Handlers
     const handleHeadImageChange = (e) => {
@@ -258,6 +250,16 @@ export const FamilyForm = ({
     const handleInputChange = (field, value) => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
+
+    // const handleToggleSameAsPresent = (checked) => {
+    //     setSameAsPresent(checked);
+    //     if (checked) {
+    //         setFormData(prev => ({
+    //             ...prev,
+    //             permanentAddress: { ...prev.presentAddress }
+    //         }));
+    //     }
+    // };
 
     const handleAddressChange = (subField, value) => {
         setFormData(prev => {
@@ -428,8 +430,6 @@ export const FamilyForm = ({
                 {
                     id: `mem-1`,
                     slNo: 1,
-                    selected: false,
-                    isDeceased: false,
                     name: 'মোসাম্মৎ সুলতানা আক্তার',
                     image: '',
                     gender: 'মহিলা',
@@ -445,8 +445,6 @@ export const FamilyForm = ({
                 {
                     id: `mem-2`,
                     slNo: 2,
-                    selected: false,
-                    isDeceased: false,
                     name: 'তানভীর ইসলাম তানিম',
                     image: '',
                     gender: 'পুরুষ',
@@ -462,8 +460,6 @@ export const FamilyForm = ({
                 {
                     id: `mem-3`,
                     slNo: 3,
-                    selected: false,
-                    isDeceased: false,
                     name: 'আনিকা ইসলাম',
                     image: '',
                     gender: 'মহিলা',
@@ -490,40 +486,12 @@ export const FamilyForm = ({
         });
     };
 
-    // Drag and Drop Logic
-    const handleDragStart = (index) => {
-        setDraggedIndex(index);
-    };
-
-    const handleDragOver = (e) => {
-        e.preventDefault();
-    };
-
-    const handleDrop = (dropIndex) => {
-        if (draggedIndex === null || draggedIndex === dropIndex) return;
-        setFormData(prev => {
-            const updatedMembers = [...prev.members];
-            const [draggedItem] = updatedMembers.splice(draggedIndex, 1);
-            updatedMembers.splice(dropIndex, 0, draggedItem);
-
-            // Re-assign slNo after drag drop
-            const reordered = updatedMembers.map((m, i) => ({
-                ...m,
-                slNo: i + 1
-            }));
-            return { ...prev, members: reordered };
-        });
-        setDraggedIndex(null);
-    };
-
     const addMemberRow = () => {
         setFormData(prev => {
             const newSl = prev.members.length + 1;
             const newMember = {
                 id: `mem-${Date.now()}-${newSl}`,
                 slNo: newSl,
-                selected: false,
-                isDeceased: false,
                 name: '',
                 image: '',
                 gender: 'পুরুষ',
@@ -1091,7 +1059,7 @@ export const FamilyForm = ({
                 {/* Dynamic Heirs Pill Badge Section */}
                 <div className="mt-6 mb-3 text-center">
                     <span className="inline-block border border-black rounded-full px-8 py-1 font-bold text-sm text-black">
-                        সদস্যগণের তথ্য
+                        ওয়ারিশগণের তথ্য
                     </span>
                 </div>
 
@@ -1102,7 +1070,6 @@ export const FamilyForm = ({
                             <tr className="border-b border-black font-bold text-black bg-slate-50/50">
                                 <th className="border border-black p-1.5 w-10">ক্রমিক নং</th>
                                 <th className="border border-black p-1.5 min-w-[180px] sm:min-w-[200px]">সদস্য/সদস্যা</th>
-                                <th className="border border-black p-1.5 w-16">মরহুম?</th>
                                 <th className="border border-black p-1.5 w-28">জন্ম তারিখ/বয়স<br /><span className="text-[9px] font-normal">(দিন/মাস/বছর)</span></th>
                                 <th className="border border-black p-1.5 w-20">রক্তের গ্রুপ</th>
                                 <th className="border border-black p-1.5 min-w-[160px]">রক্তদানের তারিখ<br /><span className="text-[9px] font-normal">(একাধিক তারিখ)</span></th>
@@ -1115,24 +1082,8 @@ export const FamilyForm = ({
                         </thead>
                         <tbody>
                             {formData.members.map((member, idx) => (
-                                <tr
-                                    key={member.id}
-                                    draggable
-                                    onDragStart={() => handleDragStart(idx)}
-                                    onDragOver={handleDragOver}
-                                    onDrop={() => handleDrop(idx)}
-                                    className={`transition cursor-grab active:cursor-grabbing ${member.isDeceased ? 'bg-gray-100 text-gray-500' : ''
-                                        } ${draggedIndex === idx ? 'opacity-40 bg-amber-100' : ''}`}
-                                >
-                                    {/* Selection Box & Drag Handle */}
-                                    <td className="border border-black p-1 text-center print:hidden">
-                                        <div className="flex items-center justify-center gap-1 font-bold text-black">
-                                            <GripVertical size={14} className="text-gray-400 hover:text-black cursor-grab" />
-                                            {idx + 1}.
-                                        </div>
-                                    </td>
-
-                                    {/* <td className="border border-black p-1 font-bold text-black">{idx + 1}.</td> */}
+                                <tr key={member.id} className="transition">
+                                    <td className="border border-black p-1 font-bold text-black">{idx + 1}.</td>
 
                                     {/* Member Name + Image Upload */}
                                     <td className="border border-black p-1">
@@ -1169,17 +1120,6 @@ export const FamilyForm = ({
                                                 className="w-full bg-transparent px-1 py-0.5 text-xs text-black font-medium focus:outline-hidden"
                                             />
                                         </div>
-                                    </td>
-
-                                    {/* Deceased Member Define Column */}
-                                    <td className="border border-black p-1 text-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={Boolean(member.isDeceased)}
-                                            onChange={(e) => handleMemberChange(idx, 'isDeceased', e.target.checked)}
-                                            className="w-3.5 h-3.5 text-rose-600 rounded border-slate-400 focus:ring-rose-500 cursor-pointer"
-                                            title="মরহুম চিহ্নিত করুন"
-                                        />
                                     </td>
 
                                     {/* DOB / Age */}
@@ -1272,7 +1212,7 @@ export const FamilyForm = ({
                                     <td className="border border-black p-1">
                                         <input
                                             type="text"
-                                            value={member.nidNumber || ''}
+                                            value={member.nid || member.address || ''}
                                             onChange={(e) => handleMemberChange(idx, 'nid', e.target.value)}
                                             className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden font-mono text-center"
                                         />
@@ -1308,7 +1248,7 @@ export const FamilyForm = ({
                         onClick={addMemberRow}
                         className="px-3.5 py-1.5 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded text-xs font-bold flex items-center gap-1 transition shadow cursor-pointer"
                     >
-                        <Plus size={15} /> নতুন সদস্য তথ্য সারি যুক্ত করুন
+                        <Plus size={15} /> নতুন ওয়ারিশ তথ্য সারি যুক্ত করুন
                     </button>
                 </div>
 

@@ -17,7 +17,7 @@ export const PrintableForm = ({ record, onClose }) => {
 
   const customLogo = settings?.logo || '';
   const formTitle = settings?.formTitle || 'পরিবার শুমারি ও তথ্য নিবন্ধন ফরম';
-  const address = settings?.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম';
+  const address = settings?.address || 'উত্তর গৌবিন্দরখীল, ৯নং ওয়ার্ড, পটিয়া চট্টগ্রাম';
 
   const handlePrint = () => {
     window.print();
@@ -380,7 +380,7 @@ export const PrintableForm = ({ record, onClose }) => {
         {/* Section Title: ওয়ারিশগণের তথ্য Table Header Pill */}
         <div className="mt-4 mb-2 text-center">
           <span className="inline-block border border-black rounded-full px-6 py-0.5 font-bold text-xs text-black">
-            ওয়ারিশগণের তথ্য
+            সদস্যগণের তথ্য
           </span>
         </div>
 
@@ -420,7 +420,7 @@ export const PrintableForm = ({ record, onClose }) => {
                       {member?.instituteOrOccupation || ''}
                     </td>
                     <td className="border border-black p-0.5">{member?.relation || ''}</td>
-                    <td className="border border-black p-0.5 text-left px-1 font-mono text-[9px]">{member?.address || ''}</td>
+                    <td className="border border-black p-0.5 text-left px-1 font-mono text-[9px]">{member?.nidNumber || ''}</td>
                     <td className="border border-black p-0.5 text-left px-1">{member?.specialInfo || ''}</td>
                   </tr>
                 );

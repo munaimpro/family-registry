@@ -490,13 +490,13 @@ export const FamilySearch = ({
                       <Eye size={14} /> প্রোফাইল দেখুন
                     </button>
 
-                    <button
+                    {/* <button
                       onClick={() => onPrintRecord(rec)}
                       className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs transition cursor-pointer border border-slate-200"
                       title="ফরম প্রিন্ট করুন"
                     >
                       <Printer size={16} />
-                    </button>
+                    </button> */}
 
                     {isLoggedIn && (
                       <button
