@@ -169,7 +169,7 @@ export const FamilyForm = ({
 
     useEffect(() => {
         if (!initialData && records) {
-            console.log(records.length);
+            //console.log(records.length);
 
             const nextCount = (records.length || 0) + 1;
             const paddedNo = String(nextCount).padStart(2, '0');

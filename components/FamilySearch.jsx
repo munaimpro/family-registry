@@ -55,7 +55,7 @@ export const FamilySearch = ({
 
   useEffect(() => {
     const fetchRecords = async () => {
-      console.log("API Token in FE:", process.env.NEXT_PUBLIC_API_TOKEN);
+      //console.log("API Token in FE:", process.env.NEXT_PUBLIC_API_TOKEN);
       setIsLoading(true);
       try {
         const queryParams = new URLSearchParams();
