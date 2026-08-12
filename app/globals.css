@@ -55,6 +55,15 @@ body {
   background-image: linear-gradient(to bottom, #0F2C59, #113366, #0A1D3B);
 }
 
+/* blood-doner-button */
+.blood-doner-button {
+  background-color: rgb(225, 29, 72);
+}
+
+.blood-doner-button:hover {
+  background-color: rgb(190, 24, 74);
+}
+
 /* Allow text selection inside input fields and textareas so form filling works */
 input,
 textarea,

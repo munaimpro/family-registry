@@ -153,7 +153,7 @@ export default function HomePage() {
 
             <Link
               href="/member"
-              className="px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer border border-rose-400/40"
+              className="blood-doner-button px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer border border-rose-400/40"
             >
               <Heart size={18} className="fill-white" />
               <span>রক্তদাতা খুঁজুন (Blood Donors)</span>
