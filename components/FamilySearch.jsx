@@ -248,14 +248,14 @@ export const FamilySearch = ({
 
         {/* External Member Filter Tabs */}
         <div className="mt-4 pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col lg:flex-row items-center gap-2">
             <span className="text-xs font-bold text-slate-700 flex items-center gap-1">
-              <UserCheck size={14} className="text-[#1B8A44]" /> মেম্বার টাইপ:
+              <UserCheck size={14} className="text-[#1B8A44]" /> মেম্বার টাইপ
             </span>
             <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-300 flex-wrap gap-1">
               <button
                 onClick={() => handleFilterTypeChange('all')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${filterType === 'all'
+                className={`w-full lg:w-auto justify-center px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${filterType === 'all'
                   ? 'bg-[#0F2C59] text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
                   }`}
@@ -264,7 +264,7 @@ export const FamilySearch = ({
               </button>
               <button
                 onClick={() => handleFilterTypeChange('moholla')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'moholla'
+                className={`w-full lg:w-auto justify-center px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'moholla'
                   ? 'bg-emerald-600 text-white shadow-xs'
                   : 'text-emerald-800 hover:text-emerald-900'
                   }`}
@@ -273,7 +273,7 @@ export const FamilySearch = ({
               </button>
               <button
                 onClick={() => handleFilterTypeChange('bloodDonor')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'bloodDonor'
+                className={`w-full lg:w-auto justify-center px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'bloodDonor'
                   ? 'bg-rose-600 text-white shadow-xs'
                   : 'text-rose-800 hover:text-rose-900'
                   }`}
@@ -282,7 +282,7 @@ export const FamilySearch = ({
               </button>
               <button
                 onClick={() => handleFilterTypeChange('temporary')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'temporary'
+                className={`w-full lg:w-auto justify-center px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${filterType === 'temporary'
                   ? 'bg-purple-600 text-white shadow-xs'
                   : 'text-purple-800 hover:text-purple-900'
                   }`}
@@ -295,7 +295,7 @@ export const FamilySearch = ({
           {/* Filter Badges & Reset Controls */}
           <button
             onClick={resetFilters}
-            className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold flex items-center gap-1 transition cursor-pointer border border-slate-300 ml-auto"
+            className="w-full lg:w-auto justify-center px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold flex items-center gap-1 transition cursor-pointer border border-slate-300 ml-auto"
           >
             <RotateCcw size={13} /> ফিল্টার রিসেট
           </button>

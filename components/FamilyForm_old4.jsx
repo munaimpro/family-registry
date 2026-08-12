@@ -34,7 +34,7 @@ export const FamilyForm = ({
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/settings`);
                 if (!response.ok) {
-                    throw new Error('নেটওয়ার্ক সমস্যা বা তথ্য পাওয়া যায়নি');
+                    throw new Error('নেটওয়ার্ক সমস্যা বা তথ্য পাওয়া যায়নি');
                 }
                 const data = await response.json();
                 setAppSettings({
@@ -169,6 +169,8 @@ export const FamilyForm = ({
 
     useEffect(() => {
         if (!initialData && records) {
+            //console.log(records.length);
+
             const nextCount = (records.length || 0) + 1;
             const paddedNo = String(nextCount).padStart(2, '0');
 
@@ -504,6 +506,7 @@ export const FamilyForm = ({
             const [draggedItem] = updatedMembers.splice(draggedIndex, 1);
             updatedMembers.splice(dropIndex, 0, draggedItem);
 
+            // Re-assign slNo after drag drop
             const reordered = updatedMembers.map((m, i) => ({
                 ...m,
                 slNo: i + 1
@@ -580,14 +583,15 @@ export const FamilyForm = ({
     const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
     return (
-        <div className="max-w-5xl mx-auto my-2 sm:my-6 px-1 sm:px-4">
+        <div className="max-w-5xl mx-auto my-6 px-2 sm:px-4">
+            {/* Outer Paper Sheet Canvas Matching Image replica */}
             <form
                 onSubmit={handleSubmit}
-                className="bg-white text-[#0F2C59] p-3 sm:p-6 md:p-8 rounded-lg shadow-2xl border border-slate-200 md:border-2 md:border-[#0F2C59] relative overflow-hidden font-serif leading-snug"
+                className="bg-white text-[#0F2C59] p-4 sm:p-8 rounded-lg shadow-2xl border-2 border-[#0F2C59] relative overflow-hidden font-serif leading-snug"
             >
-                {/* Top Right Decorative Accent */}
+                {/* Top Right Decorative Diagonal Green Corner Accent */}
                 <svg
-                    className="absolute top-0 right-0 w-32 sm:w-64 md:w-80 h-16 sm:h-28 md:h-32 pointer-events-none z-10"
+                    className="absolute top-0 right-0 w-64 sm:w-80 h-28 sm:h-32 pointer-events-none z-10"
                     viewBox="0 0 320 128"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -597,43 +601,47 @@ export const FamilyForm = ({
                 </svg>
 
                 {/* Top Header Branding Block */}
-                <div className="flex flex-col md:flex-row items-center justify-between border-b-2 border-[#0F2C59] pb-4 mb-4 gap-3 relative z-20">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center border-2 border-[#0F2C59] rounded-full p-1 bg-white shadow-xs overflow-hidden">
+                <div className="flex flex-col sm:flex-row items-center justify-between border-b-2 border-[#0F2C59] pb-4 mb-4 gap-3">
+
+                    {/* Circular Crest Logo Left */}
+                    <div className="w-20 h-20 flex-shrink-0 flex items-center justify-center border-2 border-[#0F2C59] rounded-full p-1 bg-white shadow-xs overflow-hidden">
                         {customLogo ? (
                             <img src={customLogo} alt="Logo" className="w-full h-full object-cover rounded-full" />
                         ) : (
                             <div className="w-full h-full rounded-full border border-dashed border-[#1B8A44] flex flex-col items-center justify-center text-center p-0.5">
-                                <HeartHandshake className="w-5 h-5 sm:w-6 sm:h-6 text-[#1B8A44]" />
-                                <span className="text-[6px] sm:text-[7px] font-bold text-[#0F2C59] leading-none mt-0.5">অলি মিয়া সমাজ কল্যাণ</span>
+                                <HeartHandshake className="w-6 h-6 text-[#1B8A44]" />
+                                <span className="text-[7px] font-bold text-[#0F2C59] leading-none mt-0.5">অলি মিয়া সমাজ কল্যাণ</span>
                             </div>
                         )}
                     </div>
 
-                    <div className="text-center flex-1 px-1 sm:px-2">
-                        <h1 className="text-xl sm:text-2xl md:text-4xl font-extrabold text-[#0F2C59] tracking-tight mb-1 font-serif">
+                    {/* Centered Main Title Banner */}
+                    <div className="text-center flex-1 px-2">
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0F2C59] tracking-tight mb-1 font-serif">
                             {formTitle}
                         </h1>
-                        <p className="text-[11px] sm:text-xs md:text-sm font-semibold text-black mb-1">
+                        <p className="text-xs sm:text-sm font-semibold text-black mb-1">
                             {address}
                         </p>
                     </div>
 
-                    <div className="w-20 hidden md:block"></div>
+                    {/* Right Spacer or Badge */}
+                    <div className="w-20 hidden sm:block"></div>
                 </div>
 
                 {/* Top Metadata Section */}
                 <div className="space-y-3 mb-6">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-end gap-2">
-                        <div className="flex items-center gap-1.5 w-full sm:w-auto justify-between sm:justify-end">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-end gap-3">
+                        <div className="flex items-center gap-2">
                             <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm">তারিখ :</label>
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-2">
                                 <input
                                     readOnly
                                     type="text"
                                     maxLength={2}
                                     value={dateParts.dd}
                                     onChange={(e) => handleDatePartChange('dd', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
+                                    className="w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
                                 />
                                 <input
                                     readOnly
@@ -641,7 +649,7 @@ export const FamilyForm = ({
                                     maxLength={2}
                                     value={dateParts.mm}
                                     onChange={(e) => handleDatePartChange('mm', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
+                                    className="w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
                                 />
                                 <input
                                     readOnly
@@ -649,30 +657,31 @@ export const FamilyForm = ({
                                     maxLength={4}
                                     value={dateParts.yyyy}
                                     onChange={(e) => handleDatePartChange('yyyy', e.target.value)}
-                                    className="w-12 sm:w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
+                                    className="w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-                        <div className="flex items-center gap-1.5 w-full md:w-auto">
-                            <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm flex-shrink-0">সদস্য নং–</label>
-                            <div className="flex items-center border border-black rounded-xs bg-white overflow-hidden w-full md:w-auto">
-                                <span className="bg-gray-100 px-2 py-0.5 border-r border-black font-mono font-bold text-black text-xs flex-shrink-0">OMSKP-</span>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div className="flex items-center gap-1.5">
+                            <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm">সদস্য নং–</label>
+                            <div className="flex items-center border border-black rounded-xs bg-white overflow-hidden">
+                                <span className="bg-gray-100 px-2 py-0.5 border-r border-black font-mono font-bold text-black text-xs">OMSKP-</span>
                                 <input
                                     readOnly
                                     type="text"
                                     value={formData.memberNo ? formData.memberNo.replace('OMSKP-', '') : ''}
                                     onChange={(e) => handleInputChange('memberNo', e.target.value)}
-                                    className="w-full md:w-20 px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden"
+                                    className="w-20 px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden"
                                 />
                             </div>
                         </div>
 
                         {/* Membership Type Checkbox Fields */}
-                        <div className="flex flex-wrap items-center justify-between sm:justify-start gap-2 bg-amber-50 border border-amber-300 px-2.5 py-1.5 rounded-lg shadow-2xs">
-                            <div className="flex items-center gap-1 cursor-pointer">
+                        <div className="flex flex-wrap items-center gap-2 bg-amber-50 border border-amber-300 px-3 py-1.5 rounded-lg shadow-sm my-1 sm:my-0">
+                            {/* Moholla Member */}
+                            <div className="flex items-center gap-1.5 cursor-pointer">
                                 <input
                                     type="checkbox"
                                     id="isMohollaMemberCheckbox"
@@ -680,12 +689,13 @@ export const FamilyForm = ({
                                     onChange={(e) => handleInputChange('isMohollaMember', e.target.checked)}
                                     className="w-4 h-4 text-emerald-600 rounded border-slate-400 focus:ring-emerald-500 cursor-pointer"
                                 />
-                                <label htmlFor="isMohollaMemberCheckbox" className="font-bold text-emerald-900 text-xs cursor-pointer select-none">
+                                <label htmlFor="isMohollaMemberCheckbox" className="font-bold text-emerald-900 text-xs sm:text-sm cursor-pointer select-none flex items-center gap-1">
                                     মহল্লা সদস্য
                                 </label>
                             </div>
 
-                            <div className="flex items-center gap-1 cursor-pointer sm:border-l sm:border-amber-300 sm:pl-2">
+                            {/* Blood Donor Member */}
+                            <div className="flex items-center gap-1.5 cursor-pointer border-l border-amber-300 pl-2">
                                 <input
                                     type="checkbox"
                                     id="isBloodDonorMemberCheckbox"
@@ -693,12 +703,13 @@ export const FamilyForm = ({
                                     onChange={(e) => handleInputChange('isBloodDonorMember', e.target.checked)}
                                     className="w-4 h-4 text-rose-600 rounded border-slate-400 focus:ring-rose-500 cursor-pointer"
                                 />
-                                <label htmlFor="isBloodDonorMemberCheckbox" className="font-bold text-rose-900 text-xs cursor-pointer select-none">
+                                <label htmlFor="isBloodDonorMemberCheckbox" className="font-bold text-rose-900 text-xs sm:text-sm cursor-pointer select-none flex items-center gap-1">
                                     রক্ত দাতা সদস্য
                                 </label>
                             </div>
 
-                            <div className="flex items-center gap-1 cursor-pointer sm:border-l sm:border-amber-300 sm:pl-2">
+                            {/* Temporary Member */}
+                            <div className="flex items-center gap-1.5 cursor-pointer border-l border-amber-300 pl-2">
                                 <input
                                     type="checkbox"
                                     id="isTemporaryMemberCheckbox"
@@ -706,221 +717,206 @@ export const FamilyForm = ({
                                     onChange={(e) => handleInputChange('isTemporaryMember', e.target.checked)}
                                     className="w-4 h-4 text-purple-600 rounded border-slate-400 focus:ring-purple-500 cursor-pointer"
                                 />
-                                <label htmlFor="isTemporaryMemberCheckbox" className="font-bold text-purple-900 text-xs cursor-pointer select-none">
-                                    ভাড়াটিয়া/অস্থায়ী
+                                <label htmlFor="isTemporaryMemberCheckbox" className="font-bold text-purple-900 text-xs sm:text-sm cursor-pointer select-none flex items-center gap-1">
+                                    ভাড়াটিয়া/অস্থায়ী সদস্য
                                 </label>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-1.5 w-full md:w-auto">
-                            <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm flex-shrink-0">ফরম নং–</label>
+                        <div className="flex items-center gap-1.5">
+                            <label className="whitespace-nowrap text-black font-bold text-xs sm:text-sm">ফরম নং–</label>
                             <input
                                 readOnly
                                 type="text"
                                 value={formData.formNo ? formData.formNo : ''}
                                 onChange={(e) => handleInputChange('formNo', e.target.value)}
-                                className="w-full md:w-32 bg-white border border-black rounded-xs px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden"
+                                className="w-32 bg-white border border-black rounded-xs px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden"
                             />
                         </div>
                     </div>
                 </div>
 
                 {/* Numbered Input Form Section */}
-                <div className="space-y-4 text-xs text-black">
+                <div className="space-y-3.5 text-xs text-black">
 
                     {/* ১. সদস্য/সদস্যা & পেশা */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-2 items-start md:items-baseline">
-                        <div className="md:col-span-2 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
-                            <div className="flex items-center gap-2">
-                                <label className="font-bold text-black whitespace-nowrap">
-                                    ১. সদস্য/সদস্যা <span className="text-rose-600">*</span> :
-                                </label>
-                                <div className="relative flex-shrink-0">
-                                    {formData.headImage ? (
-                                        <div className="relative w-8 h-8 sm:w-10 sm:h-10 border border-black rounded overflow-hidden group">
-                                            <img src={formData.headImage} alt="Head Member" className="w-full h-full object-cover" />
-                                            <button
-                                                type="button"
-                                                onClick={() => handleInputChange('headImage', '')}
-                                                className="absolute top-0 right-0 bg-rose-600 text-white rounded-bl p-0.5 opacity-0 group-hover:opacity-100 transition print:hidden"
-                                                title="ছবি মুছুন"
-                                            >
-                                                <X size={10} />
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <label className="w-8 h-8 sm:w-10 sm:h-10 border border-dashed border-gray-400 rounded flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition print:hidden" title="ছবি আপলোড করুন">
-                                            <Upload size={12} className="text-gray-500" />
-                                            <input
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={handleHeadImageChange}
-                                                className="hidden"
-                                            />
-                                        </label>
-                                    )}
-                                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-baseline">
+                        <div className="md:col-span-2 flex items-center gap-2">
+                            <label className="font-bold w-32 flex-shrink-0 text-black">
+                                ১. সদস্য/সদস্যা <span className="text-rose-600">*</span> :
+                            </label>
+
+                            {/* Image Upload Option for Head Member */}
+                            <div className="relative flex-shrink-0">
+                                {formData.headImage ? (
+                                    <div className="relative w-10 h-10 border border-black rounded overflow-hidden group">
+                                        <img src={formData.headImage} alt="Head Member" className="w-full h-full object-cover" />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleInputChange('headImage', '')}
+                                            className="absolute top-0 right-0 bg-rose-600 text-white rounded-bl p-0.5 opacity-0 group-hover:opacity-100 transition print:hidden"
+                                            title="ছবি মুছুন"
+                                        >
+                                            <X size={10} />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <label className="w-10 h-10 border border-dashed border-gray-400 rounded flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition print:hidden" title="ছবি আপলোড করুন">
+                                        <Upload size={14} className="text-gray-500" />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleHeadImageChange}
+                                            className="hidden"
+                                        />
+                                    </label>
+                                )}
                             </div>
+
                             <input
                                 type="text"
                                 required
                                 value={formData.headName}
                                 onChange={(e) => handleInputChange('headName', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-bold text-sm text-black focus:outline-hidden"
+                                className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 font-bold text-sm text-black focus:outline-hidden"
                             />
                         </div>
-                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-16 flex-shrink-0 text-black">পেশা :</label>
+                        <div className="flex items-baseline">
+                            <label className="font-bold w-16 flex-shrink-0 text-black">পেশা :</label>
                             <input
                                 type="text"
                                 value={formData.headOccupation}
                                 onChange={(e) => handleInputChange('headOccupation', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                                className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 font-normal text-black focus:outline-hidden"
                             />
                         </div>
                     </div>
 
                     {/* ২. পিতা/স্বামীর নাম & পেশা */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-2 items-start md:items-baseline">
-                        <div className="md:col-span-2 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">২. পিতা/স্বামীর নাম :</label>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-baseline">
+                        <div className="md:col-span-2 flex items-baseline">
+                            <label className="font-bold w-32 flex-shrink-0 text-black">২. পিতা/স্বামীর নাম :</label>
                             <input
                                 type="text"
                                 value={formData.fatherOrHusbandName}
                                 onChange={(e) => handleInputChange('fatherOrHusbandName', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                                className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 font-normal text-black focus:outline-hidden"
                             />
                         </div>
-                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-16 flex-shrink-0 text-black">পেশা :</label>
+                        <div className="flex items-baseline">
+                            <label className="font-bold w-16 flex-shrink-0 text-black">পেশা :</label>
                             <input
                                 type="text"
                                 value={formData.fatherOrHusbandOccupation}
                                 onChange={(e) => handleInputChange('fatherOrHusbandOccupation', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                                className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 font-normal text-black focus:outline-hidden"
                             />
                         </div>
                     </div>
 
                     {/* ৩. মাতার নাম & পেশা */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-2 items-start md:items-baseline">
-                        <div className="md:col-span-2 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">৩. মাতার নাম :</label>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-baseline">
+                        <div className="md:col-span-2 flex items-baseline">
+                            <label className="font-bold w-32 flex-shrink-0 text-black">৩. মাতার নাম :</label>
                             <input
                                 type="text"
                                 value={formData.motherName}
                                 onChange={(e) => handleInputChange('motherName', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                                className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 font-normal text-black focus:outline-hidden"
                             />
                         </div>
-                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-16 flex-shrink-0 text-black">পেশা :</label>
+                        <div className="flex items-baseline">
+                            <label className="font-bold w-16 flex-shrink-0 text-black">পেশা :</label>
                             <input
                                 type="text"
                                 value={formData.motherOccupation}
                                 onChange={(e) => handleInputChange('motherOccupation', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                                className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 font-normal text-black focus:outline-hidden"
                             />
                         </div>
                     </div>
 
                     {/* ৪. ঠিকানা */}
-                    <div className="space-y-2">
-                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">৪. ঠিকানা :</label>
-                            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                <div className="flex items-center gap-1.5">
-                                    <span className="font-semibold flex-shrink-0 text-black">বাড়ি/গ্রাম :</span>
-                                    <input
-                                        type="text"
-                                        value={formData.presentAddress.village}
-                                        onChange={(e) => handleAddressChange('village', e.target.value)}
-                                        className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden"
-                                    />
-                                </div>
-                                <div className="flex items-center gap-1.5">
-                                    <span className="font-semibold flex-shrink-0 text-black">রোড :</span>
-                                    <input
-                                        type="text"
-                                        value={formData.presentAddress.road}
-                                        onChange={(e) => handleAddressChange('road', e.target.value)}
-                                        className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden"
-                                    />
-                                </div>
-                            </div>
+                    <div>
+                        <div className="flex flex-wrap items-baseline gap-y-1">
+                            <label className="font-bold w-32 flex-shrink-0 text-black">৪. ঠিকানা :</label>
+                            <span className="font-semibold mr-1 text-black">বাড়ি/গ্রাম :</span>
+                            <input
+                                type="text"
+                                value={formData.presentAddress.village}
+                                onChange={(e) => handleAddressChange('village', e.target.value)}
+                                className="min-w-[140px] flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden"
+                            />
+                            <span className="font-semibold mr-1 text-black">রোড :</span>
+                            <input
+                                type="text"
+                                value={formData.presentAddress.road}
+                                onChange={(e) => handleAddressChange('road', e.target.value)}
+                                className="min-w-[90px] w-28 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden"
+                            />
                         </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pl-0 sm:pl-32">
-                            <div className="flex items-center gap-1.5">
-                                <span className="font-semibold flex-shrink-0 text-black">পোঃ :</span>
-                                <input
-                                    type="text"
-                                    value={formData.presentAddress.postOffice}
-                                    onChange={(e) => handleAddressChange('postOffice', e.target.value)}
-                                    className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden"
-                                />
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                                <span className="font-semibold flex-shrink-0 text-black">থানা :</span>
-                                <input
-                                    type="text"
-                                    value={formData.presentAddress.thana}
-                                    onChange={(e) => handleAddressChange('thana', e.target.value)}
-                                    className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden"
-                                />
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                                <span className="font-semibold flex-shrink-0 text-black">জেলা :</span>
-                                <input
-                                    type="text"
-                                    value={formData.presentAddress.district}
-                                    onChange={(e) => handleAddressChange('district', e.target.value)}
-                                    className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden"
-                                />
-                            </div>
+                        <div className="flex flex-wrap items-baseline gap-y-1 mt-1 pl-0 sm:pl-32">
+                            <span className="font-semibold mr-1 text-black">পোঃ :</span>
+                            <input
+                                type="text"
+                                value={formData.presentAddress.postOffice}
+                                onChange={(e) => handleAddressChange('postOffice', e.target.value)}
+                                className="w-24 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden"
+                            />
+                            <span className="font-semibold mr-1 text-black">থানা :</span>
+                            <input
+                                type="text"
+                                value={formData.presentAddress.thana}
+                                onChange={(e) => handleAddressChange('thana', e.target.value)}
+                                className="w-28 bg-transparent border-b border-dotted border-black px-2 py-0.5 mr-2 text-black focus:outline-hidden"
+                            />
+                            <span className="font-semibold mr-1 text-black">জেলা :</span>
+                            <input
+                                type="text"
+                                value={formData.presentAddress.district}
+                                onChange={(e) => handleAddressChange('district', e.target.value)}
+                                className="w-28 bg-transparent border-b border-dotted border-black px-2 py-0.5 text-black focus:outline-hidden"
+                            />
                         </div>
                     </div>
 
                     {/* ৫. জন্ম তারিখ ও রক্তের গ্রুপ */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-2 items-center">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">৫. জন্ম তারিখ :</label>
-                            <div className="flex items-center gap-1">
-                                <span className="text-[11px] text-black">দিন:</span>
-                                <input
-                                    type="text"
-                                    maxLength={2}
-                                    value={dobParts.dd}
-                                    onChange={(e) => handleDobPartChange('dd', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
-                                />
-                                <span className="text-[11px] text-black ml-1">মাস:</span>
-                                <input
-                                    type="text"
-                                    maxLength={2}
-                                    value={dobParts.mm}
-                                    onChange={(e) => handleDobPartChange('mm', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
-                                />
-                                <span className="text-[11px] text-black ml-1">বছর:</span>
-                                <input
-                                    type="text"
-                                    maxLength={4}
-                                    value={dobParts.yyyy}
-                                    onChange={(e) => handleDobPartChange('yyyy', e.target.value)}
-                                    className="w-12 sm:w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
-                                />
-                            </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-center">
+                        <div className="flex items-center gap-1 flex-wrap">
+                            <label className="font-bold w-32 flex-shrink-0 text-black">৫. জন্ম তারিখ :</label>
+                            <span className="text-[11px] text-black">দিন :</span>
+                            <input
+                                type="text"
+                                maxLength={2}
+                                value={dobParts.dd}
+                                onChange={(e) => handleDobPartChange('dd', e.target.value)}
+                                className="w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                            />
+                            <span className="text-[11px] ml-1 text-black">মাস :</span>
+                            <input
+                                type="text"
+                                maxLength={2}
+                                value={dobParts.mm}
+                                onChange={(e) => handleDobPartChange('mm', e.target.value)}
+                                className="w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                            />
+                            <span className="text-[11px] ml-1 text-black">বছর :</span>
+                            <input
+                                type="text"
+                                maxLength={4}
+                                value={dobParts.yyyy}
+                                onChange={(e) => handleDobPartChange('yyyy', e.target.value)}
+                                className="w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                            />
                         </div>
-
-                        <div className="flex items-center gap-2 justify-between sm:justify-start md:justify-end">
+                        <div className="flex items-center gap-2 justify-start md:justify-end">
                             <label className="font-bold text-black flex items-center gap-1">
                                 <Heart size={14} className="text-rose-700 fill-rose-600" /> রক্তের গ্রুপ :
                             </label>
                             <select
                                 value={formData.bloodGroup}
                                 onChange={(e) => handleInputChange('bloodGroup', e.target.value)}
-                                className="bg-white border border-black rounded px-2.5 py-1 font-bold text-black text-xs focus:outline-hidden"
+                                className="bg-white border border-black rounded px-3 py-1 font-bold text-black text-xs focus:outline-hidden"
                             >
                                 <option value="">নির্বাচন করুন</option>
                                 {bloodGroups.map(bg => (
@@ -931,20 +927,20 @@ export const FamilyForm = ({
 
                         {/* রক্তদানের তারিখ (Head Multiple Dates) */}
                         <div className="col-span-1 md:col-span-2 pt-2 mt-1 border-t border-dotted border-slate-300">
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                                <label className="font-bold text-black flex items-center gap-1 text-xs whitespace-nowrap">
+                            <div className="flex items-center gap-2 flex-wrap">
+                                <label className="font-bold text-black flex items-center gap-1 text-xs">
                                     <Heart size={14} className="text-rose-700 fill-rose-600" /> রক্তদানের তারিখ :
                                 </label>
 
                                 <div className="flex flex-wrap items-center gap-1.5">
                                     {(formData.bloodDonationDates || []).map((dateStr, dIdx) => (
-                                        <span key={dIdx} className="inline-flex items-center gap-1 bg-rose-50 border border-rose-300 text-rose-800 text-xs font-bold px-2 py-0.5 rounded-full shadow-2xs">
+                                        <span key={dIdx} className="inline-flex items-center gap-1 bg-rose-50 border border-rose-300 text-rose-800 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-2xs">
                                             <Heart size={10} className="text-rose-600 fill-rose-600" />
                                             <span>{dateStr}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => handleRemoveHeadBloodDate(dIdx)}
-                                                className="text-rose-500 hover:text-rose-800 font-black ml-0.5 cursor-pointer leading-none"
+                                                className="text-rose-500 hover:text-rose-800 font-black ml-1 cursor-pointer leading-none"
                                                 title="তারিখ মুছুন"
                                             >
                                                 &times;
@@ -953,7 +949,7 @@ export const FamilyForm = ({
                                     ))}
                                 </div>
 
-                                <div className="flex items-center gap-1.5 w-full sm:w-auto print:hidden mt-1 sm:mt-0">
+                                <div className="flex items-center gap-1 print:hidden">
                                     <input
                                         type="text"
                                         placeholder="দিন/মাস/বছর (যেমন: 15/02/2025)"
@@ -965,14 +961,14 @@ export const FamilyForm = ({
                                                 handleAddHeadBloodDate();
                                             }
                                         }}
-                                        className="w-full sm:w-44 bg-white border border-black rounded px-2 py-1 text-xs text-black font-medium focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                        className="w-44 bg-white border border-black rounded px-2 py-0.5 text-xs text-black font-medium focus:outline-none focus:ring-1 focus:ring-rose-500"
                                     />
                                     <button
                                         type="button"
                                         onClick={handleAddHeadBloodDate}
-                                        className="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded text-xs font-bold flex items-center gap-1 cursor-pointer shadow-xs whitespace-nowrap"
+                                        className="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded text-xs font-bold flex items-center gap-1 cursor-pointer shadow-xs"
                                     >
-                                        + যোগ
+                                        + তারিখ যোগ করুন
                                     </button>
                                 </div>
                             </div>
@@ -980,31 +976,31 @@ export const FamilyForm = ({
                     </div>
 
                     {/* ৬. জাতীয়তা & ধর্ম */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-2 items-start md:items-baseline">
-                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">৬. জাতীয়তা :</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-baseline">
+                        <div className="flex items-baseline">
+                            <label className="font-bold w-32 flex-shrink-0 text-black">৬. জাতীয়তা :</label>
                             <input
                                 type="text"
                                 value={formData.nationality}
                                 onChange={(e) => handleInputChange('nationality', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 text-black focus:outline-hidden"
+                                className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 text-black focus:outline-hidden"
                             />
                         </div>
-                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-16 flex-shrink-0 text-black">ধর্ম :</label>
+                        <div className="flex items-baseline">
+                            <label className="font-bold w-16 flex-shrink-0 text-black">ধর্ম :</label>
                             <input
                                 type="text"
                                 value={formData.religion}
                                 onChange={(e) => handleInputChange('religion', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 text-black focus:outline-hidden"
+                                className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 text-black focus:outline-hidden"
                             />
                         </div>
                     </div>
 
                     {/* ৭. জাতীয় পরিচয়পত্র নং */}
                     <div>
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1.5">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">৭. জাতীয় পরিচয়পত্র নং :</label>
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <label className="font-bold w-32 flex-shrink-0 text-black">৭. জাতীয় পরিচয়পত্র নং :</label>
                             {renderDigitInputBoxes(
                                 formData.nidNumber,
                                 (val) => handleInputChange('nidNumber', val),
@@ -1015,62 +1011,60 @@ export const FamilyForm = ({
                     </div>
 
                     {/* ৮. জন্ম সনদ & মৃত্যু তারিখ */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-2 items-start md:items-baseline">
-                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">৮. জন্ম সনদ :</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-baseline">
+                        <div className="flex items-baseline">
+                            <label className="font-bold w-32 flex-shrink-0 text-black">৮. জন্ম সনদ :</label>
                             <input
                                 type="text"
                                 value={formData.birthCertificateNo}
                                 onChange={(e) => handleInputChange('birthCertificateNo', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-mono text-black focus:outline-hidden"
+                                className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 font-mono text-black focus:outline-hidden"
                             />
                         </div>
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-24 flex-shrink-0 text-black">মৃত্যু তারিখ :</label>
-                            <div className="flex items-center gap-1">
-                                <span className="text-[11px] text-black">দিন:</span>
-                                <input
-                                    type="text"
-                                    maxLength={2}
-                                    value={deathDateParts.dd}
-                                    onChange={(e) => handleDeathDatePartChange('dd', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
-                                />
-                                <span className="text-[11px] text-black ml-1">মাস:</span>
-                                <input
-                                    type="text"
-                                    maxLength={2}
-                                    value={deathDateParts.mm}
-                                    onChange={(e) => handleDeathDatePartChange('mm', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
-                                />
-                                <span className="text-[11px] text-black ml-1">বছর:</span>
-                                <input
-                                    type="text"
-                                    maxLength={4}
-                                    value={deathDateParts.yyyy}
-                                    onChange={(e) => handleDeathDatePartChange('yyyy', e.target.value)}
-                                    className="w-12 sm:w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
-                                />
-                            </div>
+                        <div className="flex items-center gap-1 flex-wrap">
+                            <label className="font-bold w-24 flex-shrink-0 text-black">মৃত্যু তারিখ :</label>
+                            <span className="text-[11px] text-black">দিন :</span>
+                            <input
+                                type="text"
+                                maxLength={2}
+                                value={deathDateParts.dd}
+                                onChange={(e) => handleDeathDatePartChange('dd', e.target.value)}
+                                className="w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                            />
+                            <span className="text-[11px] ml-1 text-black">মাস :</span>
+                            <input
+                                type="text"
+                                maxLength={2}
+                                value={deathDateParts.mm}
+                                onChange={(e) => handleDeathDatePartChange('mm', e.target.value)}
+                                className="w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                            />
+                            <span className="text-[11px] ml-1 text-black">বছর :</span>
+                            <input
+                                type="text"
+                                maxLength={4}
+                                value={deathDateParts.yyyy}
+                                onChange={(e) => handleDeathDatePartChange('yyyy', e.target.value)}
+                                className="w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                            />
                         </div>
                     </div>
 
                     {/* ৯. শিক্ষাগত যোগ্যতা */}
-                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                        <label className="font-bold sm:w-32 flex-shrink-0 text-black">৯. শিক্ষাগত যোগ্যতা :</label>
+                    <div className="flex items-baseline">
+                        <label className="font-bold w-32 flex-shrink-0 text-black">৯. শিক্ষাগত যোগ্যতা :</label>
                         <input
                             type="text"
                             value={formData.educationalQualification}
                             onChange={(e) => handleInputChange('educationalQualification', e.target.value)}
-                            className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 text-black focus:outline-hidden"
+                            className="flex-1 bg-transparent border-b border-dotted border-black px-2 py-0.5 text-black focus:outline-hidden"
                         />
                     </div>
 
                     {/* ১০. মোবাইল নাম্বার & বিকল্প নাম্বার */}
-                    <div className="space-y-3">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1.5">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <label className="font-bold w-32 flex-shrink-0 text-black">
                                 ১০. মোবাইল নাম্বার <span className="text-rose-600">*</span> :
                             </label>
                             {renderDigitInputBoxes(
@@ -1080,8 +1074,8 @@ export const FamilyForm = ({
                                 true
                             )}
                         </div>
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1.5">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <label className="font-bold w-32 flex-shrink-0 text-black">
                                 বিকল্প নাম্বার :
                             </label>
                             {renderDigitInputBoxes(
@@ -1096,187 +1090,13 @@ export const FamilyForm = ({
 
                 {/* Dynamic Heirs Pill Badge Section */}
                 <div className="mt-6 mb-3 text-center">
-                    <span className="inline-block border border-black rounded-full px-4 sm:px-8 py-1 font-bold text-xs sm:text-sm text-black">
+                    <span className="inline-block border border-black rounded-full px-8 py-1 font-bold text-sm text-black">
                         সদস্যগণের তথ্য/ওয়ারিশগণের তথ্য
                     </span>
                 </div>
 
-                {/* Mobile View Card Layout for Members (< lg screens) */}
-                <div className="block lg:hidden space-y-3 mb-4">
-                    {formData.members.map((member, idx) => (
-                        <div
-                            key={member.id}
-                            className={`border border-black rounded-md p-3 relative bg-slate-50/50 space-y-2.5 ${member.isDeceased ? 'bg-gray-100 opacity-80' : ''}`}
-                        >
-                            <div className="flex items-center justify-between border-b border-gray-300 pb-2">
-                                <span className="font-bold text-black text-xs">সদস্য #{idx + 1}</span>
-                                <div className="flex items-center gap-2">
-                                    <label className="flex items-center gap-1 text-xs text-rose-700 font-bold">
-                                        <input
-                                            type="checkbox"
-                                            checked={Boolean(member.isDeceased)}
-                                            onChange={(e) => handleMemberChange(idx, 'isDeceased', e.target.checked)}
-                                            className="w-3.5 h-3.5 text-rose-600 rounded border-slate-400 focus:ring-rose-500 cursor-pointer"
-                                        />
-                                        মরহুম?
-                                    </label>
-                                    <button
-                                        type="button"
-                                        onClick={() => removeMemberRow(idx)}
-                                        className="p-1 text-rose-600 hover:bg-rose-100 rounded transition cursor-pointer print:hidden"
-                                        title="সারি সরান"
-                                    >
-                                        <Trash2 size={14} />
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                                <div className="sm:col-span-2">
-                                    <label className="font-semibold block text-black text-[11px] mb-0.5">সদস্য/সদস্যার নাম:</label>
-                                    <div className="flex items-center gap-1.5">
-                                        <div className="relative flex-shrink-0">
-                                            {member.image ? (
-                                                <div className="relative w-8 h-8 border border-black rounded overflow-hidden group">
-                                                    <img src={member.image} alt={member.name || 'Member'} className="w-full h-full object-cover" />
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleMemberChange(idx, 'image', '')}
-                                                        className="absolute top-0 right-0 bg-rose-600 text-white rounded-bl p-0.5 opacity-0 group-hover:opacity-100 transition print:hidden"
-                                                    >
-                                                        <X size={8} />
-                                                    </button>
-                                                </div>
-                                            ) : (
-                                                <label className="w-8 h-8 border border-dashed border-gray-400 rounded flex items-center justify-center cursor-pointer hover:bg-gray-50 transition print:hidden">
-                                                    <Upload size={12} className="text-gray-500" />
-                                                    <input
-                                                        type="file"
-                                                        accept="image/*"
-                                                        onChange={(e) => handleMemberImageChange(idx, e)}
-                                                        className="hidden"
-                                                    />
-                                                </label>
-                                            )}
-                                        </div>
-                                        <input
-                                            type="text"
-                                            value={member.name}
-                                            onChange={(e) => handleMemberChange(idx, 'name', e.target.value)}
-                                            className="w-full border-b border-black px-1.5 py-0.5 bg-white"
-                                            placeholder="নাম লিখুন"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="font-semibold block text-black text-[11px] mb-0.5">জন্ম তারিখ/বয়স:</label>
-                                    <input
-                                        type="text"
-                                        value={member.dobOrAge}
-                                        onChange={(e) => handleMemberChange(idx, 'dobOrAge', e.target.value)}
-                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white font-mono text-xs"
-                                        placeholder="দিন/মাস/বছর"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="font-semibold block text-black text-[11px] mb-0.5">রক্তের গ্রুপ:</label>
-                                    <select
-                                        value={member.bloodGroup}
-                                        onChange={(e) => handleMemberChange(idx, 'bloodGroup', e.target.value)}
-                                        className="w-full border-b border-black px-1 py-0.5 bg-white text-xs font-bold"
-                                    >
-                                        <option value="">নির্বাচন করুন</option>
-                                        {bloodGroups.map(bg => (
-                                            <option key={bg} value={bg}>{bg}</option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="font-semibold block text-black text-[11px] mb-0.5">সম্পর্ক:</label>
-                                    <input
-                                        type="text"
-                                        value={member.relation}
-                                        onChange={(e) => handleMemberChange(idx, 'relation', e.target.value)}
-                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white"
-                                        placeholder="স্ত্রী/পুত্র/কন্যা ইত্যাদি"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="font-semibold block text-black text-[11px] mb-0.5">NID/মৃত্যু সনদ নং:</label>
-                                    <input
-                                        type="text"
-                                        value={member.nidNumber || ''}
-                                        onChange={(e) => handleMemberChange(idx, 'nidNumber', e.target.value)}
-                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white font-mono"
-                                    />
-                                </div>
-
-                                <div className="sm:col-span-2">
-                                    <label className="font-semibold block text-black text-[11px] mb-0.5">শিক্ষা প্রতিষ্ঠান/শ্রেণি/পেশা:</label>
-                                    <input
-                                        type="text"
-                                        value={member.instituteOrOccupation}
-                                        onChange={(e) => handleMemberChange(idx, 'instituteOrOccupation', e.target.value)}
-                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white"
-                                    />
-                                </div>
-
-                                <div className="sm:col-span-2">
-                                    <label className="font-semibold block text-black text-[11px] mb-0.5">বিশেষ তথ্য:</label>
-                                    <input
-                                        type="text"
-                                        value={member.specialInfo || ''}
-                                        onChange={(e) => handleMemberChange(idx, 'specialInfo', e.target.value)}
-                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white"
-                                        placeholder="রোগী, প্রবাসী, প্রতিবন্ধী ইত্যাদি"
-                                    />
-                                </div>
-
-                                <div className="sm:col-span-2">
-                                    <label className="font-semibold block text-black text-[11px] mb-0.5">রক্তদানের তারিখসমূহ:</label>
-                                    <div className="flex flex-wrap gap-1 mb-1">
-                                        {normalizeDates(member.bloodDonationDates).map((dStr, dIdx) => (
-                                            <span key={dIdx} className="inline-flex items-center gap-1 bg-rose-50 border border-rose-300 text-rose-800 text-[10px] font-bold px-1.5 py-0.5 rounded-md">
-                                                <Heart size={8} className="text-rose-600 fill-rose-600" />
-                                                <span>{dStr}</span>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleRemoveMemberBloodDate(idx, dIdx)}
-                                                    className="text-rose-500 font-bold ml-0.5"
-                                                >
-                                                    &times;
-                                                </button>
-                                            </span>
-                                        ))}
-                                    </div>
-                                    <div className="flex items-center gap-1 print:hidden">
-                                        <input
-                                            type="text"
-                                            placeholder="দিন/মাস/বছর"
-                                            value={memberBloodDateInputs[idx] || ''}
-                                            onChange={(e) => setMemberBloodDateInputs(prev => ({ ...prev, [idx]: e.target.value }))}
-                                            className="w-full bg-white border border-slate-300 rounded px-1.5 py-0.5 text-xs"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleAddMemberBloodDate(idx)}
-                                            className="px-2 py-0.5 bg-rose-600 text-white rounded text-xs font-bold whitespace-nowrap"
-                                        >
-                                            + যোগ
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Warish Table (Desktop / Large Tablet View) */}
-                <div className="hidden lg:block overflow-x-auto mb-4 border border-black rounded-lg bg-transparent">
+                {/* Warish Table */}
+                <div className="overflow-x-auto mb-4 border border-black rounded-lg bg-transparent overflow-hidden">
                     <table className="w-full border-collapse text-center text-xs text-black">
                         <thead>
                             <tr className="border-b border-black font-bold text-black bg-slate-50/50">
@@ -1304,6 +1124,7 @@ export const FamilyForm = ({
                                     className={`transition cursor-grab active:cursor-grabbing ${member.isDeceased ? 'bg-gray-100 text-gray-500' : ''
                                         } ${draggedIndex === idx ? 'opacity-40 bg-amber-100' : ''}`}
                                 >
+                                    {/* Selection Box & Drag Handle */}
                                     <td className="border border-black p-1 text-center print:hidden">
                                         <div className="flex items-center justify-center gap-1 font-bold text-black">
                                             <GripVertical size={14} className="text-gray-400 hover:text-black cursor-grab" />
@@ -1311,6 +1132,9 @@ export const FamilyForm = ({
                                         </div>
                                     </td>
 
+                                    {/* <td className="border border-black p-1 font-bold text-black">{idx + 1}.</td> */}
+
+                                    {/* Member Name + Image Upload */}
                                     <td className="border border-black p-1">
                                         <div className="flex items-center gap-1.5">
                                             <div className="relative flex-shrink-0">
@@ -1347,6 +1171,7 @@ export const FamilyForm = ({
                                         </div>
                                     </td>
 
+                                    {/* Deceased Member Define Column */}
                                     <td className="border border-black p-1 text-center">
                                         <input
                                             type="checkbox"
@@ -1357,6 +1182,7 @@ export const FamilyForm = ({
                                         />
                                     </td>
 
+                                    {/* DOB / Age */}
                                     <td className="border border-black p-1">
                                         <input
                                             type="text"
@@ -1380,6 +1206,7 @@ export const FamilyForm = ({
                                     </td>
                                     <td className="border border-black p-1.5 min-w-[160px] text-left">
                                         <div className="flex flex-col gap-1.5">
+                                            {/* List of existing blood donation dates */}
                                             <div className="flex flex-wrap gap-1">
                                                 {normalizeDates(member.bloodDonationDates).map((dStr, dIdx) => (
                                                     <span
@@ -1400,6 +1227,7 @@ export const FamilyForm = ({
                                                 ))}
                                             </div>
 
+                                            {/* Input to add new date */}
                                             <div className="flex items-center gap-1 print:hidden">
                                                 <input
                                                     type="text"
@@ -1478,7 +1306,7 @@ export const FamilyForm = ({
                     <button
                         type="button"
                         onClick={addMemberRow}
-                        className="w-full sm:w-auto px-3.5 py-2 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded text-xs font-bold flex items-center justify-center gap-1 transition shadow cursor-pointer"
+                        className="px-3.5 py-1.5 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded text-xs font-bold flex items-center gap-1 transition shadow cursor-pointer"
                     >
                         <Plus size={15} /> নতুন সদস্য তথ্য সারি যুক্ত করুন
                     </button>
@@ -1492,15 +1320,15 @@ export const FamilyForm = ({
                             type="text"
                             value={formData.headName}
                             onChange={(e) => handleInputChange('headName', e.target.value)}
-                            className="bg-transparent border-b border-black px-1 font-bold text-black focus:outline-hidden inline-block min-w-[150px] sm:min-w-[200px] text-center text-[11px]"
+                            className="bg-transparent border-b border-black px-1 font-bold text-black focus:outline-hidden inline-block min-w-[200px] text-center text-[11px]"
                         />{' '}
                         এই মর্মে ঘোষণা, স্বীকার ও সুস্থ মস্তিষ্কে জানাচ্ছি যে, আমার দেওয়া উপরোল্লিখিত সকল তথ্য সত্য এবং নির্ভুল। এ ছাড়া উপরোক্ত তথ্যে কোনো ভুল প্রমানিত হলে আমি উপযুক্ত শাস্তি গ্রহন করিতে বাধ্য থাকিব। আমি অলি মিয়া সমাজ কল্যাণ পরিষদের গঠনতন্ত্র, নীতি ও সিদ্ধান্ত মেনে চলব। পরিষদের পবিত্র উদ্দেশ্য বাস্তবায়নে নিজেকে নিয়োজিত রাখব এবং সমাজ কল্যাণমূলক সকল কার্যক্রমে সরাসরি বা পরোক্ষভাবে সহযোগিতা করব। আমি বিবাদ বা বিতেন সৃষ্টি না করে শান্তিপূর্ণ, ঐক্যবদ্ধ ও সৌহার্দ্যপূর্ণ পরিবেশ বজায় রাখতে সচেষ্ট থাকব, ইনশাআল্লাহ।
                     </p>
                 </div>
 
                 {/* Signatures Row */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 pt-10 sm:pt-12 mt-6 text-center text-xs font-bold text-black">
-                    <div className="order-1">
+                <div className="grid grid-cols-3 gap-4 pt-12 mt-6 text-center text-xs font-bold text-black">
+                    <div>
                         <div className="border-t border-dotted border-black pt-1 mx-2">
                             সদস্য সংগ্রহকের স্বাক্ষর
                         </div>
@@ -1512,34 +1340,34 @@ export const FamilyForm = ({
                             className="w-full text-center text-[10px] border-b border-transparent hover:border-slate-300 focus:border-black bg-transparent mt-1 text-black font-normal focus:outline-hidden print:border-none"
                         />
                     </div>
-                    <div className="order-2">
+                    <div>
                         <div className="border-t border-dotted border-black pt-1 mx-2">
                             আবেদনকারীর স্বাক্ষর
                         </div>
                     </div>
-                    <div className="order-3">
+                    <div>
                         <div className="border-t border-dotted border-black pt-1 mx-2">
                             সভাপতি/আহ্বায়কের স্বাক্ষর
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom Control Panel */}
-                <div className="mt-8 pt-4 border-t border-slate-300 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 print:hidden">
+                {/* Bottom Floating Control Panel */}
+                <div className="mt-8 pt-4 border-t border-slate-300 flex flex-wrap items-center justify-between gap-3 print:hidden">
                     <button
                         type="button"
                         onClick={handleAutoFill}
-                        className="w-full sm:w-auto px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer border border-slate-300"
+                        className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer border border-slate-300"
                     >
                         স্বয়ংক্রিয় নমুনা ফর্ম তথ্য পূরণ
                     </button>
 
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                    <div className="flex items-center gap-3">
                         {onCancel && (
                             <button
                                 type="button"
                                 onClick={onCancel}
-                                className="w-full sm:w-auto px-4 py-2 border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer"
+                                className="px-4 py-2 border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer"
                             >
                                 বাতিল
                             </button>
@@ -1549,7 +1377,7 @@ export const FamilyForm = ({
                             <button
                                 type="button"
                                 onClick={() => onPrintPreview(formData)}
-                                className="w-full sm:w-auto px-4 py-2 bg-[#0F2C59] hover:bg-[#1B365D] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition shadow cursor-pointer"
+                                className="px-4 py-2 bg-[#0F2C59] hover:bg-[#1B365D] text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow cursor-pointer"
                             >
                                 <Printer size={15} /> প্রিন্ট প্রিভিউ
                             </button>
@@ -1557,7 +1385,7 @@ export const FamilyForm = ({
 
                         <button
                             type="submit"
-                            className="w-full sm:w-auto px-6 py-2.5 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-lg transition cursor-pointer"
+                            className="px-6 py-2.5 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition cursor-pointer"
                         >
                             <Save size={16} /> সম্পূর্ণ তথ্য সংরক্ষণ করুন
                         </button>
