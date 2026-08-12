@@ -183,7 +183,7 @@ export const Navbar = ({
                       }`}
                   >
                     <PlusCircle size={15} />
-                    <span>নতুন ইনপুট ফরম</span>
+                    <span>নতুন ফরম</span>
                   </Link>
 
                   <Link
@@ -300,7 +300,7 @@ export const Navbar = ({
                       }`}
                   >
                     <PlusCircle size={18} />
-                    <span>নতুন তথ্য ইনপুট ফরম</span>
+                    <span>নতুন ফরম</span>
                   </Link>
 
                   <Link

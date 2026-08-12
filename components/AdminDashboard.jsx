@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { deleteRecordById, saveSingleRecord, saveRecords, INITIAL_SAMPLE_RECORDS } from '../lib/storage';
 import { toast } from 'react-hot-toast';
 import {
   Users,
@@ -153,25 +152,25 @@ export const AdminDashboard = ({
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
   // Toggle Verification Status via MongoDB API
-  const handleToggleStatus = async (record) => {
-    const recId = record._id || record.id;
-    const newStatus = record.status === 'verified' ? 'pending' : 'verified';
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families/${recId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      if (res.ok) {
-        toast.success(`স্ট্যাটাস পরিবর্তন করা হয়েছে: ${newStatus === 'verified' ? 'যাচাইকৃত' : 'অপেক্ষমাণ'}`);
-      }
-    } catch (err) {
-      console.error('Error updating status via API:', err);
-    }
-    saveSingleRecord({ ...record, status: newStatus });
-    if (onRefreshData) onRefreshData();
-    fetchFamilies();
-  };
+  // const handleToggleStatus = async (record) => {
+  //   const recId = record._id || record.id;
+  //   const newStatus = record.status === 'verified' ? 'pending' : 'verified';
+  //   try {
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families/${recId}`, {
+  //       method: 'PATCH',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ status: newStatus }),
+  //     });
+  //     if (res.ok) {
+  //       toast.success(`স্ট্যাটাস পরিবর্তন করা হয়েছে: ${newStatus === 'verified' ? 'যাচাইকৃত' : 'অপেক্ষমাণ'}`);
+  //     }
+  //   } catch (err) {
+  //     console.error('Error updating status via API:', err);
+  //   }
+  //   saveSingleRecord({ ...record, status: newStatus });
+  //   if (onRefreshData) onRefreshData();
+  //   fetchFamilies();
+  // };
 
   // Native API Delete Action
   const handleDelete = async (id) => {
@@ -241,14 +240,14 @@ export const AdminDashboard = ({
   };
 
   // Reset to Sample Data
-  const handleResetSampleData = () => {
-    if (window.confirm('আপনি কি নিশ্চিত যে ডেমো স্যাম্পল ডেটাতে রিসেট করতে চান? বর্তমান সব পরিবর্তন মুছে যাবে।')) {
-      saveRecords(INITIAL_SAMPLE_RECORDS);
-      if (onRefreshData) onRefreshData();
-      fetchFamilies();
-      toast('স্যাম্পল ডেটায় রিসেট সম্পূর্ণ হয়েছে', { icon: 'ℹ️' });
-    }
-  };
+  // const handleResetSampleData = () => {
+  //   if (window.confirm('আপনি কি নিশ্চিত যে ডেমো স্যাম্পল ডেটাতে রিসেট করতে চান? বর্তমান সব পরিবর্তন মুছে যাবে।')) {
+  //     saveRecords(INITIAL_SAMPLE_RECORDS);
+  //     if (onRefreshData) onRefreshData();
+  //     fetchFamilies();
+  //     toast('স্যাম্পল ডেটায় রিসেট সম্পূর্ণ হয়েছে', { icon: 'ℹ️' });
+  //   }
+  // };
 
   // List to display in the table
   const displayedList = apiFamilies !== null ? apiFamilies : records.filter(r => {
@@ -444,12 +443,12 @@ export const AdminDashboard = ({
             )}
           </div>
 
-          <button
+          {/* <button
             onClick={handleResetSampleData}
             className="text-xs text-slate-600 hover:text-amber-700 font-bold flex items-center gap-1 transition cursor-pointer self-end md:self-auto"
           >
             <RotateCcw size={14} /> ডেমো স্যাম্পল ডেটায় রিসেট করুন
-          </button>
+          </button> */}
         </div>
 
         {/* Main Table */}

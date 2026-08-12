@@ -17,10 +17,16 @@ export const AppProvider = ({ children }) => {
   //   setRecords(loaded);
   // };
 
-  // Fetching record data from API
+  // // Fetching record data from API
   const refreshRecords = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
+        }
+      });
       if (!res.ok) throw new Error('Failed to fetch records');
       const data = await res.json();
       setRecords(data);

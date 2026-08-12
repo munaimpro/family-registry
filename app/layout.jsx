@@ -32,9 +32,24 @@ const inter = Inter({
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://omskp.vercel.app';
 
+// Native Fetch API দিয়ে API থেকে সেটিংস ডেটা ফেচ করা
+const fetchSettings = async () => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/settings`);
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    }
+  } catch (error) {
+    console.error('Settings fetch error:', error);
+  }
+};
+
+const settings = await fetchSettings();
+
 export const metadata = {
-  title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
-  description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
+  title: settings?.appTitle || 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডিরেক্টরি',
+  description: settings?.appDescription || 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
   metadataBase: new URL(baseUrl),
   icons: {
     icon: '/icon.png',
@@ -44,15 +59,15 @@ export const metadata = {
 
   // OpenGraph Metadata
   openGraph: {
-    title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
-    description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
+    title: settings?.appTitle || 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডিরেক্টরি',
+    description: settings?.appDescription || 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
     url: '/',
-    siteName: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
+    siteName: settings?.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
     images: [
       {
         property: 'og:image',
-        url: 'https://omskp-blood-bank.vercel.app/og-image.png',
-        alt: 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
+        url: settings?.logo || 'https://omskp-blood-bank.vercel.app/og-image.png',
+        alt: settings?.foundationName || 'অলি মিয়া সমাজ কল্যাণ পরিষদ',
       },
     ],
     locale: 'bn_BD',
@@ -62,9 +77,9 @@ export const metadata = {
   // Twitter Card Metadata
   twitter: {
     card: 'summary_large_image',
-    title: 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডাইরেক্টরি',
-    description: 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
-    images: ['https://omskp-blood-bank.vercel.app/og-image.png'],
+    title: settings?.appTitle || 'অলি মিয়া সমাজ কল্যাণ পরিষদ - পরিবার তথ্য নিবন্ধন ও ডিজিটাল ডিরেক্টরি',
+    description: settings?.appDescription || 'অলি মিয়া সমাজ কল্যাণ পরিষদের ডিজিটাল সামাজিক পরিবার রেজিস্ট্রি ও তথ্য ব্যবস্থাপনা ফরম',
+    images: [settings?.logo || 'https://omskp-blood-bank.vercel.app/og-image.png'],
   },
 };
 

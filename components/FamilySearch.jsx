@@ -55,6 +55,7 @@ export const FamilySearch = ({
 
   useEffect(() => {
     const fetchRecords = async () => {
+      console.log("API Token in FE:", process.env.NEXT_PUBLIC_API_TOKEN);
       setIsLoading(true);
       try {
         const queryParams = new URLSearchParams();
@@ -64,7 +65,13 @@ export const FamilySearch = ({
         if (selectedBloodGroup) queryParams.append('bloodGroup', selectedBloodGroup);
         if (filterType !== 'all') queryParams.append('filterType', filterType);
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families?${queryParams.toString()}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families?${queryParams.toString()}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
+          }
+        });
         if (response.ok) {
           const data = await response.json();
           setDbRecords(data);
