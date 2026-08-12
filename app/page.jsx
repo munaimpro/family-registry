@@ -110,7 +110,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans selection:bg-[#1B8A44] selection:text-white">
 
       {/* 1. TOP BISMILLAH BANNER */}
-      <div className="bg-[#0A1D3B] text-white py-4 px-4 text-center border-b border-[#1B8A44]/40 relative overflow-hidden">
+      <div className="bismillah-section text-white py-4 px-4 text-center border-b border-[#1B8A44]/40 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/20 via-[#1B8A44]/20 to-emerald-900/20 pointer-events-none"></div>
         <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center justify-center gap-1">
           <div className="inline-block bg-emerald-950/80 border border-emerald-500/40 px-4 py-1.5 rounded-full shadow-inner mb-1">
@@ -125,7 +125,7 @@ export default function HomePage() {
       </div>
 
       {/* 2. HERO SECTION */}
-      <section className="relative bg-gradient-to-b from-[#0F2C59] via-[#113366] to-[#0A1D3B] text-white pt-8 pb-16 px-4 overflow-hidden border-b-4 border-[#1B8A44]">
+      <section className="hero-section relative text-white pt-8 pb-16 px-4 overflow-hidden border-b-4 border-[#1B8A44]">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#1B8A44_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
 
         <div className="max-w-6xl mx-auto relative z-10 text-center">

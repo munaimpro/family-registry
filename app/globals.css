@@ -45,6 +45,16 @@ body {
   user-select: none;
 }
 
+.bismillah-section {
+  background-color: #0A1D3B;
+}
+
+.hero-section {
+  background-color: #0F2C59;
+  /* Fallback for older browsers */
+  background-image: linear-gradient(to bottom, #0F2C59, #113366, #0A1D3B);
+}
+
 /* Allow text selection inside input fields and textareas so form filling works */
 input,
 textarea,
