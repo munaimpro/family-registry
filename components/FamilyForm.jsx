@@ -73,6 +73,7 @@ export const FamilyForm = ({
                     image: m.image || '',
                     selected: m.selected || false,
                     isDeceased: m.isDeceased || false,
+                    isMarried: m.isMarried || false,
                     bloodDonationDates: normalizeDates(m.bloodDonationDates)
                 }))
             };
@@ -134,6 +135,7 @@ export const FamilyForm = ({
                     slNo: 1,
                     selected: false,
                     isDeceased: false,
+                    isMarried: false,
                     name: '',
                     image: '',
                     gender: 'মহিলা',
@@ -151,6 +153,7 @@ export const FamilyForm = ({
                     slNo: 2,
                     selected: false,
                     isDeceased: false,
+                    isMarried: false,
                     name: '',
                     image: '',
                     gender: 'পুরুষ',
@@ -428,6 +431,7 @@ export const FamilyForm = ({
                     slNo: 1,
                     selected: false,
                     isDeceased: false,
+                    isMarried: false,
                     name: 'মোসাম্মৎ সুলতানা আক্তার',
                     image: '',
                     gender: 'মহিলা',
@@ -445,6 +449,7 @@ export const FamilyForm = ({
                     slNo: 2,
                     selected: false,
                     isDeceased: false,
+                    isMarried: false,
                     name: 'তানভীর ইসলাম তানিম',
                     image: '',
                     gender: 'পুরুষ',
@@ -462,6 +467,7 @@ export const FamilyForm = ({
                     slNo: 3,
                     selected: false,
                     isDeceased: false,
+                    isMarried: false,
                     name: 'আনিকা ইসলাম',
                     image: '',
                     gender: 'মহিলা',
@@ -521,6 +527,7 @@ export const FamilyForm = ({
                 slNo: newSl,
                 selected: false,
                 isDeceased: false,
+                isMarried: false,
                 name: '',
                 image: '',
                 gender: 'পুরুষ',
@@ -539,10 +546,10 @@ export const FamilyForm = ({
     };
 
     const removeMemberRow = (index) => {
-        if (formData.members.length <= 1) {
-            toast.error('অন্তত ১ জন সদস্যের তথ্য রাখুন');
-            return;
-        }
+        // if (formData.members.length <= 1) {
+        //     toast.error('অন্তত ১ জন সদস্যের তথ্য রাখুন');
+        //     return;
+        // }
         setFormData(prev => {
             const updated = prev.members.filter((_, idx) => idx !== index).map((m, i) => ({
                 ...m,
@@ -633,7 +640,7 @@ export const FamilyForm = ({
                                     maxLength={2}
                                     value={dateParts.dd}
                                     onChange={(e) => handleDatePartChange('dd', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
+                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs uppercase"
                                 />
                                 <input
                                     readOnly
@@ -641,7 +648,7 @@ export const FamilyForm = ({
                                     maxLength={2}
                                     value={dateParts.mm}
                                     onChange={(e) => handleDatePartChange('mm', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
+                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs uppercase"
                                 />
                                 <input
                                     readOnly
@@ -649,7 +656,7 @@ export const FamilyForm = ({
                                     maxLength={4}
                                     value={dateParts.yyyy}
                                     onChange={(e) => handleDatePartChange('yyyy', e.target.value)}
-                                    className="w-12 sm:w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs"
+                                    className="w-12 sm:w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:ring-1 focus:ring-[#1B8A44] focus:outline-hidden rounded-xs uppercase"
                                 />
                             </div>
                         </div>
@@ -665,7 +672,7 @@ export const FamilyForm = ({
                                     type="text"
                                     value={formData.memberNo ? formData.memberNo.replace('OMSKP-', '') : ''}
                                     onChange={(e) => handleInputChange('memberNo', e.target.value)}
-                                    className="w-full md:w-20 px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden"
+                                    className="w-full md:w-20 px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden uppercase"
                                 />
                             </div>
                         </div>
@@ -719,7 +726,7 @@ export const FamilyForm = ({
                                 type="text"
                                 value={formData.formNo ? formData.formNo : ''}
                                 onChange={(e) => handleInputChange('formNo', e.target.value)}
-                                className="w-full md:w-32 bg-white border border-black rounded-xs px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden"
+                                className="w-full md:w-32 bg-white border border-black rounded-xs px-2 py-0.5 font-mono font-bold text-center text-black text-xs focus:outline-hidden uppercase"
                             />
                         </div>
                     </div>
@@ -766,7 +773,7 @@ export const FamilyForm = ({
                                 required
                                 value={formData.headName}
                                 onChange={(e) => handleInputChange('headName', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-bold text-sm text-black focus:outline-hidden"
+                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-bold text-sm text-black focus:outline-hidden uppercase"
                             />
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
@@ -775,7 +782,7 @@ export const FamilyForm = ({
                                 type="text"
                                 value={formData.headOccupation}
                                 onChange={(e) => handleInputChange('headOccupation', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden uppercase"
                             />
                         </div>
                     </div>
@@ -788,7 +795,7 @@ export const FamilyForm = ({
                                 type="text"
                                 value={formData.fatherOrHusbandName}
                                 onChange={(e) => handleInputChange('fatherOrHusbandName', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden uppercase"
                             />
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
@@ -797,7 +804,7 @@ export const FamilyForm = ({
                                 type="text"
                                 value={formData.fatherOrHusbandOccupation}
                                 onChange={(e) => handleInputChange('fatherOrHusbandOccupation', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden uppercase"
                             />
                         </div>
                     </div>
@@ -810,7 +817,7 @@ export const FamilyForm = ({
                                 type="text"
                                 value={formData.motherName}
                                 onChange={(e) => handleInputChange('motherName', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden uppercase"
                             />
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
@@ -819,7 +826,7 @@ export const FamilyForm = ({
                                 type="text"
                                 value={formData.motherOccupation}
                                 onChange={(e) => handleInputChange('motherOccupation', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden uppercase"
                             />
                         </div>
                     </div>
@@ -835,7 +842,7 @@ export const FamilyForm = ({
                                         type="text"
                                         value={formData.presentAddress.village}
                                         onChange={(e) => handleAddressChange('village', e.target.value)}
-                                        className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden"
+                                        className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden uppercase"
                                     />
                                 </div>
                                 <div className="flex items-center gap-1.5">
@@ -844,7 +851,7 @@ export const FamilyForm = ({
                                         type="text"
                                         value={formData.presentAddress.road}
                                         onChange={(e) => handleAddressChange('road', e.target.value)}
-                                        className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden"
+                                        className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden uppercase"
                                     />
                                 </div>
                             </div>
@@ -857,7 +864,7 @@ export const FamilyForm = ({
                                     type="text"
                                     value={formData.presentAddress.postOffice}
                                     onChange={(e) => handleAddressChange('postOffice', e.target.value)}
-                                    className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden"
+                                    className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden uppercase"
                                 />
                             </div>
                             <div className="flex items-center gap-1.5">
@@ -866,7 +873,7 @@ export const FamilyForm = ({
                                     type="text"
                                     value={formData.presentAddress.thana}
                                     onChange={(e) => handleAddressChange('thana', e.target.value)}
-                                    className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden"
+                                    className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden uppercase"
                                 />
                             </div>
                             <div className="flex items-center gap-1.5">
@@ -875,7 +882,7 @@ export const FamilyForm = ({
                                     type="text"
                                     value={formData.presentAddress.district}
                                     onChange={(e) => handleAddressChange('district', e.target.value)}
-                                    className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden"
+                                    className="w-full bg-transparent border-b border-dotted border-black px-1 py-0.5 text-black focus:outline-hidden uppercase"
                                 />
                             </div>
                         </div>
@@ -889,26 +896,30 @@ export const FamilyForm = ({
                                 <span className="text-[11px] text-black">দিন:</span>
                                 <input
                                     type="text"
+                                    required
                                     maxLength={2}
                                     value={dobParts.dd}
                                     onChange={(e) => handleDobPartChange('dd', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden uppercase"
                                 />
                                 <span className="text-[11px] text-black ml-1">মাস:</span>
                                 <input
                                     type="text"
+                                    required
                                     maxLength={2}
                                     value={dobParts.mm}
                                     onChange={(e) => handleDobPartChange('mm', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden uppercase"
                                 />
                                 <span className="text-[11px] text-black ml-1">বছর:</span>
                                 <input
                                     type="text"
+                                    required
+                                    minLength={4}
                                     maxLength={4}
                                     value={dobParts.yyyy}
                                     onChange={(e) => handleDobPartChange('yyyy', e.target.value)}
-                                    className="w-12 sm:w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                                    className="w-12 sm:w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden uppercase"
                                 />
                             </div>
                         </div>
@@ -965,7 +976,7 @@ export const FamilyForm = ({
                                                 handleAddHeadBloodDate();
                                             }
                                         }}
-                                        className="w-full sm:w-44 bg-white border border-black rounded px-2 py-1 text-xs text-black font-medium focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                        className="w-full sm:w-44 bg-white border border-black rounded px-2 py-1 text-xs text-black font-medium focus:outline-none focus:ring-1 focus:ring-rose-500 uppercase"
                                     />
                                     <button
                                         type="button"
@@ -987,7 +998,7 @@ export const FamilyForm = ({
                                 type="text"
                                 value={formData.nationality}
                                 onChange={(e) => handleInputChange('nationality', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 text-black focus:outline-hidden"
+                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 text-black focus:outline-hidden uppercase"
                             />
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
@@ -996,7 +1007,7 @@ export const FamilyForm = ({
                                 type="text"
                                 value={formData.religion}
                                 onChange={(e) => handleInputChange('religion', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 text-black focus:outline-hidden"
+                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 text-black focus:outline-hidden uppercase"
                             />
                         </div>
                     </div>
@@ -1022,7 +1033,7 @@ export const FamilyForm = ({
                                 type="text"
                                 value={formData.birthCertificateNo}
                                 onChange={(e) => handleInputChange('birthCertificateNo', e.target.value)}
-                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-mono text-black focus:outline-hidden"
+                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-mono text-black focus:outline-hidden uppercase"
                             />
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
@@ -1034,7 +1045,7 @@ export const FamilyForm = ({
                                     maxLength={2}
                                     value={deathDateParts.dd}
                                     onChange={(e) => handleDeathDatePartChange('dd', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden uppercase"
                                 />
                                 <span className="text-[11px] text-black ml-1">মাস:</span>
                                 <input
@@ -1042,7 +1053,7 @@ export const FamilyForm = ({
                                     maxLength={2}
                                     value={deathDateParts.mm}
                                     onChange={(e) => handleDeathDatePartChange('mm', e.target.value)}
-                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                                    className="w-8 sm:w-9 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden uppercase"
                                 />
                                 <span className="text-[11px] text-black ml-1">বছর:</span>
                                 <input
@@ -1050,7 +1061,7 @@ export const FamilyForm = ({
                                     maxLength={4}
                                     value={deathDateParts.yyyy}
                                     onChange={(e) => handleDeathDatePartChange('yyyy', e.target.value)}
-                                    className="w-12 sm:w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden"
+                                    className="w-12 sm:w-14 h-7 border border-black bg-white text-center font-mono font-bold text-xs text-black focus:outline-hidden uppercase"
                                 />
                             </div>
                         </div>
@@ -1063,7 +1074,7 @@ export const FamilyForm = ({
                             type="text"
                             value={formData.educationalQualification}
                             onChange={(e) => handleInputChange('educationalQualification', e.target.value)}
-                            className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 text-black focus:outline-hidden"
+                            className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 text-black focus:outline-hidden uppercase"
                         />
                     </div>
 
@@ -1129,6 +1140,25 @@ export const FamilyForm = ({
                                         <Trash2 size={14} />
                                     </button>
                                 </div>
+                                <div className="flex items-center gap-2">
+                                    <label className="flex items-center gap-1 text-xs text-rose-700 font-bold">
+                                        <input
+                                            type="checkbox"
+                                            checked={Boolean(member.isMarried)}
+                                            onChange={(e) => handleMemberChange(idx, 'isMarried', e.target.checked)}
+                                            className="w-3.5 h-3.5 text-rose-600 rounded border-slate-400 focus:ring-rose-500 cursor-pointer"
+                                        />
+                                        বিবাহিত?
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={() => removeMemberRow(idx)}
+                                        className="p-1 text-rose-600 hover:bg-rose-100 rounded transition cursor-pointer print:hidden"
+                                        title="সারি সরান"
+                                    >
+                                        <Trash2 size={14} />
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
@@ -1163,7 +1193,7 @@ export const FamilyForm = ({
                                             type="text"
                                             value={member.name}
                                             onChange={(e) => handleMemberChange(idx, 'name', e.target.value)}
-                                            className="w-full border-b border-black px-1.5 py-0.5 bg-white"
+                                            className="w-full border-b border-black px-1.5 py-0.5 bg-white uppercase"
                                             placeholder="নাম লিখুন"
                                         />
                                     </div>
@@ -1175,7 +1205,7 @@ export const FamilyForm = ({
                                         type="text"
                                         value={member.dobOrAge}
                                         onChange={(e) => handleMemberChange(idx, 'dobOrAge', e.target.value)}
-                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white font-mono text-xs"
+                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white font-mono text-xs uppercase"
                                         placeholder="দিন/মাস/বছর"
                                     />
                                 </div>
@@ -1200,7 +1230,7 @@ export const FamilyForm = ({
                                         type="text"
                                         value={member.relation}
                                         onChange={(e) => handleMemberChange(idx, 'relation', e.target.value)}
-                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white"
+                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white uppercase"
                                         placeholder="স্ত্রী/পুত্র/কন্যা ইত্যাদি"
                                     />
                                 </div>
@@ -1211,7 +1241,7 @@ export const FamilyForm = ({
                                         type="text"
                                         value={member.nidNumber || ''}
                                         onChange={(e) => handleMemberChange(idx, 'nidNumber', e.target.value)}
-                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white font-mono"
+                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white font-mono uppercase"
                                     />
                                 </div>
 
@@ -1221,7 +1251,7 @@ export const FamilyForm = ({
                                         type="text"
                                         value={member.instituteOrOccupation}
                                         onChange={(e) => handleMemberChange(idx, 'instituteOrOccupation', e.target.value)}
-                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white"
+                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white uppercase"
                                     />
                                 </div>
 
@@ -1231,7 +1261,7 @@ export const FamilyForm = ({
                                         type="text"
                                         value={member.specialInfo || ''}
                                         onChange={(e) => handleMemberChange(idx, 'specialInfo', e.target.value)}
-                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white"
+                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white uppercase"
                                         placeholder="রোগী, প্রবাসী, প্রতিবন্ধী ইত্যাদি"
                                     />
                                 </div>
@@ -1259,7 +1289,7 @@ export const FamilyForm = ({
                                             placeholder="দিন/মাস/বছর"
                                             value={memberBloodDateInputs[idx] || ''}
                                             onChange={(e) => setMemberBloodDateInputs(prev => ({ ...prev, [idx]: e.target.value }))}
-                                            className="w-full bg-white border border-slate-300 rounded px-1.5 py-0.5 text-xs"
+                                            className="w-full bg-white border border-slate-300 rounded px-1.5 py-0.5 text-xs uppercase"
                                         />
                                         <button
                                             type="button"
@@ -1283,6 +1313,7 @@ export const FamilyForm = ({
                                 <th className="border border-black p-1.5 w-10">ক্রমিক নং</th>
                                 <th className="border border-black p-1.5 min-w-[180px] sm:min-w-[200px]">সদস্য/সদস্যা</th>
                                 <th className="border border-black p-1.5 w-16">মরহুম?</th>
+                                <th className="border border-black p-1.5 w-16">বিবাহিত?</th>
                                 <th className="border border-black p-1.5 w-28">জন্ম তারিখ/বয়স<br /><span className="text-[9px] font-normal">(দিন/মাস/বছর)</span></th>
                                 <th className="border border-black p-1.5 w-20">রক্তের গ্রুপ</th>
                                 <th className="border border-black p-1.5 min-w-[160px]">রক্তদানের তারিখ<br /><span className="text-[9px] font-normal">(একাধিক তারিখ)</span></th>
@@ -1301,7 +1332,7 @@ export const FamilyForm = ({
                                     onDragStart={() => handleDragStart(idx)}
                                     onDragOver={handleDragOver}
                                     onDrop={() => handleDrop(idx)}
-                                    className={`transition cursor-grab active:cursor-grabbing ${member.isDeceased ? 'bg-gray-100 text-gray-500' : ''
+                                    className={`transition cursor-grab active:cursor-grabbing ${member.isDeceased || member.isMarried ? 'bg-gray-100 text-gray-500' : ''
                                         } ${draggedIndex === idx ? 'opacity-40 bg-amber-100' : ''}`}
                                 >
                                     <td className="border border-black p-1 text-center print:hidden">
@@ -1342,7 +1373,7 @@ export const FamilyForm = ({
                                                 type="text"
                                                 value={member.name}
                                                 onChange={(e) => handleMemberChange(idx, 'name', e.target.value)}
-                                                className="w-full bg-transparent px-1 py-0.5 text-xs text-black font-medium focus:outline-hidden"
+                                                className="w-full bg-transparent px-1 py-0.5 text-xs text-black font-medium focus:outline-hidden uppercase"
                                             />
                                         </div>
                                     </td>
@@ -1357,12 +1388,22 @@ export const FamilyForm = ({
                                         />
                                     </td>
 
+                                    <td className="border border-black p-1 text-center">
+                                        <input
+                                            type="checkbox"
+                                            checked={Boolean(member.isMarried)}
+                                            onChange={(e) => handleMemberChange(idx, 'isMarried', e.target.checked)}
+                                            className="w-3.5 h-3.5 text-rose-600 rounded border-slate-400 focus:ring-rose-500 cursor-pointer"
+                                            title="বিবাহিত চিহ্নিত করুন"
+                                        />
+                                    </td>
+
                                     <td className="border border-black p-1">
                                         <input
                                             type="text"
                                             value={member.dobOrAge}
                                             onChange={(e) => handleMemberChange(idx, 'dobOrAge', e.target.value)}
-                                            className="w-full bg-transparent px-1 py-0.5 text-xs font-mono text-black focus:outline-hidden"
+                                            className="w-full bg-transparent px-1 py-0.5 text-xs font-mono text-black focus:outline-hidden uppercase"
                                         />
                                     </td>
 
@@ -1412,7 +1453,7 @@ export const FamilyForm = ({
                                                             handleAddMemberBloodDate(idx);
                                                         }
                                                     }}
-                                                    className="w-24 bg-white border border-slate-300 rounded px-1.5 py-0.5 text-[11px] text-black focus:outline-none focus:border-rose-500"
+                                                    className="w-24 bg-white border border-slate-300 rounded px-1.5 py-0.5 text-[11px] text-black focus:outline-none focus:border-rose-500 uppercase"
                                                 />
                                                 <button
                                                     type="button"
@@ -1430,7 +1471,7 @@ export const FamilyForm = ({
                                             type="text"
                                             value={member.instituteOrOccupation}
                                             onChange={(e) => handleMemberChange(idx, 'instituteOrOccupation', e.target.value)}
-                                            className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden"
+                                            className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden uppercase"
                                         />
                                     </td>
                                     <td className="border border-black p-1">
@@ -1438,7 +1479,7 @@ export const FamilyForm = ({
                                             type="text"
                                             value={member.relation}
                                             onChange={(e) => handleMemberChange(idx, 'relation', e.target.value)}
-                                            className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden"
+                                            className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden uppercase"
                                         />
                                     </td>
                                     <td className="border border-black p-1">
@@ -1446,7 +1487,7 @@ export const FamilyForm = ({
                                             type="text"
                                             value={member.nidNumber || ''}
                                             onChange={(e) => handleMemberChange(idx, 'nidNumber', e.target.value)}
-                                            className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden font-mono text-center"
+                                            className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden font-mono text-center uppercase"
                                         />
                                     </td>
                                     <td className="border border-black p-1">
@@ -1454,7 +1495,7 @@ export const FamilyForm = ({
                                             type="text"
                                             value={member.specialInfo || ''}
                                             onChange={(e) => handleMemberChange(idx, 'specialInfo', e.target.value)}
-                                            className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden"
+                                            className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden uppercase"
                                         />
                                     </td>
                                     <td className="border border-black p-1 text-center print:hidden">
@@ -1492,7 +1533,7 @@ export const FamilyForm = ({
                             type="text"
                             value={formData.headName}
                             onChange={(e) => handleInputChange('headName', e.target.value)}
-                            className="bg-transparent border-b border-black px-1 font-bold text-black focus:outline-hidden inline-block min-w-[150px] sm:min-w-[200px] text-center text-[11px]"
+                            className="bg-transparent border-b border-black px-1 font-bold text-black focus:outline-hidden inline-block min-w-[150px] sm:min-w-[200px] text-center text-[11px] uppercase"
                         />{' '}
                         এই মর্মে ঘোষণা, স্বীকার ও সুস্থ মস্তিষ্কে জানাচ্ছি যে, আমার দেওয়া উপরোল্লিখিত সকল তথ্য সত্য এবং নির্ভুল। এ ছাড়া উপরোক্ত তথ্যে কোনো ভুল প্রমানিত হলে আমি উপযুক্ত শাস্তি গ্রহন করিতে বাধ্য থাকিব। আমি অলি মিয়া সমাজ কল্যাণ পরিষদের গঠনতন্ত্র, নীতি ও সিদ্ধান্ত মেনে চলব। পরিষদের পবিত্র উদ্দেশ্য বাস্তবায়নে নিজেকে নিয়োজিত রাখব এবং সমাজ কল্যাণমূলক সকল কার্যক্রমে সরাসরি বা পরোক্ষভাবে সহযোগিতা করব। আমি বিবাদ বা বিতেন সৃষ্টি না করে শান্তিপূর্ণ, ঐক্যবদ্ধ ও সৌহার্দ্যপূর্ণ পরিবেশ বজায় রাখতে সচেষ্ট থাকব, ইনশাআল্লাহ।
                     </p>
@@ -1509,7 +1550,7 @@ export const FamilyForm = ({
                             placeholder="সংগ্রহকের নাম (ঐচ্ছিক)"
                             value={formData.collectorSignatureName || ''}
                             onChange={(e) => handleInputChange('collectorSignatureName', e.target.value)}
-                            className="w-full text-center text-[10px] border-b border-transparent hover:border-slate-300 focus:border-black bg-transparent mt-1 text-black font-normal focus:outline-hidden print:border-none"
+                            className="w-full text-center text-[10px] border-b border-transparent hover:border-slate-300 focus:border-black bg-transparent mt-1 text-black font-normal focus:outline-hidden print:border-none uppercase"
                         />
                     </div>
                     <div className="order-2">

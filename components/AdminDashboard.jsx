@@ -188,7 +188,6 @@ export const AdminDashboard = ({
       toast.error('নেটওয়ার্ক সমস্যা');
     }
 
-    deleteRecordById(id);
     if (onRefreshData) onRefreshData();
     fetchFamilies();
     setDeleteConfirmId(null);

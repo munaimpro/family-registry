@@ -415,12 +415,12 @@ export const FamilySearch = ({
                           )}
                         </div>
                         <h3 className="text-lg font-bold text-[#0F2C59] font-serif group-hover:text-[#1B8A44] transition flex items-center gap-2">
-                          <span>{rec.headName}</span>
+                          <span>{rec.headName.toUpperCase()}</span>
                         </h3>
                         {rec.fatherOrHusbandName && (
                           <p className="text-xs text-slate-600 font-medium mt-0.5 flex items-center gap-1">
                             <User size={13} className="text-[#1B8A44] flex-shrink-0" />
-                            <span>পিতার নাম: <strong className="text-slate-800 font-semibold">{rec.fatherOrHusbandName}</strong></span>
+                            <span>পিতার নাম: <strong className="text-slate-800 font-semibold">{rec.fatherOrHusbandName.toUpperCase()}</strong></span>
                           </p>
                         )}
                       </div>
@@ -436,9 +436,9 @@ export const FamilySearch = ({
                       <div className="mb-3 p-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-900 font-medium flex items-center gap-2 shadow-2xs">
                         <Users size={15} className="text-[#1B8A44] flex-shrink-0" />
                         <div>
-                          <span className="text-[10px] text-emerald-700 block uppercase font-bold">সার্চ অনুযায়ী খুঁজে পাওয়া মেম্বার:</span>
-                          <span className="font-bold text-[#1B8A44]">{matchedMember.name}</span>
-                          <span className="text-slate-600 font-normal"> ({matchedMember.relation})</span>
+                          <span className="text-[10px] text-emerald-700 block font-bold">সার্চ অনুযায়ী খুঁজে পাওয়া মেম্বার:</span>
+                          <span className="font-bold text-[#1B8A44]">{matchedMember.name.toUpperCase()}</span>
+                          <span className="text-slate-600 font-normal"> ({matchedMember.relation.toUpperCase()})</span>
                         </div>
                       </div>
                     )}
