@@ -107,7 +107,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans selection:bg-[#1B8A44] selection:text-white">
+    <div className="main-section min-h-screen bg-[#F8FAFC] text-slate-800 font-sans selection:bg-[#1B8A44] selection:text-white">
 
       {/* 1. TOP BISMILLAH BANNER */}
       <div className="bismillah-section text-white py-4 px-4 text-center border-b border-[#1B8A44]/40 relative overflow-hidden">
@@ -144,7 +144,7 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
             <Link
               href="/member"
-              className="px-6 py-3.5 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer border border-emerald-400/40"
+              className="member-search-button px-6 py-3.5 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer border border-emerald-400/40"
             >
               <Search size={18} />
               <span>সদস্য অনুসন্ধান ও তালিকা</span>
@@ -240,9 +240,9 @@ export default function HomePage() {
               <button
                 key={bg}
                 onClick={() => handleBloodGroupClick(bg)}
-                className="group relative bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 p-3 rounded-xl text-center transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md"
+                className="doner-group-button group relative bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 p-3 rounded-xl text-center transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md"
               >
-                <span className="block text-lg font-black text-rose-700 group-hover:text-white font-mono">
+                <span className="blood-group-text block text-lg font-black text-rose-700 group-hover:text-white font-mono">
                   {bg}
                 </span>
                 <span className="block text-[11px] font-bold text-slate-600 group-hover:text-rose-100 mt-0.5">
@@ -269,7 +269,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="bg-gradient-to-r from-emerald-900 to-[#0F2C59] text-white p-6 sm:p-8 rounded-2xl shadow-xl mb-12 relative overflow-hidden border-2 border-[#1B8A44]">
+        <div className="Quran-Ayat bg-gradient-to-r from-emerald-900 to-[#0F2C59] text-white p-6 sm:p-8 rounded-2xl shadow-xl mb-12 relative overflow-hidden border-2 border-[#1B8A44]">
           <div className="relative z-10 text-center max-w-3xl mx-auto space-y-3">
             <p className="text-emerald-300 font-serif text-lg sm:text-xl font-bold italic">
               &quot;মুমূর্ষু মানুষের পাশে দাঁড়ানো এবং রক্তদান করা মহত্তম মানবিক কাজগুলির একটি।&quot;
@@ -409,7 +409,7 @@ export default function HomePage() {
 
       {/* 6. EMERGENCY ASSISTANCE CTA BANNER */}
       <section className="py-12 px-4 max-w-6xl mx-auto">
-        <div className="bg-gradient-to-r from-[#0F2C59] via-[#153D7A] to-[#0A1D3B] text-white rounded-3xl p-8 sm:p-10 shadow-2xl border-2 border-[#1B8A44] flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="cta-section bg-gradient-to-r from-[#0F2C59] via-[#153D7A] to-[#0A1D3B] text-white rounded-3xl p-8 sm:p-10 shadow-2xl border-2 border-[#1B8A44] flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-left">
             <span className="text-xs font-mono font-bold bg-rose-600 text-white px-3 py-1 rounded-full uppercase tracking-wider">
               Emergency Blood Support

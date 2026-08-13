@@ -45,6 +45,15 @@ body {
   user-select: none;
 }
 
+.main-section {
+  background-color: #F8FAFC;
+}
+
+.main-section::selection {
+  background-color: #1B8A44;
+  color: #ffffff;
+}
+
 .bismillah-section {
   background-color: #0A1D3B;
 }
@@ -62,6 +71,42 @@ body {
 
 .blood-doner-button:hover {
   background-color: rgb(190, 24, 74);
+}
+
+.member-search-button {
+  background-color: #1B8A44;
+}
+
+.member-search-button:hover {
+  background-color: #156d35;
+}
+
+.quick-search-item {
+  background-color: rgb(255, 250, 250);
+}
+
+.quick-search-item:hover {
+  background-color: rgb(254, 248, 255);
+}
+
+.doner-group-button {
+  background-color: oklch(96.9% .015 12.422);
+}
+
+.doner-group-button:hover {
+  background-color: oklch(58.6% .253 17.585);
+}
+
+.blood-group-text {
+  color: oklch(51.4% .222 16.935);
+}
+
+.Quran-Ayat {
+  background-image: linear-gradient(to right, #022c22, #0F2C59);
+}
+
+.cta-section {
+  background-image: linear-gradient(to right, #0F2C59, #153D7A, #0A1D3B);
 }
 
 /* Allow text selection inside input fields and textareas so form filling works */
