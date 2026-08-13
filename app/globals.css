@@ -101,6 +101,10 @@ body {
   color: oklch(51.4% .222 16.935);
 }
 
+.doner-group-button:hover .blood-group-text {
+  color: #ffffff !important;
+}
+
 .Quran-Ayat {
   background-image: linear-gradient(to right, #022c22, #0F2C59);
 }
