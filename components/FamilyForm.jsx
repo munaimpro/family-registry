@@ -66,6 +66,7 @@ export const FamilyForm = ({
         if (initialData) {
             return {
                 ...initialData,
+                headGender: initialData.headGender || 'Male',
                 headImage: initialData.headImage || '',
                 bloodDonationDates: normalizeDates(initialData.bloodDonationDates),
                 members: (initialData.members || []).map(m => ({
@@ -91,6 +92,7 @@ export const FamilyForm = ({
             memberNo: '',
             formNo: '',
             headName: '',
+            headGender: 'Male',
             headImage: '',
             headOccupation: '',
             fatherOrHusbandName: '',
@@ -138,7 +140,7 @@ export const FamilyForm = ({
                     isMarried: false,
                     name: '',
                     image: '',
-                    gender: 'মহিলা',
+                    gender: 'Female',
                     dobOrAge: '',
                     bloodGroup: '',
                     bloodDonationDates: [],
@@ -156,7 +158,7 @@ export const FamilyForm = ({
                     isMarried: false,
                     name: '',
                     image: '',
-                    gender: 'পুরুষ',
+                    gender: 'Male',
                     dobOrAge: '',
                     bloodGroup: '',
                     bloodDonationDates: [],
@@ -387,6 +389,7 @@ export const FamilyForm = ({
             memberNo: 'M-1024',
             formNo: 'F-5012',
             headName: 'মোঃ রফিকুল ইসলাম',
+            headGender: 'Male',
             headImage: '',
             headOccupation: 'ব্যবসায়ী',
             fatherOrHusbandName: 'মরহুম আব্দুল মজিদ',
@@ -434,7 +437,7 @@ export const FamilyForm = ({
                     isMarried: false,
                     name: 'মোসাম্মৎ সুলতানা আক্তার',
                     image: '',
-                    gender: 'মহিলা',
+                    gender: 'Female',
                     dobOrAge: '12/04/1992',
                     bloodGroup: 'O+',
                     bloodDonationDates: ['15/05/2024', '10/12/2025'],
@@ -452,7 +455,7 @@ export const FamilyForm = ({
                     isMarried: false,
                     name: 'তানভীর ইসলাম তানিম',
                     image: '',
-                    gender: 'পুরুষ',
+                    gender: 'Male',
                     dobOrAge: '05/10/2015',
                     bloodGroup: 'B+',
                     bloodDonationDates: ['01/02/2025'],
@@ -470,7 +473,7 @@ export const FamilyForm = ({
                     isMarried: false,
                     name: 'আনিকা ইসলাম',
                     image: '',
-                    gender: 'মহিলা',
+                    gender: 'Female',
                     dobOrAge: '20/01/2019',
                     bloodGroup: 'B+',
                     bloodDonationDates: [],
@@ -530,7 +533,7 @@ export const FamilyForm = ({
                 isMarried: false,
                 name: '',
                 image: '',
-                gender: 'পুরুষ',
+                gender: 'Male',
                 dobOrAge: '',
                 bloodGroup: '',
                 bloodDonationDates: [],
@@ -567,6 +570,11 @@ export const FamilyForm = ({
         }
         if (!formData.mobileNumber.trim()) {
             toast.error('অনুগ্রহ করে মোবাইল নম্বর লিখুন');
+            return;
+        }
+
+        if (!formData.isMohollaMember && !formData.isBloodDonorMember && !formData.isTemporaryMember) {
+            toast.error('অনুগ্রহ করে মহল্লা সদস্য, রক্তদাতা সদস্য অথবা ভাড়াটিয়া/অস্থায়ী সদস্য নির্বাচন করুন');
             return;
         }
 
@@ -736,7 +744,7 @@ export const FamilyForm = ({
                 <div className="space-y-4 text-xs text-black">
 
                     {/* ১. সদস্য/সদস্যা & পেশা */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-2 items-start md:items-baseline">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-2 items-start md:items-baseline">
                         <div className="md:col-span-2 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
                             <div className="flex items-center gap-2">
                                 <label className="font-bold text-black whitespace-nowrap">
@@ -775,6 +783,17 @@ export const FamilyForm = ({
                                 onChange={(e) => handleInputChange('headName', e.target.value)}
                                 className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-bold text-sm text-black focus:outline-hidden uppercase"
                             />
+                        </div>
+                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+                            <label className="font-bold sm:w-16 flex-shrink-0 text-black">লিঙ্গ :</label>
+                            <select
+                                value={formData.headGender || 'Male'}
+                                onChange={(e) => handleInputChange('headGender', e.target.value)}
+                                className="w-full flex-1 bg-transparent border-b border-dotted border-black px-1.5 py-0.5 font-normal text-black focus:outline-hidden"
+                            >
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
                             <label className="font-bold sm:w-16 flex-shrink-0 text-black">পেশা :</label>
@@ -1201,6 +1220,18 @@ export const FamilyForm = ({
                                 </div>
 
                                 <div>
+                                    <label className="font-semibold block text-black text-[11px] mb-0.5">লিঙ্গ:</label>
+                                    <select
+                                        value={member.gender || 'Male'}
+                                        onChange={(e) => handleMemberChange(idx, 'gender', e.target.value)}
+                                        className="w-full border-b border-black px-1.5 py-0.5 bg-white text-xs"
+                                    >
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+
+                                <div>
                                     <label className="font-semibold block text-black text-[11px] mb-0.5">জন্ম তারিখ/বয়স:</label>
                                     <input
                                         type="text"
@@ -1315,6 +1346,7 @@ export const FamilyForm = ({
                             <tr className="border-b border-black font-bold text-black bg-slate-50/50">
                                 <th className="border border-black p-1.5 w-10">ক্রমিক নং</th>
                                 <th className="border border-black p-1.5 min-w-[180px] sm:min-w-[200px]">সদস্য/সদস্যা</th>
+                                <th className="border border-black p-1.5 w-28">লিঙ্গ</th>
                                 <th className="border border-black p-1.5 w-16">মরহুম?</th>
                                 <th className="border border-black p-1.5 w-16">বিবাহিত?</th>
                                 <th className="border border-black p-1.5 w-28">জন্ম তারিখ/বয়স<br /><span className="text-[9px] font-normal">(দিন/মাস/বছর)</span></th>
@@ -1379,6 +1411,17 @@ export const FamilyForm = ({
                                                 className="w-full bg-transparent px-1 py-0.5 text-xs text-black font-medium focus:outline-hidden uppercase"
                                             />
                                         </div>
+                                    </td>
+
+                                    <td className="border border-black p-1 text-center">
+                                        <select
+                                            value={member.gender || 'Male'}
+                                            onChange={(e) => handleMemberChange(idx, 'gender', e.target.value)}
+                                            className="w-16 sm:w-24 bg-transparent px-1 py-0.5 text-xs text-black font-medium focus:outline-hidden"
+                                        >
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
                                     </td>
 
                                     <td className="border border-black p-1 text-center">

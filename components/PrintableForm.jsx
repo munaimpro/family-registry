@@ -218,17 +218,23 @@ export const PrintableForm = ({ record, onClose }) => {
                 {/* Main Personal Info List */}
                 <div className="space-y-2 text-xs text-black">
                     {/* 1. সদস্য/সদস্যা & পেশা */}
-                    <div className="grid grid-cols-3 gap-2 items-baseline">
+                    <div className="grid grid-cols-4 gap-2 items-baseline">
                         <div className="col-span-2 flex items-baseline">
                             <span className="font-bold w-28 flex-shrink-0 text-black">১. সদস্য/সদস্যা :</span>
-                            <div className="border-b border-dotted border-black flex-1 font-semibold px-1 text-xs text-black flex items-center gap-2 flex-wrap">
-                                <span>{record.headName}</span>
+                            <div className="uppercase border-b border-dotted border-black flex-1 font-semibold px-1 text-xs text-black flex items-center gap-2 flex-wrap">
+                                <span>{record.headName.toUpperCase()}</span>
                             </div>
                         </div>
                         <div className="flex items-baseline">
-                            <span className="font-bold w-12 flex-shrink-0 text-black">পেশা :</span>
+                            <span className="font-bold w-12 flex-shrink-0 text-black">লিঙ্গ :</span>
                             <span className="border-b border-dotted border-black flex-1 px-1 text-black">
-                                {record.headOccupation || '—'}
+                                {record.headGender === 'Male' ? 'MALE' : record.headGender === 'Female' ? 'FEMALE' : record.headGender || '—'}
+                            </span>
+                        </div>
+                        <div className="flex items-baseline">
+                            <span className="font-bold w-12 flex-shrink-0 text-black">পেশা :</span>
+                            <span className="uppercase border-b border-dotted border-black flex-1 px-1 text-black">
+                                {record.headOccupation.toUpperCase() || '—'}
                             </span>
                         </div>
                     </div>
@@ -237,14 +243,14 @@ export const PrintableForm = ({ record, onClose }) => {
                     <div className="grid grid-cols-3 gap-2 items-baseline">
                         <div className="col-span-2 flex items-baseline">
                             <span className="font-bold w-28 flex-shrink-0 text-black">২. পিতা/স্বামীর নাম :</span>
-                            <span className="border-b border-dotted border-black flex-1 px-1 text-black">
-                                {record.fatherOrHusbandName}
+                            <span className="uppercase border-b border-dotted border-black flex-1 px-1 text-black">
+                                {record.fatherOrHusbandName.toUpperCase()}
                             </span>
                         </div>
                         <div className="flex items-baseline">
                             <span className="font-bold w-12 flex-shrink-0 text-black">পেশা :</span>
-                            <span className="border-b border-dotted border-black flex-1 px-1 text-black">
-                                {record.fatherOrHusbandOccupation || '—'}
+                            <span className="uppercase border-b border-dotted border-black flex-1 px-1 text-black">
+                                {record.fatherOrHusbandOccupation.toUpperCase() || '—'}
                             </span>
                         </div>
                     </div>
@@ -253,14 +259,14 @@ export const PrintableForm = ({ record, onClose }) => {
                     <div className="grid grid-cols-3 gap-2 items-baseline">
                         <div className="col-span-2 flex items-baseline">
                             <span className="font-bold w-28 flex-shrink-0 text-black">৩. মাতার নাম :</span>
-                            <span className="border-b border-dotted border-black flex-1 px-1 text-black">
-                                {record.motherName}
+                            <span className="uppercase border-b border-dotted border-black flex-1 px-1 text-black">
+                                {record.motherName.toUpperCase()}
                             </span>
                         </div>
                         <div className="flex items-baseline">
                             <span className="font-bold w-12 flex-shrink-0 text-black">পেশা :</span>
-                            <span className="border-b border-dotted border-black flex-1 px-1 text-black">
-                                {record.motherOccupation || '—'}
+                            <span className="uppercase border-b border-dotted border-black flex-1 px-1 text-black">
+                                {record.motherOccupation.toUpperCase() || '—'}
                             </span>
                         </div>
                     </div>
@@ -270,26 +276,26 @@ export const PrintableForm = ({ record, onClose }) => {
                         <div className="flex flex-wrap items-baseline gap-y-1">
                             <span className="font-bold w-28 flex-shrink-0 text-black">৪. ঠিকানা :</span>
                             <span className="font-semibold mr-1 text-black">বাড়ি/গ্রাম :</span>
-                            <span className="border-b border-dotted border-black min-w-[120px] flex-1 px-1 mr-2 text-black">
-                                {record.presentAddress?.village || record.permanentAddress?.village || '—'}
+                            <span className="uppercase border-b border-dotted border-black min-w-[120px] flex-1 px-1 mr-2 text-black">
+                                {record.presentAddress?.village.toUpperCase() || record.permanentAddress?.village.toUpperCase() || '—'}
                             </span>
                             <span className="font-semibold mr-1 text-black">রোড :</span>
-                            <span className="border-b border-dotted border-black min-w-[90px] px-1 mr-2 text-black">
-                                {record.presentAddress?.road || record.permanentAddress?.road || '—'}
+                            <span className="uppercase border-b border-dotted border-black min-w-[90px] px-1 mr-2 text-black">
+                                {record.presentAddress?.road.toUpperCase() || record.permanentAddress?.road.toUpperCase() || '—'}
                             </span>
                         </div>
                         <div className="flex flex-wrap items-baseline gap-y-1 mt-1 pl-28">
                             <span className="font-semibold mr-1 text-black">পোঃ :</span>
-                            <span className="border-b border-dotted border-black min-w-[90px] px-1 mr-2 text-black">
-                                {record.presentAddress?.postOffice || record.permanentAddress?.postOffice || '—'}
+                            <span className="uppercase border-b border-dotted border-black min-w-[90px] px-1 mr-2 text-black">
+                                {record.presentAddress?.postOffice.toUpperCase() || record.permanentAddress?.postOffice.toUpperCase() || '—'}
                             </span>
                             <span className="font-semibold mr-1 text-black">থানা :</span>
-                            <span className="border-b border-dotted border-black min-w-[90px] px-1 mr-2 text-black">
-                                {record.presentAddress?.thana || record.permanentAddress?.thana || '—'}
+                            <span className="uppercase border-b border-dotted border-black min-w-[90px] px-1 mr-2 text-black">
+                                {record.presentAddress?.thana.toUpperCase() || record.permanentAddress?.thana.toUpperCase() || '—'}
                             </span>
                             <span className="font-semibold mr-1 text-black">জেলা :</span>
-                            <span className="border-b border-dotted border-black min-w-[90px] px-1 text-black">
-                                {record.presentAddress?.district || record.permanentAddress?.district || '—'}
+                            <span className="uppercase border-b border-dotted border-black min-w-[90px] px-1 text-black">
+                                {record.presentAddress?.district.toUpperCase() || record.permanentAddress?.district.toUpperCase() || '—'}
                             </span>
                         </div>
                     </div>
@@ -307,7 +313,7 @@ export const PrintableForm = ({ record, onClose }) => {
                         </div>
                         <div className="flex items-center gap-2 justify-end">
                             <span className="font-bold text-black">রক্তের গ্রুপ :</span>
-                            <span className="border border-black px-2 py-0.5 font-bold text-xs bg-white rounded-xs text-black">
+                            <span className="uppercase border border-black px-2 py-0.5 font-bold text-xs bg-white rounded-xs text-black">
                                 {record.bloodGroup || '—'}
                             </span>
                         </div>
@@ -317,14 +323,14 @@ export const PrintableForm = ({ record, onClose }) => {
                     <div className="grid grid-cols-2 gap-2 items-baseline">
                         <div className="flex items-baseline">
                             <span className="font-bold w-28 flex-shrink-0 text-black">৬. জাতীয়তা :</span>
-                            <span className="border-b border-dotted border-black flex-1 px-1 text-black">
-                                {record.nationality || 'বাংলাদেশী'}
+                            <span className="uppercase border-b border-dotted border-black flex-1 px-1 text-black">
+                                {record.nationality.toUpperCase() || 'বাংলাদেশী'}
                             </span>
                         </div>
                         <div className="flex items-baseline">
                             <span className="font-bold w-12 flex-shrink-0 text-black">ধর্ম :</span>
-                            <span className="border-b border-dotted border-black flex-1 px-1 text-black">
-                                {record.religion || 'ইসলাম'}
+                            <span className="uppercase border-b border-dotted border-black flex-1 px-1 text-black">
+                                {record.religion.toUpperCase() || 'ইসলাম'}
                             </span>
                         </div>
                     </div>
@@ -357,8 +363,8 @@ export const PrintableForm = ({ record, onClose }) => {
                     {/* 9. শিক্ষাগত যোগ্যতা */}
                     <div className="flex items-baseline">
                         <span className="font-bold w-28 flex-shrink-0 text-black">৯. শিক্ষাগত যোগ্যতা :</span>
-                        <span className="border-b border-dotted border-black flex-1 px-1 text-black">
-                            {record.educationalQualification || '—'}
+                        <span className="uppercase border-b border-dotted border-black flex-1 px-1 text-black">
+                            {record.educationalQualification.toUpperCase() || '—'}
                         </span>
                     </div>
 
@@ -391,6 +397,7 @@ export const PrintableForm = ({ record, onClose }) => {
                             <tr className="border-b border-black font-bold text-black bg-slate-50">
                                 <th className="border border-black p-0.5 w-6">ক্রম</th>
                                 <th className="border border-black p-0.5">সদস্য/সদস্যা</th>
+                                <th className="border border-black p-0.5 w-12">লিঙ্গ</th>
                                 <th className="border border-black p-0.5 w-16">জন্ম তারিখ</th>
                                 <th className="border border-black p-0.5 w-10">রক্ত</th>
                                 <th className="border border-black p-0.5 w-20">রক্তদান</th>
@@ -407,7 +414,10 @@ export const PrintableForm = ({ record, onClose }) => {
                                     <tr key={index} className="h-6">
                                         <td className="border border-black p-0.5 font-semibold">{index + 1}.</td>
                                         <td className="border border-black p-0.5 text-left px-1 font-medium">
-                                            {member?.name || ''}
+                                            {member?.name.toUpperCase() || ''}
+                                        </td>
+                                        <td className="border border-black p-0.5 font-medium">
+                                            {member?.gender === 'Male' ? 'MALE' : member?.gender === 'Female' ? 'FEMALE' : member?.gender || ''}
                                         </td>
                                         <td className="border border-black p-0.5 font-mono text-[9px]">{member?.dobOrAge || ''}</td>
                                         <td className="border border-black p-0.5 font-bold">{member?.bloodGroup || ''}</td>
@@ -417,11 +427,11 @@ export const PrintableForm = ({ record, onClose }) => {
                                                 : '—'}
                                         </td>
                                         <td className="border border-black p-0.5 text-left px-1">
-                                            {member?.instituteOrOccupation || ''}
+                                            {member?.instituteOrOccupation.toUpperCase() || ''}
                                         </td>
-                                        <td className="border border-black p-0.5">{member?.relation || ''}</td>
+                                        <td className="border border-black p-0.5">{member?.relation.toUpperCase() || ''}</td>
                                         <td className="border border-black p-0.5 text-left px-1 font-mono text-[9px]">{member?.nidNumber || ''}</td>
-                                        <td className="border border-black p-0.5 text-left px-1">{member?.specialInfo || ''}</td>
+                                        <td className="border border-black p-0.5 text-left px-1">{member?.specialInfo.toUpperCase() || ''}</td>
                                     </tr>
                                 );
                             })}
@@ -432,7 +442,7 @@ export const PrintableForm = ({ record, onClose }) => {
                 {/* Legal Declaration Text */}
                 <div className="text-[9.5px] text-justify leading-tight my-2 text-black">
                     <p>
-                        আমি <span className="border-b border-black font-bold px-1 inline-block min-w-[100px] text-center">{record.headName || ''}</span> এই মর্মে ঘোষণা, স্বীকার ও সুস্থ মস্তিষ্কে জানাচ্ছি যে, আমার দেওয়া উপরোল্লিখিত সকল তথ্য সত্য এবং নির্ভুল। এ ছাড়া উপরোক্ত তথ্যে কোনো ভুল প্রমানিত হলে আমি উপযুক্ত শাস্তি গ্রহন করিতে বাধ্য থাকিব। আমি অলি মিয়া সমাজ কল্যাণ পরিষদের গঠনতন্ত্র, নীতি ও সিদ্ধান্ত মেনে চলব। পরিষদের পবিত্র উদ্দেশ্য বাস্তবায়নে নিজেকে নিয়োজিত রাখব এবং সমাজ কল্যাণমূলক সকল কার্যক্রমে সরাসরি বা পরোক্ষভাবে সহযোগিতা করব। আমি বিবাদ বা বিতেন সৃষ্টি না করে শান্তিপূর্ণ, ঐক্যবদ্ধ ও সৌহার্দ্যপূর্ণ পরিবেশ বজায় রাখতে সচেষ্ট থাকব, ইনশাআল্লাহ।
+                        আমি <span className="uppercase border-b border-black font-bold px-1 inline-block min-w-[100px] text-center">{record.headName.toUpperCase() || ''}</span> এই মর্মে ঘোষণা, স্বীকার ও সুস্থ মস্তিষ্কে জানাচ্ছি যে, আমার দেওয়া উপরোল্লিখিত সকল তথ্য সত্য এবং নির্ভুল। এ ছাড়া উপরোক্ত তথ্যে কোনো ভুল প্রমানিত হলে আমি উপযুক্ত শাস্তি গ্রহন করিতে বাধ্য থাকিব। আমি অলি মিয়া সমাজ কল্যাণ পরিষদের গঠনতন্ত্র, নীতি ও সিদ্ধান্ত মেনে চলব। পরিষদের পবিত্র উদ্দেশ্য বাস্তবায়নে নিজেকে নিয়োজিত রাখব এবং সমাজ কল্যাণমূলক সকল কার্যক্রমে সরাসরি বা পরোক্ষভাবে সহযোগিতা করব। আমি বিবাদ বা বিতেন সৃষ্টি না করে শান্তিপূর্ণ, ঐক্যবদ্ধ ও সৌহার্দ্যপূর্ণ পরিবেশ বজায় রাখতে সচেষ্ট থাকব, ইনশাআল্লাহ।
                     </p>
                 </div>
 
