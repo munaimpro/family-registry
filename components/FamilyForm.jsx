@@ -891,7 +891,7 @@ export const FamilyForm = ({
                     {/* ৫. জন্ম তারিখ ও রক্তের গ্রুপ */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-2 items-center">
                         <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">৫. জন্ম তারিখ :</label>
+                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">৫. জন্ম তারিখ<span className="text-rose-600">*</span> :</label>
                             <div className="flex items-center gap-1">
                                 <span className="text-[11px] text-black">দিন:</span>
                                 <input
@@ -929,6 +929,7 @@ export const FamilyForm = ({
                                 <Heart size={14} className="text-rose-700 fill-rose-600" /> রক্তের গ্রুপ :
                             </label>
                             <select
+                                required
                                 value={formData.bloodGroup}
                                 onChange={(e) => handleInputChange('bloodGroup', e.target.value)}
                                 className="bg-white border border-black rounded px-2.5 py-1 font-bold text-black text-xs focus:outline-hidden"
@@ -1015,12 +1016,12 @@ export const FamilyForm = ({
                     {/* ৭. জাতীয় পরিচয়পত্র নং */}
                     <div>
                         <div className="flex flex-col sm:flex-row sm:items-center gap-1.5">
-                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">৭. জাতীয় পরিচয়পত্র নং :</label>
+                            <label className="font-bold sm:w-32 flex-shrink-0 text-black">৭. জাতীয় পরিচয়পত্র নং<span className="text-rose-600">*</span> :</label>
                             {renderDigitInputBoxes(
                                 formData.nidNumber,
                                 (val) => handleInputChange('nidNumber', val),
                                 17,
-                                false
+                                true
                             )}
                         </div>
                     </div>
@@ -1213,6 +1214,7 @@ export const FamilyForm = ({
                                 <div>
                                     <label className="font-semibold block text-black text-[11px] mb-0.5">রক্তের গ্রুপ:</label>
                                     <select
+                                        required
                                         value={member.bloodGroup}
                                         onChange={(e) => handleMemberChange(idx, 'bloodGroup', e.target.value)}
                                         className="w-full border-b border-black px-1 py-0.5 bg-white text-xs font-bold"
@@ -1236,9 +1238,10 @@ export const FamilyForm = ({
                                 </div>
 
                                 <div>
-                                    <label className="font-semibold block text-black text-[11px] mb-0.5">NID/মৃত্যু সনদ নং:</label>
+                                    <label className="font-semibold block text-black text-[11px] mb-0.5">NID/মৃত্যু সনদ নং<span className="text-rose-600">*</span> :</label>
                                     <input
                                         type="text"
+                                        required
                                         value={member.nidNumber || ''}
                                         onChange={(e) => handleMemberChange(idx, 'nidNumber', e.target.value)}
                                         className="w-full border-b border-black px-1.5 py-0.5 bg-white font-mono uppercase"
@@ -1401,6 +1404,7 @@ export const FamilyForm = ({
                                     <td className="border border-black p-1">
                                         <input
                                             type="text"
+                                            required
                                             value={member.dobOrAge}
                                             onChange={(e) => handleMemberChange(idx, 'dobOrAge', e.target.value)}
                                             className="w-full bg-transparent px-1 py-0.5 text-xs font-mono text-black focus:outline-hidden uppercase"
@@ -1410,6 +1414,7 @@ export const FamilyForm = ({
                                     <td className="border border-black p-1">
                                         <select
                                             value={member.bloodGroup}
+                                            required
                                             onChange={(e) => handleMemberChange(idx, 'bloodGroup', e.target.value)}
                                             className="w-full bg-transparent text-xs font-bold text-black focus:outline-hidden"
                                         >
@@ -1419,6 +1424,7 @@ export const FamilyForm = ({
                                             ))}
                                         </select>
                                     </td>
+
                                     <td className="border border-black p-1.5 min-w-[160px] text-left">
                                         <div className="flex flex-col gap-1.5">
                                             <div className="flex flex-wrap gap-1">
@@ -1466,6 +1472,7 @@ export const FamilyForm = ({
                                             </div>
                                         </div>
                                     </td>
+
                                     <td className="border border-black p-1">
                                         <input
                                             type="text"
@@ -1474,6 +1481,7 @@ export const FamilyForm = ({
                                             className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden uppercase"
                                         />
                                     </td>
+
                                     <td className="border border-black p-1">
                                         <input
                                             type="text"
@@ -1482,14 +1490,17 @@ export const FamilyForm = ({
                                             className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden uppercase"
                                         />
                                     </td>
+
                                     <td className="border border-black p-1">
                                         <input
                                             type="text"
                                             value={member.nidNumber || ''}
+                                            required
                                             onChange={(e) => handleMemberChange(idx, 'nidNumber', e.target.value)}
                                             className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden font-mono text-center uppercase"
                                         />
                                     </td>
+
                                     <td className="border border-black p-1">
                                         <input
                                             type="text"
@@ -1498,6 +1509,7 @@ export const FamilyForm = ({
                                             className="w-full bg-transparent px-1 py-0.5 text-xs text-black focus:outline-hidden uppercase"
                                         />
                                     </td>
+
                                     <td className="border border-black p-1 text-center print:hidden">
                                         <button
                                             type="button"
@@ -1531,6 +1543,7 @@ export const FamilyForm = ({
                         আমি{' '}
                         <input
                             type="text"
+                            required
                             value={formData.headName}
                             onChange={(e) => handleInputChange('headName', e.target.value)}
                             className="bg-transparent border-b border-black px-1 font-bold text-black focus:outline-hidden inline-block min-w-[150px] sm:min-w-[200px] text-center text-[11px] uppercase"
