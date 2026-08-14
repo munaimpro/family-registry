@@ -84,7 +84,7 @@ export default function SignupPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">ইমেইল ঠিকানা (Email)</label>
+            <label className="block text-xs font-bold text-slate-700 mb-1">ইমেইল অ্যাড্রেস (Email)</label>
             <div className="relative">
               <Mail size={16} className="absolute left-3 top-3 text-slate-400" />
               <input

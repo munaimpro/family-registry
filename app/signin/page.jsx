@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { signIn, signUp } from '../../lib/auth-client';
+import { signIn, useSession } from '../../lib/auth-client';
 import { Lock, Mail, ArrowRight, ShieldCheck, CheckCircle2, KeyRound } from 'lucide-react';
 import Link from 'next/link';
 
@@ -14,39 +14,42 @@ export default function SigninPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const fillDemoCredentials = async () => {
-    setEmail('admin@omskp.org');
-    setPassword('password123');
-    setError('');
-    setLoading(true);
+  // Check and redirect loggedin users
+  const { data: loggedInUser, loggedInError } = useSession();
 
-    try {
-      // Auto register demo user if not exists, then sign in
-      await signUp.email({
-        email: 'admin@omskp.org',
-        password: 'password123',
-        name: 'অ্যাডমিন (Admin)',
-      }).catch(() => { });
+  useEffect(() => {
+    if (loggedInError) setError(loggedInError.message);
+    if (loggedInUser?.user) router.push('/');
+  }, [loggedInUser, loggedInError, router]);
 
-      const res = await signIn.email({
-        email: 'admin@omskp.org',
-        password: 'password123',
-      });
+  if (loading || loggedInUser) return null; // or a loading spinner
 
-      if (res.error) {
-        setError('ডেমো লগইন ব্যর্থ হয়েছে।');
-      } else {
-        setSuccess(true);
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 300);
-      }
-    } catch (err) {
-      setError('একটি অপ্রত্যাশিত ত্রুটি ঘটেছে।');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fillDemoCredentials = async () => {
+  //   setEmail('admin@omskp.org');
+  //   setPassword('password123');
+  //   setError('');
+  //   setLoading(true);
+
+  //   try {
+  //     const res = await signIn.email({
+  //       email: 'admin@omskp.org',
+  //       password: 'password123',
+  //     });
+
+  //     if (res.error) {
+  //       setError('ডেমো লগইন ব্যর্থ হয়েছে।');
+  //     } else {
+  //       setSuccess(true);
+  //       setTimeout(() => {
+  //         window.location.href = '/';
+  //       }, 300);
+  //     }
+  //   } catch (err) {
+  //     setError('একটি অপ্রত্যাশিত ত্রুটি ঘটেছে।');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleSignin = async (e) => {
     e.preventDefault();
@@ -58,20 +61,6 @@ export default function SigninPage() {
         email,
         password,
       });
-
-      if (res.error) {
-        // Try sign up then sign in
-        await signUp.email({
-          email,
-          password,
-          name: email === 'admin@omskp.org' ? 'অ্যাডমিন (Admin)' : 'ব্যবহারকারী',
-        }).catch(() => { });
-
-        res = await signIn.email({
-          email,
-          password,
-        });
-      }
 
       if (res.error) {
         setError(res.error.message || 'লগইন করতে সমস্যা হয়েছে। ইমেইল বা পাসওয়ার্ড যাচাই করুন।');
@@ -130,7 +119,7 @@ export default function SigninPage() {
 
         <form onSubmit={handleSignin} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">ইমেইল ঠিকানা (Email)</label>
+            <label className="block text-xs font-bold text-slate-700 mb-1">ইমেইল অ্যাড্রেস (Email)</label>
             <div className="relative">
               <Mail size={16} className="absolute left-3 top-3 text-slate-400" />
               <input

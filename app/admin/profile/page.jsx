@@ -4,8 +4,8 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession, signOut, changePassword, updateUser } from '../../../lib/auth-client';
-import { User, Lock, Shield, LogOut, KeyRound, ArrowLeft, Upload, Settings } from 'lucide-react';
+import { useSession, signOut, authClient, updateUser, changeEmail } from '../../../lib/auth-client';
+import { User, Lock, Shield, LogOut, KeyRound, ArrowLeft, Upload, Settings, Mail, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
@@ -19,13 +19,25 @@ export default function AdminProfilePage() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [newEmail, setNewEmail] = useState('');
+  const [emailLoading, setEmailLoading] = useState(false);
+
   useEffect(() => {
     setMounted(true);
-  }, []);
+    if (user?.email) {
+      setNewEmail(user.email);
+    }
+    if (user?.password) {
+      setCurrentPassword(user.password);
+    }
+  }, [user]);
 
   const activeAvatar = uploadedAvatar || user?.image || '';
 
@@ -63,6 +75,43 @@ export default function AdminProfilePage() {
     reader.readAsDataURL(file);
   };
 
+  const handleEmailChange = async (e) => {
+    e.preventDefault();
+
+    if (!newEmail || newEmail === user?.email) {
+      toast.error('দয়া করে একটি নতুন ইমেইল প্রদান করুন।');
+      return;
+    }
+
+    setEmailLoading(true);
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/update-email`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: user?.id,
+          newEmail: newEmail
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.error || 'ইমেইল আপডেট করতে ব্যর্থ হয়েছে।');
+      } else {
+        toast.success('ইমেইল সফলভাবে আপডেট হয়েছে!');
+        window.location.reload();
+      }
+    } catch (err) {
+      toast.error('একটি অপ্রত্যাশিত ত্রুটি ঘটেছে।');
+    } finally {
+      setEmailLoading(false);
+    }
+  };
+
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     setPasswordError('');
@@ -81,7 +130,7 @@ export default function AdminProfilePage() {
     setLoading(true);
 
     try {
-      const { error } = await changePassword({
+      const { error } = await authClient.changePassword({
         currentPassword,
         newPassword,
         revokeOtherSessions: true,
@@ -91,7 +140,7 @@ export default function AdminProfilePage() {
         toast.error(error.message || 'পাসওয়ার্ড পরিবর্তন করতে ব্যর্থ হয়েছে। বর্তমান পাসওয়ার্ড যাচাই করুন।');
       } else {
         toast.success('পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে!');
-        setCurrentPassword('');
+        setCurrentPassword(currentPassword);
         setNewPassword('');
         setConfirmPassword('');
       }
@@ -172,62 +221,117 @@ export default function AdminProfilePage() {
             </div>
           </div>
 
-          <div className="p-6 sm:p-8 space-y-6">
-            <h2 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
-              <KeyRound size={18} className="text-[#1B8A44]" /> পাসওয়ার্ড পরিবর্তন করুন (Change Password)
-            </h2>
+          <div className="p-6 sm:p-8 space-y-10">
+            {/* Email Update Section */}
+            <div className="space-y-6">
+              <h2 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+                <Mail size={18} className="text-[#1B8A44]" /> ইমেইল পরিবর্তন করুন (Change Email)
+              </h2>
 
-            <form onSubmit={handlePasswordChange} className="space-y-4 max-w-lg">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">বর্তমান পাসওয়ার্ড (Current Password)</label>
-                <div className="relative">
-                  <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
-                  <input
-                    type="password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
-                  />
+              <form onSubmit={handleEmailChange} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">ইমেইল ঠিকানা (Email Address)</label>
+                  <div className="relative">
+                    <Mail size={16} className="absolute left-3 top-3 text-slate-400" />
+                    <input
+                      type="email"
+                      value={newEmail}
+                      onChange={(e) => setNewEmail(e.target.value)}
+                      placeholder="আপনার ইমেইল লিখুন"
+                      className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">নতুন পাসওয়ার্ড (New Password)</label>
-                <div className="relative">
-                  <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
-                  />
+                <button
+                  type="submit"
+                  disabled={emailLoading}
+                  className="py-3 px-6 bg-[#1B8A44] hover:bg-[#156d35] text-white font-bold rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                >
+                  {emailLoading ? 'আপডেট হচ্ছে...' : 'ইমেইল আপডেট করুন'}
+                </button>
+              </form>
+            </div>
+
+            {/* Password Update Section */}
+            <div className="space-y-6">
+              <h2 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+                <KeyRound size={18} className="text-[#1B8A44]" /> পাসওয়ার্ড পরিবর্তন করুন (Change Password)
+              </h2>
+
+              <form onSubmit={handlePasswordChange} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">বর্তমান পাসওয়ার্ড (Current Password)</label>
+                  <div className="relative">
+                    <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
+                    <input
+                      type={showCurrentPassword ? "text" : "password"}
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 transition"
+                    >
+                      {showCurrentPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">নতুন পাসওয়ার্ড নিশ্চিত করুন (Confirm New Password)</label>
-                <div className="relative">
-                  <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
-                  />
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">নতুন পাসওয়ার্ড (New Password)</label>
+                  <div className="relative">
+                    <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 transition"
+                    >
+                      {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="py-3 px-6 bg-[#1B8A44] hover:bg-[#156d35] text-white font-bold rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-              >
-                {loading ? 'পরিবর্তন হচ্ছে...' : 'পাসওয়ার্ড আপডেট করুন'}
-              </button>
-            </form>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">নতুন পাসওয়ার্ড নিশ্চিত করুন (Confirm New Password)</label>
+                  <div className="relative">
+                    <Lock size={16} className="absolute left-3 top-3 text-slate-400" />
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 transition"
+                    >
+                      {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="py-3 px-6 bg-[#1B8A44] hover:bg-[#156d35] text-white font-bold rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                >
+                  {loading ? 'পরিবর্তন হচ্ছে...' : 'পাসওয়ার্ড আপডেট করুন'}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
