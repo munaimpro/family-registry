@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
@@ -18,7 +18,9 @@ import {
   Search,
   Check,
   UserPlus,
-  Loader2
+  Loader2,
+  House,
+  Building2
 } from 'lucide-react';
 
 export const AdminDashboard = ({
@@ -141,13 +143,19 @@ export const AdminDashboard = ({
     ? dashboardStats.totalMembers
     : totalMembers;
 
-  const displayVerifiedCount = (dashboardStats && typeof dashboardStats.verifiedCount === 'number' && !dashboardStats.isFallback)
-    ? dashboardStats.verifiedCount
-    : verifiedCount;
+  const displayTemporaryMembers = (dashboardStats && typeof dashboardStats.temporaryMember === 'object' && !dashboardStats.isFallback)
+    ? dashboardStats.temporaryMember
+    : 0;
 
-  const displaySpecialMembersCount = (dashboardStats && typeof dashboardStats.specialMembersCount === 'number' && !dashboardStats.isFallback)
-    ? dashboardStats.specialMembersCount
-    : localSpecialMembers;
+  const displayDonerMembers = (dashboardStats && dashboardStats.donerMember && !dashboardStats.isFallback)
+    ? dashboardStats.donerMember
+    : null;
+
+  const displayMohollaMembers = (dashboardStats && typeof dashboardStats.mohollaMember === 'object' && !dashboardStats.isFallback)
+    ? dashboardStats.mohollaMember
+    : 0;
+
+  console.log(displayMohollaMembers);
 
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
@@ -319,7 +327,7 @@ export const AdminDashboard = ({
       </div>
 
       {/* Analytics Summary Stats Widgets */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Total Families Card */}
         <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
@@ -328,7 +336,7 @@ export const AdminDashboard = ({
             <span className="text-[10px] text-slate-500 block mt-1">ফরম ডাটাবেজ</span>
           </div>
           <div className="p-3 bg-[#EBF5EE] text-[#1B8A44] rounded-xl border border-[#1B8A44]/30">
-            <Users size={28} />
+            <House size={28} />
           </div>
         </div>
 
@@ -344,32 +352,120 @@ export const AdminDashboard = ({
           </div>
         </div>
 
-        {/* Verified Families */}
+        {/* Temporary Members Card */}
         <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
-            <span className="text-xs text-slate-500 block mb-1 font-bold">যাচাইকৃত পরিবার</span>
-            <span className="text-3xl font-black text-indigo-600 font-mono">{displayVerifiedCount}</span>
-            <span className="text-[10px] text-slate-500 block mt-1">যাচাই এর হার {displayTotalFamilies ? Math.round((displayVerifiedCount / displayTotalFamilies) * 100) : 0}%</span>
+            <span className="text-xs text-slate-500 block mb-1 font-bold">অস্থায়ী / ভাড়াটিয়া সদস্য</span>
+            <span className="text-3xl font-black text-amber-600 font-mono">{displayTemporaryMembers.total}</span>
+            <span className="text-[10px] text-slate-500 block mt-1 flex space-x-4">
+              {/* Total Male Member */}
+              <span className="text-[10px] text-slate-500 block mb-1">Male: <strong>{displayTemporaryMembers.male}</strong> জন </span>
+
+              {/* Total Female Member */}
+              <span className="text-[10px] text-slate-500 block mb-1">Female: <strong>{displayTemporaryMembers.female}</strong> জন</span>
+            </span>
           </div>
-          <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-200">
-            <CheckCircle2 size={28} />
+          <div className="p-3 bg-amber-50 text-amber-600 rounded-xl border border-amber-200">
+            <Clock size={28} />
           </div>
         </div>
 
-        {/* Special Members / Blood Donor Pool */}
+        {/* Moholla Members Card */}
         <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
-            <span className="text-xs text-slate-500 block mb-1 font-bold">বিশেষ / ডোনার সদস্য</span>
-            <span className="text-3xl font-black text-rose-600 font-mono">
-              {displaySpecialMembersCount || Object.values(bloodGroupCounts).reduce((a, b) => a + b, 0)}
+            <span className="text-xs text-slate-500 block mb-1 font-bold">মহল্লা সদস্য</span>
+            <span className="text-3xl font-black text-indigo-600 font-mono">{displayMohollaMembers.total}</span>
+            <span className="text-[10px] text-slate-500 block mt-1 flex space-x-4">
+              {/* Total Male Member */}
+              <span className="text-[10px] text-slate-500 block mb-1">Male: <strong>{displayMohollaMembers.male}</strong> জন </span>
+
+              {/* Total Female Member */}
+              <span className="text-[10px] text-slate-500 block mb-1">Female: <strong>{displayMohollaMembers.female}</strong> জন</span>
             </span>
-            <span className="text-[10px] text-slate-500 block mt-1">মহল্লা / রক্তদাতা / স্থায়ী</span>
           </div>
-          <div className="p-3 bg-rose-50 text-rose-600 rounded-xl border border-rose-200">
-            <Heart size={28} />
+          <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-200">
+            {/* Indicate village member icon */}
+            <Building2 size={28} />
           </div>
         </div>
       </div>
+
+      {/* Doner Member Breakdown */}
+      <div className="bg-[#FAFBF9] border-2 border-slate-200 p-5 rounded-2xl shadow-sm">
+        <h3 className="text-sm font-bold text-[#0F2C59] mb-3 flex items-center gap-2">
+          <Heart size={16} className="text-rose-600" /> রক্তদাতা সদস্য (ডোনার মেম্বার) — ব্লাড গ্রুপ আছে এমন
+        </h3>
+        {loadingStats ? (
+          <div className="flex items-center gap-2 text-xs text-slate-400"><Loader2 size={14} className="animate-spin" /> লোড হচ্ছে...</div>
+        ) : displayDonerMembers ? (
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-white border border-rose-200 rounded-xl p-4 text-center">
+              <span className="text-xs text-slate-500 block mb-1 font-bold">মোট রক্তদাতা</span>
+              <span className="text-3xl font-black text-rose-600 font-mono">{displayDonerMembers.total}</span>
+              <span className="text-[10px] text-slate-500 block mt-1">জন</span>
+            </div>
+            <div className="bg-white border border-blue-200 rounded-xl p-4 text-center">
+              <span className="text-xs text-slate-500 block mb-1 font-bold">Male রক্তদাতা</span>
+              <span className="text-3xl font-black text-blue-700 font-mono">{displayDonerMembers.male}</span>
+              <span className="text-[10px] text-slate-500 block mt-1">জন</span>
+            </div>
+            <div className="bg-white border border-pink-200 rounded-xl p-4 text-center">
+              <span className="text-xs text-slate-500 block mb-1 font-bold">Female রক্তদাতা</span>
+              <span className="text-3xl font-black text-pink-600 font-mono">{displayDonerMembers.female}</span>
+              <span className="text-[10px] text-slate-500 block mt-1">জন</span>
+            </div>
+          </div>
+        ) : (
+          <p className="text-xs text-slate-400">ডেটা পাওয়া যায়নি</p>
+        )}
+      </div>
+
+      {/* Village Member Breakdown */}
+      {/* {displayVillageMember.length > 0 && (
+        <div className="bg-[#FAFBF9] border-2 border-slate-200 p-5 rounded-2xl shadow-sm">
+          <h3 className="text-sm font-bold text-[#0F2C59] mb-3 flex items-center gap-2">
+            <Users size={16} className="text-[#1B8A44]" /> গ্রাম / এলাকা ভিত্তিক সদস্য তালিকা
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs border-collapse">
+              <thead>
+                <tr className="bg-[#0F2C59] text-white">
+                  <th className="text-left p-2.5 rounded-tl-lg font-bold">#</th>
+                  <th className="text-left p-2.5 font-bold">গ্রাম / এলাকার নাম</th>
+                  <th className="text-center p-2.5 font-bold text-blue-200">পুরুষ</th>
+                  <th className="text-center p-2.5 font-bold text-pink-200">মহিলা</th>
+                  <th className="text-center p-2.5 rounded-tr-lg font-bold">মোট</th>
+                </tr>
+              </thead>
+              <tbody>
+                {displayVillageMember.map((v, idx) => (
+                  <tr key={v.village} className={idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                    <td className="p-2.5 text-slate-500 font-mono">{idx + 1}</td>
+                    <td className="p-2.5 font-semibold text-slate-800">{v.village}</td>
+                    <td className="p-2.5 text-center font-mono font-bold text-blue-700">{v.male}</td>
+                    <td className="p-2.5 text-center font-mono font-bold text-pink-600">{v.female}</td>
+                    <td className="p-2.5 text-center font-mono font-black text-[#1B8A44]">{v.total}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr className="bg-[#EBF5EE] font-bold border-t-2 border-[#1B8A44]/30">
+                  <td className="p-2.5" colSpan={2}>মোট</td>
+                  <td className="p-2.5 text-center font-mono text-blue-700">
+                    {displayVillageMember.reduce((s, v) => s + v.male, 0)}
+                  </td>
+                  <td className="p-2.5 text-center font-mono text-pink-600">
+                    {displayVillageMember.reduce((s, v) => s + v.female, 0)}
+                  </td>
+                  <td className="p-2.5 text-center font-mono text-[#1B8A44]">
+                    {displayVillageMember.reduce((s, v) => s + v.total, 0)}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      )} */}
 
       {/* Blood Donors Breakdown Grid */}
       <div className="bg-[#FAFBF9] border-2 border-slate-200 p-5 rounded-2xl shadow-sm">

@@ -69,14 +69,35 @@ export const FamilyForm = ({
                 headGender: initialData.headGender || 'Male',
                 headImage: initialData.headImage || '',
                 bloodDonationDates: normalizeDates(initialData.bloodDonationDates),
-                members: (initialData.members || []).map(m => ({
-                    ...m,
-                    image: m.image || '',
-                    selected: m.selected || false,
-                    isDeceased: m.isDeceased || false,
-                    isMarried: m.isMarried || false,
-                    bloodDonationDates: normalizeDates(m.bloodDonationDates)
-                }))
+                // members: (initialData.members || []).map(m => ({
+                //     ...m,
+                //     image: m.image || '',
+                //     selected: m.selected || false,
+                //     isDeceased: m.isDeceased || false,
+                //     isMarried: m.isMarried || false,
+                //     isMohollaMember: m.isMohollaMember || false,
+                //     isTemporaryMember: m.isTemporaryMember || false,
+                //     bloodDonationDates: normalizeDates(m.bloodDonationDates)
+                // }))
+                members: (initialData.members || []).map(m => {
+                    const { isMohollaMember, isBloodDonorMember, isTemporaryMember, ...restMember } = m;
+
+                    // হেডারে যেটা আছে সেটাই সেট হবে (শুধু true থাকলে কী থাকবে)
+                    const membershipFlags = {};
+                    if (initialData.isMohollaMember || m.isMohollaMember) membershipFlags.isMohollaMember = true;
+                    if (initialData.isBloodDonorMember || m.isBloodDonorMember) membershipFlags.isBloodDonorMember = true;
+                    if (initialData.isTemporaryMember || m.isTemporaryMember) membershipFlags.isTemporaryMember = true;
+
+                    return {
+                        ...restMember,
+                        image: m.image || '',
+                        selected: m.selected || false,
+                        isDeceased: m.isDeceased || false,
+                        isMarried: m.isMarried || false,
+                        bloodDonationDates: normalizeDates(m.bloodDonationDates),
+                        ...membershipFlags
+                    };
+                })
             };
         }
         const today = new Date();
@@ -562,6 +583,41 @@ export const FamilyForm = ({
         });
     };
 
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     if (!formData.headName.trim()) {
+    //         toast.error('অনুগ্রহ করে পরিবারের প্রধানের নাম লিখুন');
+    //         return;
+    //     }
+    //     if (!formData.mobileNumber.trim()) {
+    //         toast.error('অনুগ্রহ করে মোবাইল নম্বর লিখুন');
+    //         return;
+    //     }
+
+    //     if (!formData.isMohollaMember && !formData.isBloodDonorMember && !formData.isTemporaryMember) {
+    //         toast.error('অনুগ্রহ করে মহল্লা সদস্য, রক্তদাতা সদস্য অথবা ভাড়াটিয়া/অস্থায়ী সদস্য নির্বাচন করুন');
+    //         return;
+    //     }
+
+    //     const validMembers = formData.members
+    //         .filter(m => m.name.trim() !== '')
+    //         .map((m, idx) => ({
+    //             ...m,
+    //             slNo: idx + 1,
+    //             isMohollaMember: m.isMohollaMember || false,
+    //             isTemporaryMember: m.isTemporaryMember || false
+    //         }));
+
+    //     const finalRecord = {
+    //         ...formData,
+    //         members: validMembers,
+    //         updatedAt: new Date().toISOString()
+    //     };
+
+    //     onSaveSuccess(finalRecord);
+    //     toast.success('পারিবারিক তথ্য সফলভাবে সংরক্ষিত হয়েছে!');
+    // };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!formData.headName.trim()) {
@@ -578,9 +634,24 @@ export const FamilyForm = ({
             return;
         }
 
+        // ফরম হেডারের কী-গুলোর মধ্য থেকে যেগুলো true শুধু সেগুলোকে একটি অবজেক্ট হিসেবে আলাদা করা
+        const headerMembershipFlags = {};
+        if (formData.isMohollaMember) headerMembershipFlags.isMohollaMember = true;
+        if (formData.isBloodDonorMember) headerMembershipFlags.isBloodDonorMember = true;
+        if (formData.isTemporaryMember) headerMembershipFlags.isTemporaryMember = true;
+
         const validMembers = formData.members
             .filter(m => m.name.trim() !== '')
-            .map((m, idx) => ({ ...m, slNo: idx + 1 }));
+            .map((m, idx) => {
+                // মেম্বারের পূর্বের ফ্লাগগুলো ক্লিন করা (যাতে আন-সিলেক্টেডগুলো রিমুভ হয়ে যায়)
+                const { isMohollaMember, isBloodDonorMember, isTemporaryMember, ...cleanMember } = m;
+
+                return {
+                    ...cleanMember,
+                    slNo: idx + 1,
+                    ...headerMembershipFlags // শুধু সিলেক্টেড (true) কী-গুলো ডাইনামিকালি অ্যাড হবে
+                };
+            });
 
         const finalRecord = {
             ...formData,
