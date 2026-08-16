@@ -8,6 +8,7 @@ import { ImportModal } from './ImportModal';
 import { Toaster } from 'react-hot-toast';
 import { HeartHandshake } from 'lucide-react';
 import { getAppSettings } from '../lib/storage';
+import { VersionNotificationBanner } from './VersionNotificationBanner';
 
 const Navbar = dynamic(() => import('./Navbar').then(mod => ({ default: mod.Navbar })), {
   ssr: false,
@@ -92,6 +93,9 @@ function ShellContent({ children }) {
         onExportBackup={handleExportBackup}
         recordCount={records.length}
       />
+
+      {/* Full screen width New Version Update Notification Banner */}
+      <VersionNotificationBanner />
 
       {/* Main Content Area */}
       <main className="flex-1 pb-20 md:pb-8">
