@@ -27,81 +27,6 @@ import {
     Sparkles
 } from 'lucide-react';
 
-// ইংরেজি সংখ্যাকে বাংলায় রূপান্তর
-const toBengaliNum = (num) => {
-    if (num === null || num === undefined) return '';
-    const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-    return String(num).replace(/\d/g, (d) => bnDigits[d]);
-};
-
-// বাংলা সংখ্যাকে ইংরেজিতে রূপান্তর
-const toEnglishNum = (str) => {
-    if (!str) return '';
-    return String(str).replace(/[০-৯]/g, (d) => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]);
-};
-
-// বয়স হিসাব করার লোকাল সেফটি ফাংশন (যদি পেজ থেকে exactAgeText না আসে)
-const formatAgeDisplay = (exactAgeText, rawDob, rawAge) => {
-    if (exactAgeText) return exactAgeText;
-
-    const input = rawDob || rawAge;
-    if (!input) return null;
-    const str = String(input).trim();
-    if (!str) return null;
-
-    const cleanStr = toEnglishNum(str);
-    const today = new Date();
-
-    // ১. শুধু সংখ্যা হলে (যেমন "23")
-    if (/^\d{1,2}$/.test(cleanStr)) {
-        return `${toBengaliNum(cleanStr)} বছর`;
-    }
-
-    // ২. শুধু সাল হলে (যেমন "1998")
-    if (/^\d{4}$/.test(cleanStr)) {
-        const calculatedAge = today.getFullYear() - parseInt(cleanStr, 10);
-        return calculatedAge > 0 ? `${toBengaliNum(calculatedAge)} বছর` : '১ বছর';
-    }
-
-    // ৩. পূর্ণাঙ্গ জন্মতারিখ পার্স করা
-    let birthDate = null;
-    const dmyMatch = cleanStr.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
-    const ymdMatch = cleanStr.match(/^(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})$/);
-
-    if (dmyMatch) {
-        birthDate = new Date(parseInt(dmyMatch[3], 10), parseInt(dmyMatch[2], 10) - 1, parseInt(dmyMatch[1], 10));
-    } else if (ymdMatch) {
-        birthDate = new Date(parseInt(ymdMatch[1], 10), parseInt(ymdMatch[2], 10) - 1, parseInt(ymdMatch[3], 10));
-    } else {
-        const parsed = new Date(cleanStr);
-        if (!isNaN(parsed.getTime())) birthDate = parsed;
-    }
-
-    if (!birthDate || isNaN(birthDate.getTime())) return str;
-
-    let years = today.getFullYear() - birthDate.getFullYear();
-    let months = today.getMonth() - birthDate.getMonth();
-    let days = today.getDate() - birthDate.getDate();
-
-    if (days < 0) {
-        months -= 1;
-        const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-        days += previousMonth.getDate();
-    }
-    if (months < 0) {
-        years -= 1;
-        months += 12;
-    }
-    if (years < 0) return null;
-
-    let parts = [];
-    if (years > 0) parts.push(`${toBengaliNum(years)} বছর`);
-    if (months > 0) parts.push(`${toBengaliNum(months)} মাস`);
-    if (days > 0) parts.push(`${toBengaliNum(days)} দিন`);
-
-    return parts.length > 0 ? parts.join(' ') : '০ দিন';
-};
-
 export const FamilySearch = ({
     records,
     isLoggedIn = false,
@@ -489,7 +414,7 @@ export const FamilySearch = ({
                 <div className="mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2">
                     <span>
                         সর্বমোট প্রাপ্ত ফলাফল: <strong className="text-[#1B8A44] font-mono text-sm">{totalRecords}</strong> টি পরিবার
-                        {filterType === 'moholla' && <span className="ml-1 text-emerald-700 font-bold">(केवल মহল্লা সদস্য)</span>}
+                        {filterType === 'moholla' && <span className="ml-1 text-emerald-700 font-bold">(কেবল মহল্লা সদস্য)</span>}
                         {filterType === 'bloodDonor' && <span className="ml-1 text-rose-700 font-bold">(কেবল রক্ত দাতা সদস্য)</span>}
                         {filterType === 'temporary' && <span className="ml-1 text-purple-700 font-bold">(কেবল ভাড়াটিয়া/অস্থায়ী সদস্য)</span>}
                         {(minAgeQuery || maxAgeQuery) && (
@@ -555,9 +480,6 @@ export const FamilySearch = ({
                                 });
                             }
 
-                            // প্রধান সদস্যের বয়স নির্ধারণ
-                            const headAgeFormatted = formatAgeDisplay(rec.exactAgeText, rec.dob, rec.age);
-
                             return (
                                 <div
                                     key={rec._id}
@@ -589,10 +511,10 @@ export const FamilySearch = ({
                                                 </div>
                                                 <h3 className="text-lg font-bold text-[#0F2C59] font-serif group-hover:text-[#1B8A44] transition flex items-center gap-2 flex-wrap">
                                                     <span>{rec.headName.toUpperCase()}</span>
-                                                    {headAgeFormatted && (
-                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 border border-slate-300 text-slate-800 rounded-md text-[11px] font-sans font-bold shadow-2xs" title={`বয়স: ${headAgeFormatted}`}>
+                                                    {(rec.dob || rec.age) && (
+                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 border border-slate-300 text-slate-800 rounded-md text-[11px] font-sans font-bold shadow-2xs" title={`জন্মতারিখ/বয়স: ${rec.dob || rec.age}`}>
                                                             <Calendar size={11} className="text-slate-600" />
-                                                            <span>{headAgeFormatted}</span>
+                                                            <span>{rec.dob ? rec.dob : `${rec.age} বছর`}</span>
                                                         </span>
                                                     )}
                                                 </h3>
@@ -618,8 +540,8 @@ export const FamilySearch = ({
                                                     <span className="text-[10px] text-emerald-700 block font-bold">সার্চ অনুযায়ী খুঁজে পাওয়া মেম্বার:</span>
                                                     <span className="font-bold text-[#1B8A44]">{matchedMember.name.toUpperCase()}</span>
                                                     <span className="text-slate-600 font-normal"> ({matchedMember.relation.toUpperCase()})</span>
-                                                    {formatAgeDisplay(matchedMember.exactAgeText, matchedMember.dobOrAge || matchedMember.dob, matchedMember.age) && (
-                                                        <span className="ml-1 text-slate-700 font-bold">• বয়স: {formatAgeDisplay(matchedMember.exactAgeText, matchedMember.dobOrAge || matchedMember.dob, matchedMember.age)}</span>
+                                                    {(matchedMember.dobOrAge || matchedMember.dob || matchedMember.age) && (
+                                                        <span className="ml-1 text-slate-700 font-bold">• বয়স/জন্ম: {matchedMember.dobOrAge || matchedMember.dob || `${matchedMember.age} বছর`}</span>
                                                     )}
                                                 </div>
                                             </div>
@@ -648,8 +570,7 @@ export const FamilySearch = ({
                                                 <div className="flex flex-col gap-1.5">
                                                     {rec.members.slice(0, 4).map((m, idx) => {
                                                         const isThisMatched = matchedMember && matchedMember.id === m.id;
-                                                        const memberAgeFormatted = formatAgeDisplay(m.exactAgeText, m.dobOrAge || m.dob, m.age);
-
+                                                        const memberAgeOrDob = m.dobOrAge || m.dob || (m.age ? `${m.age} বছর` : null);
                                                         return (
                                                             <div
                                                                 key={idx}
@@ -661,9 +582,9 @@ export const FamilySearch = ({
                                                                 <span className="truncate">
                                                                     <strong>{m.name}</strong> <span className="text-slate-500">({m.relation})</span>
                                                                 </span>
-                                                                {memberAgeFormatted ? (
+                                                                {memberAgeOrDob ? (
                                                                     <span className="text-[10px] text-slate-700 bg-slate-200/80 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap">
-                                                                        {memberAgeFormatted}
+                                                                        {memberAgeOrDob}
                                                                     </span>
                                                                 ) : (
                                                                     m.gender && <span className="text-[10px] text-slate-500">{m.gender}</span>

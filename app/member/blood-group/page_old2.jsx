@@ -7,81 +7,6 @@ import { Heart, User, Eye, Users, Calendar, ArrowLeft, Filter } from 'lucide-rea
 import Link from 'next/link';
 import { isHeadOfAnyRecord } from '@/lib/storage';
 
-// ইংরেজি সংখ্যাকে বাংলায় রূপান্তর করার হেলপার ফাংশন
-const toBengaliNumber = (num) => {
-    const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-    return String(num).replace(/\d/g, (digit) => bnDigits[digit]);
-};
-
-// বাংলা সংখ্যাকে ইংরেজিতে রূপান্তর করার হেলপার ফাংশন
-const toEnglishNumber = (str) => {
-    if (!str) return '';
-    return String(str).replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]);
-};
-
-// নিখুঁত বয়স বের করার হেলপার ফাংশন (২৩ বছর ৩ মাস ১৫ দিন)
-const calculateExactAge = (dobInput) => {
-    if (!dobInput) return null;
-    const str = String(dobInput).trim();
-    if (!str) return null;
-
-    // যদি সরাসরি কেবল বয়স সংখ্যা হিসেবে দেওয়া থাকে (যেমন "23")
-    if (/^\d{1,3}$/.test(toEnglishNumber(str))) {
-        const ageNum = parseInt(toEnglishNumber(str), 10);
-        return { years: ageNum, months: 0, days: 0, text: `${toBengaliNumber(ageNum)} বছর` };
-    }
-
-    const bnToEn = toEnglishNumber(str);
-    let birthDate = null;
-
-    // DD/MM/YYYY বা DD-MM-YYYY
-    const dmyMatch = bnToEn.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
-    if (dmyMatch) {
-        birthDate = new Date(parseInt(dmyMatch[3], 10), parseInt(dmyMatch[2], 10) - 1, parseInt(dmyMatch[1], 10));
-    } else {
-        // YYYY-MM-DD
-        const ymdMatch = bnToEn.match(/^(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})$/);
-        if (ymdMatch) {
-            birthDate = new Date(parseInt(ymdMatch[1], 10), parseInt(ymdMatch[2], 10) - 1, parseInt(ymdMatch[3], 10));
-        } else {
-            const parsed = new Date(bnToEn);
-            if (!isNaN(parsed.getTime())) birthDate = parsed;
-        }
-    }
-
-    if (!birthDate || isNaN(birthDate.getTime())) {
-        return { years: 0, months: 0, days: 0, text: str };
-    }
-
-    const today = new Date();
-    let years = today.getFullYear() - birthDate.getFullYear();
-    let months = today.getMonth() - birthDate.getMonth();
-    let days = today.getDate() - birthDate.getDate();
-
-    if (days < 0) {
-        months -= 1;
-        // পূর্ববর্তী মাসের দিন সংখ্যা বের করা
-        const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-        days += previousMonth.getDate();
-    }
-
-    if (months < 0) {
-        years -= 1;
-        months += 12;
-    }
-
-    if (years < 0) return null;
-
-    // পারফেক্ট বাংলা টেক্সট ফরম্যাট
-    let ageParts = [];
-    if (years > 0) ageParts.push(`${toBengaliNumber(years)} বছর`);
-    if (months > 0) ageParts.push(`${toBengaliNumber(months)} মাস`);
-    if (days > 0) ageParts.push(`${toBengaliNumber(days)} দিন`);
-
-    const text = ageParts.length > 0 ? ageParts.join(' ') : '০ দিন';
-    return { years, months, days, text };
-};
-
 function BloodGroupAndAgeContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -127,63 +52,43 @@ function BloodGroupAndAgeContent() {
         return fetchedFamilies || records || [];
     }, [fetchedFamilies, records]);
 
-    // সার্ভার থেকে আসা রেজাল্ট মেম্বার লিস্ট আকারে সঠিক ফিল্টারিংসহ সাজানো
+    // সার্ভার থেকে আসা রিকুয়েস্টের রেজাল্ট মেম্বার লিস্ট আকারে সাজানো
     const members = React.useMemo(() => {
         if (!bloodGroup && !minAgeParam && !maxAgeParam) return [];
 
         const matchedMembers = [];
-        const minAgeNum = minAgeParam ? parseInt(toEnglishNumber(minAgeParam), 10) : null;
-        const maxAgeNum = maxAgeParam ? parseInt(toEnglishNumber(maxAgeParam), 10) : null;
-
-        const isAgeMatching = (ageObj) => {
-            if (!ageObj) return true; // যদি বয়স দেওয়া না থাকে তবে বাদ যাবে না
-            const y = ageObj.years;
-            if (minAgeNum !== null && !isNaN(minAgeNum) && y < minAgeNum) return false;
-            if (maxAgeNum !== null && !isNaN(maxAgeNum) && y > maxAgeNum) return false;
-            return true;
-        };
-
-        const isBloodMatching = (bg) => {
-            if (!bloodGroup) return true;
-            return bg === bloodGroup;
-        };
 
         activeRecords.forEach(rec => {
-            // ১. প্রধান সদস্য যাচাই ও যুক্ত করা
-            const headAgeObj = calculateExactAge(rec.dob || rec.age);
-            if (isBloodMatching(rec.bloodGroup) && isAgeMatching(headAgeObj)) {
-                matchedMembers.push({
-                    _id: (rec._id || rec.id) + '-head',
-                    recordId: rec._id || rec.id,
-                    type: 'head',
-                    name: rec.headName,
-                    fatherName: rec.fatherOrHusbandName || 'তথ্য নেই',
-                    bloodGroup: rec.bloodGroup,
-                    ageText: headAgeObj ? headAgeObj.text : null,
-                    formNo: rec.formNo,
-                    mobile: rec.mobileNumber
-                });
-            }
+            // ১. প্রধান সদস্য যুক্ত করা
+            const displayHeadAge = rec.dob || (rec.age ? `${rec.age} বছর` : null);
+            matchedMembers.push({
+                id: (rec._id || rec.id) + '-head',
+                recordId: rec._id || rec.id,
+                type: 'head',
+                name: rec.headName,
+                fatherName: rec.fatherOrHusbandName || 'তথ্য নেই',
+                bloodGroup: rec.bloodGroup,
+                ageText: displayHeadAge,
+                formNo: rec.formNo,
+                mobile: rec.mobileNumber
+            });
 
-            // ২. পরিবারের অন্যান্য সদস্য (ওয়ারিশগণ) যাচাই ও যুক্ত করা
+            // ২. পরিবারের অন্যান্য সদস্য (ওয়ারিশগণ) যুক্ত করা
             if (rec.members && rec.members.length > 0) {
                 rec.members.forEach(m => {
                     if (!isHeadOfAnyRecord(m.name, activeRecords, rec._id || rec.id)) {
-                        const memAgeObj = calculateExactAge(m.dobOrAge || m.dob || m.age);
-
-                        if (isBloodMatching(m.bloodGroup) && isAgeMatching(memAgeObj)) {
-                            matchedMembers.push({
-                                _id: m.id || (rec._id || rec.id) + '-' + m.name,
-                                recordId: rec._id || rec.id,
-                                type: 'member',
-                                name: m.name + (m.relation ? ' (' + m.relation + ')' : ''),
-                                fatherName: 'প্রধান সদস্য: ' + rec.headName,
-                                bloodGroup: m.bloodGroup,
-                                ageText: memAgeObj ? memAgeObj.text : null,
-                                formNo: rec.formNo,
-                                mobile: m.mobileNumber
-                            });
-                        }
+                        const displayMemAge = m.dobOrAge || m.dob || (m.age ? `${m.age} বছর` : null);
+                        matchedMembers.push({
+                            id: m.id || (rec._id || rec.id) + '-' + m.name,
+                            recordId: rec._id || rec.id,
+                            type: 'member',
+                            name: m.name + (m.relation ? ' (' + m.relation + ')' : ''),
+                            fatherName: 'প্রধান সদস্য: ' + rec.headName,
+                            bloodGroup: m.bloodGroup,
+                            ageText: displayMemAge,
+                            formNo: rec.formNo,
+                            mobile: m.mobileNumber
+                        });
                     }
                 });
             }
@@ -336,6 +241,16 @@ function BloodGroupAndAgeContent() {
                                     </p>
                                 </div>
                             </div>
+
+                            {/* Action Button */}
+                            <div className="pt-4 mt-4 border-t border-slate-100">
+                                <button
+                                    onClick={() => router.push(`/member-profile/${member.recordId}`)}
+                                    className="w-full py-2 bg-[#0F2C59] hover:bg-[#1B365D] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer shadow-sm hover:shadow-md"
+                                >
+                                    <Eye size={15} /> পরিবার প্রোফাইল দেখুন
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -346,12 +261,7 @@ function BloodGroupAndAgeContent() {
 
 export default function BloodGroupAndAgePage() {
     return (
-        <Suspense fallback={
-            <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-500 max-w-7xl mx-auto my-6">
-                <div className="animate-spin w-8 h-8 border-4 border-[#1B8A44] border-t-transparent rounded-full mx-auto mb-3"></div>
-                <p className="font-semibold text-sm">পেইজ লোড হচ্ছে...</p>
-            </div>
-        }>
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen text-slate-500 font-medium text-lg">লোড হচ্ছে...</div>}>
             <BloodGroupAndAgeContent />
         </Suspense>
     );

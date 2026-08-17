@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { searchRecords, isHeadOfAnyRecord } from '../lib/storage';
-import { getApiUrl } from '../lib/utils';
 import {
     Search,
     Heart,
@@ -23,84 +22,83 @@ import {
     ChevronRight,
     ShieldCheck,
     UserCheck,
-    Calendar,
-    Sparkles
+    Calendar
 } from 'lucide-react';
 
-// ইংরেজি সংখ্যাকে বাংলায় রূপান্তর
-const toBengaliNum = (num) => {
-    if (num === null || num === undefined) return '';
-    const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-    return String(num).replace(/\d/g, (d) => bnDigits[d]);
-};
-
-// বাংলা সংখ্যাকে ইংরেজিতে রূপান্তর
-const toEnglishNum = (str) => {
-    if (!str) return '';
-    return String(str).replace(/[০-৯]/g, (d) => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]);
-};
-
-// বয়স হিসাব করার লোকাল সেফটি ফাংশন (যদি পেজ থেকে exactAgeText না আসে)
-const formatAgeDisplay = (exactAgeText, rawDob, rawAge) => {
-    if (exactAgeText) return exactAgeText;
-
-    const input = rawDob || rawAge;
-    if (!input) return null;
-    const str = String(input).trim();
+// জন্মতারিখ বা বয়স ইনপুট থেকে বর্তমান তারিখের সাপেক্ষে বছর, মাস ও দিন বের করার ইউটিলিটি ফাংশন
+function calculateExactAge(dobInput) {
+    if (!dobInput) return null;
+    const str = String(dobInput).trim();
     if (!str) return null;
 
-    const cleanStr = toEnglishNum(str);
-    const today = new Date();
-
-    // ১. শুধু সংখ্যা হলে (যেমন "23")
-    if (/^\d{1,2}$/.test(cleanStr)) {
-        return `${toBengaliNum(cleanStr)} বছর`;
+    // যদি সরাসরি সংখ্যা দেওয়া থাকে (যেমন "25")
+    if (/^\d{1,3}$/.test(str)) {
+        const yearsNum = parseInt(str, 10);
+        return `${yearsNum} বছর`;
     }
 
-    // ২. শুধু সাল হলে (যেমন "1998")
-    if (/^\d{4}$/.test(cleanStr)) {
-        const calculatedAge = today.getFullYear() - parseInt(cleanStr, 10);
-        return calculatedAge > 0 ? `${toBengaliNum(calculatedAge)} বছর` : '১ বছর';
-    }
+    // বাংলা সংখ্যাকে ইংরেজিতে রূপান্তর
+    const bnToEn = str.replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]);
 
-    // ৩. পূর্ণাঙ্গ জন্মতারিখ পার্স করা
     let birthDate = null;
-    const dmyMatch = cleanStr.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
-    const ymdMatch = cleanStr.match(/^(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})$/);
 
+    // Format 1: DD/MM/YYYY বা DD-MM-YYYY
+    const dmyMatch = bnToEn.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
     if (dmyMatch) {
-        birthDate = new Date(parseInt(dmyMatch[3], 10), parseInt(dmyMatch[2], 10) - 1, parseInt(dmyMatch[1], 10));
-    } else if (ymdMatch) {
-        birthDate = new Date(parseInt(ymdMatch[1], 10), parseInt(ymdMatch[2], 10) - 1, parseInt(ymdMatch[3], 10));
-    } else {
-        const parsed = new Date(cleanStr);
-        if (!isNaN(parsed.getTime())) birthDate = parsed;
+        const day = parseInt(dmyMatch[1], 10);
+        const month = parseInt(dmyMatch[2], 10) - 1;
+        const year = parseInt(dmyMatch[3], 10);
+        birthDate = new Date(year, month, day);
     }
 
-    if (!birthDate || isNaN(birthDate.getTime())) return str;
+    // Format 2: YYYY-MM-DD
+    const ymdMatch = bnToEn.match(/^(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})$/);
+    if (!birthDate && ymdMatch) {
+        const year = parseInt(ymdMatch[1], 10);
+        const month = parseInt(ymdMatch[2], 10) - 1;
+        const day = parseInt(ymdMatch[3], 10);
+        birthDate = new Date(year, month, day);
+    }
 
-    let years = today.getFullYear() - birthDate.getFullYear();
-    let months = today.getMonth() - birthDate.getMonth();
-    let days = today.getDate() - birthDate.getDate();
+    // Fallback: Default Date Parsing
+    if (!birthDate || isNaN(birthDate.getTime())) {
+        const parsed = new Date(bnToEn);
+        if (!isNaN(parsed.getTime())) {
+            birthDate = parsed;
+        }
+    }
+
+    if (!birthDate || isNaN(birthDate.getTime())) {
+        return null;
+    }
+
+    const now = new Date();
+    if (birthDate > now) {
+        return '০ দিন';
+    }
+
+    let years = now.getFullYear() - birthDate.getFullYear();
+    let months = now.getMonth() - birthDate.getMonth();
+    let days = now.getDate() - birthDate.getDate();
 
     if (days < 0) {
         months -= 1;
-        const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-        days += previousMonth.getDate();
+        const prevMonthDate = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += prevMonthDate.getDate();
     }
+
     if (months < 0) {
         years -= 1;
         months += 12;
     }
-    if (years < 0) return null;
 
-    let parts = [];
-    if (years > 0) parts.push(`${toBengaliNum(years)} বছর`);
-    if (months > 0) parts.push(`${toBengaliNum(months)} মাস`);
-    if (days > 0) parts.push(`${toBengaliNum(days)} দিন`);
+    const parts = [];
+    if (years > 0) parts.push(`${years} বছর`);
+    if (months > 0) parts.push(`${months} মাস`);
+    if (days > 0 || parts.length === 0) parts.push(`${days} দিন`);
 
-    return parts.length > 0 ? parts.join(' ') : '০ দিন';
-};
+    return parts.join(' ');
+}
 
 export const FamilySearch = ({
     records,
@@ -124,11 +122,16 @@ export const FamilySearch = ({
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(12);
 
-    const [dbRecords, setDbRecords] = useState(() => records || []);
+    useEffect(() => {
+        if (initialBloodGroup) {
+            setSelectedBloodGroup(initialBloodGroup);
+        }
+    }, [initialBloodGroup]);
+
+    const [dbRecords, setDbRecords] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        let isCancelled = false;
         const fetchRecords = async () => {
             setIsLoading(true);
             try {
@@ -138,56 +141,32 @@ export const FamilySearch = ({
                 if (formNoQuery) queryParams.append('formNo', formNoQuery);
                 if (selectedBloodGroup) queryParams.append('bloodGroup', selectedBloodGroup);
                 if (filterType !== 'all') queryParams.append('filterType', filterType);
-                if (minAgeQuery) queryParams.append('minAge', minAgeQuery.trim());
-                if (maxAgeQuery) queryParams.append('maxAge', maxAgeQuery.trim());
+                if (minAgeQuery.trim()) queryParams.append('minAge', minAgeQuery.trim());
+                if (maxAgeQuery.trim()) queryParams.append('maxAge', maxAgeQuery.trim());
 
                 const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/families?${queryParams.toString()}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        ...(process.env.NEXT_PUBLIC_API_TOKEN ? { 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}` } : {})
+                        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
                     }
                 });
-                if (response.ok && !isCancelled) {
+                if (response.ok) {
                     const data = await response.json();
                     setDbRecords(data);
-                } else if (!isCancelled) {
-                    const filteredLocal = searchRecords(records || [], {
-                        query: searchInput,
-                        formNoQuery,
-                        selectedBloodGroup,
-                        minAge: minAgeQuery,
-                        maxAge: maxAgeQuery,
-                    });
-                    setDbRecords(filteredLocal);
                 }
             } catch (error) {
                 console.error("Error fetching records:", error);
-                if (!isCancelled) {
-                    const filteredLocal = searchRecords(records || [], {
-                        query: (nameQuery || generalQuery).trim(),
-                        formNoQuery,
-                        selectedBloodGroup,
-                        minAge: minAgeQuery,
-                        maxAge: maxAgeQuery,
-                    });
-                    setDbRecords(filteredLocal);
-                }
             } finally {
-                if (!isCancelled) {
-                    setIsLoading(false);
-                }
+                setIsLoading(false);
             }
         };
 
         const timeoutId = setTimeout(() => {
             fetchRecords();
-        }, 200);
-        return () => {
-            isCancelled = true;
-            clearTimeout(timeoutId);
-        };
-    }, [nameQuery, generalQuery, formNoQuery, minAgeQuery, maxAgeQuery, selectedBloodGroup, filterType, records]);
+        }, 300);
+        return () => clearTimeout(timeoutId);
+    }, [nameQuery, generalQuery, formNoQuery, minAgeQuery, maxAgeQuery, selectedBloodGroup, filterType]);
 
     const handleNameChange = (val) => { setNameQuery(val); setCurrentPage(1); };
     const handleFormNoChange = (val) => { setFormNoQuery(val); setCurrentPage(1); };
@@ -237,7 +216,7 @@ export const FamilySearch = ({
                             <Search className="text-[#1B8A44]" size={20} /> পরিবার ডিরেক্টরি ও অনুসন্ধান (Public Member Directory)
                         </h2>
                         <p className="text-xs text-slate-600 mt-1">
-                            প্রধান সদস্যের নাম, ফরম নম্বর, স্ত্রী/পুত্র/কন্যা বা নির্দিষ্ট বয়স সীমা দিয়ে মেম্বার খুঁজুন।
+                            প্রধান সদস্যের নাম, ফরম নম্বর, স্ত্রী/পুত্র/কন্যা অথবা বয়স সীমা দিয়ে মেম্বার খুঁজুন।
                         </p>
                     </div>
 
@@ -264,7 +243,7 @@ export const FamilySearch = ({
                                 type="text"
                                 value={nameQuery}
                                 onChange={(e) => handleNameChange(e.target.value)}
-                                placeholder="প্রধান বা সদস্যের নাম..."
+                                placeholder="প্রধান বা স্ত্রী/সন্তানের নাম..."
                                 className="w-full px-3 py-2 pr-8 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
                             />
                             {nameQuery && (
@@ -305,45 +284,18 @@ export const FamilySearch = ({
                         </div>
                     </div>
 
-                    {/* Age Range Filter (Min Age & Max Age) */}
+                    {/* Age Range Inputs (Min - Max Age) */}
                     <div>
-                        <div className="flex items-center justify-between mb-1">
-                            <label className="text-[11px] font-bold text-slate-700 flex items-center gap-1">
-                                <Calendar size={13} className="text-amber-600" />
-                                বয়স সীমা (Min - Max Age)
-                            </label>
-                            {(minAgeQuery || maxAgeQuery) && (
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        const params = new URLSearchParams();
-                                        if (minAgeQuery) params.append('minAge', minAgeQuery);
-                                        if (maxAgeQuery) params.append('maxAge', maxAgeQuery);
-                                        if (selectedBloodGroup) params.append('bloodGroup', selectedBloodGroup);
-                                        router.push(`/member/blood-group?${params.toString()}`);
-                                    }}
-                                    className="text-[10px] text-[#1B8A44] hover:text-[#156d35] font-bold underline cursor-pointer flex items-center gap-0.5"
-                                    title="নির্দিষ্ট বয়সের সদস্য তালিকা দেখুন"
-                                >
-                                    <Eye size={11} /> তালিকা দেখুন
-                                </button>
-                            )}
-                        </div>
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1">
+                            <Calendar size={13} className="text-amber-600" />
+                            বয়স সীমা (Min - Max Age)
+                        </label>
                         <div className="grid grid-cols-2 gap-1.5">
                             <div className="relative">
                                 <input
                                     type="text"
                                     value={minAgeQuery}
                                     onChange={(e) => handleMinAgeChange(e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' && (minAgeQuery || maxAgeQuery)) {
-                                            const params = new URLSearchParams();
-                                            if (minAgeQuery) params.append('minAge', minAgeQuery);
-                                            if (maxAgeQuery) params.append('maxAge', maxAgeQuery);
-                                            if (selectedBloodGroup) params.append('bloodGroup', selectedBloodGroup);
-                                            router.push(`/member/blood-group?${params.toString()}`);
-                                        }
-                                    }}
                                     placeholder="মিন (e.g. 18)"
                                     className="w-full px-2.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
                                 />
@@ -361,15 +313,6 @@ export const FamilySearch = ({
                                     type="text"
                                     value={maxAgeQuery}
                                     onChange={(e) => handleMaxAgeChange(e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' && (minAgeQuery || maxAgeQuery)) {
-                                            const params = new URLSearchParams();
-                                            if (minAgeQuery) params.append('minAge', minAgeQuery);
-                                            if (maxAgeQuery) params.append('maxAge', maxAgeQuery);
-                                            if (selectedBloodGroup) params.append('bloodGroup', selectedBloodGroup);
-                                            router.push(`/member/blood-group?${params.toString()}`);
-                                        }
-                                    }}
                                     placeholder="ম্যাক্স (e.g. 60)"
                                     className="w-full px-2.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-900 focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden"
                                 />
@@ -489,7 +432,7 @@ export const FamilySearch = ({
                 <div className="mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2">
                     <span>
                         সর্বমোট প্রাপ্ত ফলাফল: <strong className="text-[#1B8A44] font-mono text-sm">{totalRecords}</strong> টি পরিবার
-                        {filterType === 'moholla' && <span className="ml-1 text-emerald-700 font-bold">(केवल মহল্লা সদস্য)</span>}
+                        {filterType === 'moholla' && <span className="ml-1 text-emerald-700 font-bold">(কেবল মহল্লা সদস্য)</span>}
                         {filterType === 'bloodDonor' && <span className="ml-1 text-rose-700 font-bold">(কেবল রক্ত দাতা সদস্য)</span>}
                         {filterType === 'temporary' && <span className="ml-1 text-purple-700 font-bold">(কেবল ভাড়াটিয়া/অস্থায়ী সদস্য)</span>}
                         {(minAgeQuery || maxAgeQuery) && (
@@ -555,12 +498,12 @@ export const FamilySearch = ({
                                 });
                             }
 
-                            // প্রধান সদস্যের বয়স নির্ধারণ
-                            const headAgeFormatted = formatAgeDisplay(rec.exactAgeText, rec.dob, rec.age);
+                            // প্রধান সদস্যের বয়স হিসাব
+                            const headAge = calculateExactAge(rec.dob || rec.age);
 
                             return (
                                 <div
-                                    key={rec._id}
+                                    key={rec.id}
                                     className="bg-white border-2 border-slate-200 hover:border-[#1B8A44] rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between group"
                                 >
                                     <div>
@@ -589,10 +532,10 @@ export const FamilySearch = ({
                                                 </div>
                                                 <h3 className="text-lg font-bold text-[#0F2C59] font-serif group-hover:text-[#1B8A44] transition flex items-center gap-2 flex-wrap">
                                                     <span>{rec.headName.toUpperCase()}</span>
-                                                    {headAgeFormatted && (
-                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 border border-slate-300 text-slate-800 rounded-md text-[11px] font-sans font-bold shadow-2xs" title={`বয়স: ${headAgeFormatted}`}>
-                                                            <Calendar size={11} className="text-slate-600" />
-                                                            <span>{headAgeFormatted}</span>
+                                                    {headAge && (
+                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-50 border border-amber-300 text-amber-900 rounded-md text-[11px] font-sans font-bold shadow-2xs">
+                                                            <Calendar size={11} className="text-amber-600" />
+                                                            <span>{headAge}</span>
                                                         </span>
                                                     )}
                                                 </h3>
@@ -618,9 +561,10 @@ export const FamilySearch = ({
                                                     <span className="text-[10px] text-emerald-700 block font-bold">সার্চ অনুযায়ী খুঁজে পাওয়া মেম্বার:</span>
                                                     <span className="font-bold text-[#1B8A44]">{matchedMember.name.toUpperCase()}</span>
                                                     <span className="text-slate-600 font-normal"> ({matchedMember.relation.toUpperCase()})</span>
-                                                    {formatAgeDisplay(matchedMember.exactAgeText, matchedMember.dobOrAge || matchedMember.dob, matchedMember.age) && (
-                                                        <span className="ml-1 text-slate-700 font-bold">• বয়স: {formatAgeDisplay(matchedMember.exactAgeText, matchedMember.dobOrAge || matchedMember.dob, matchedMember.age)}</span>
-                                                    )}
+                                                    {matchedMember.dobOrAge && (() => {
+                                                        const mAge = calculateExactAge(matchedMember.dobOrAge);
+                                                        return mAge ? <span className="ml-1 text-amber-800 font-bold">• বয়স: {mAge}</span> : null;
+                                                    })()}
                                                 </div>
                                             </div>
                                         )}
@@ -641,15 +585,14 @@ export const FamilySearch = ({
                                             </div>
                                         </div>
 
-                                        {/* Heir Names preview pills */}
+                                        {/* Heir Names preview pills with Age (বছর, মাস, দিন) */}
                                         {rec.members && rec.members.length > 0 && (
                                             <div className="mb-4">
-                                                <span className="text-[11px] font-bold text-slate-500 block mb-1">ওয়ারিশবৃন্দ (স্ত্রী/পুত্র/কন্যা):</span>
+                                                <span className="text-[11px] font-bold text-slate-500 block mb-1">ওয়ারিশবৃন্দ (স্ত্রী/পুত্র/কন্যা) ও বয়স:</span>
                                                 <div className="flex flex-col gap-1.5">
                                                     {rec.members.slice(0, 4).map((m, idx) => {
                                                         const isThisMatched = matchedMember && matchedMember.id === m.id;
-                                                        const memberAgeFormatted = formatAgeDisplay(m.exactAgeText, m.dobOrAge || m.dob, m.age);
-
+                                                        const memberAge = calculateExactAge(m.dobOrAge || m.dob || m.age);
                                                         return (
                                                             <div
                                                                 key={idx}
@@ -661,9 +604,9 @@ export const FamilySearch = ({
                                                                 <span className="truncate">
                                                                     <strong>{m.name}</strong> <span className="text-slate-500">({m.relation})</span>
                                                                 </span>
-                                                                {memberAgeFormatted ? (
-                                                                    <span className="text-[10px] text-slate-700 bg-slate-200/80 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap">
-                                                                        {memberAgeFormatted}
+                                                                {memberAge ? (
+                                                                    <span className="text-[10px] text-amber-800 bg-amber-100/80 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap">
+                                                                        {memberAge}
                                                                     </span>
                                                                 ) : (
                                                                     m.gender && <span className="text-[10px] text-slate-500">{m.gender}</span>
