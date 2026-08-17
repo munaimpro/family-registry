@@ -208,7 +208,7 @@ export default function HomePage() {
                     </div>
 
                     <p className="text-sm sm:text-base md:text-lg text-emerald-100/90 max-w-3xl mx-auto font-normal leading-relaxed mb-8">
-                        আমাদের লক্ষ পরিবার ডিজিটাল রেজিস্ট্রি ব্যবস্থা, জরুরি ব্লাড ডোনার ডিরেক্টরি এবং সর্বস্তরের মানুষের সামাজিক কল্যাণে নিয়োজিত এক আধুনিক ডিজিটাল প্ল্যাটফর্ম।
+                        আমাদের লক্ষ্য পরিবার ডিজিটাল রেজিস্ট্রি ব্যবস্থা, জরুরি ব্লাড ডোনার ডিরেক্টরি এবং সর্বস্তরের মানুষের সামাজিক কল্যাণে নিয়োজিত এক আধুনিক ডিজিটাল প্ল্যাটফর্ম।
                     </p>
 
                     {/* Primary Action Buttons */}
@@ -297,7 +297,7 @@ export default function HomePage() {
                                     {displayDonerMembers.total}
                                 </div>
                                 <div className="text-xs text-slate-200 font-medium mt-1 flex items-center justify-center gap-1">
-                                    <Heart size={13} className="text-rose-400 fill-rose-400" /> মোট রক্তদাতা
+                                    <Heart size={13} className="text-rose-400 fill-rose-400" /> রক্তদাতা সদস্য (মহল্লা + অস্থায়ী)
                                 </div>
                             </div>
                             <div className="text-[10px] sm:text-[11px] text-rose-100/90 font-medium mt-2 pt-1.5 border-t border-white/10 flex items-center justify-center gap-1.5 flex-wrap">

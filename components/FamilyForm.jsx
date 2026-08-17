@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { getApiUrl } from '../lib/utils';
 import {
     Plus,
     Trash2,
@@ -30,6 +31,7 @@ export const FamilyForm = ({
 
     // Fetch settings from API on component mount
     useEffect(() => {
+        let isCancelled = false;
         const fetchSettings = async () => {
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/settings`);
@@ -37,17 +39,22 @@ export const FamilyForm = ({
                     throw new Error('নেটওয়ার্ক সমস্যা বা তথ্য পাওয়া যায়নি');
                 }
                 const data = await response.json();
-                setAppSettings({
-                    formTitle: data?.formTitle || '',
-                    address: data?.address || '',
-                    logo: data?.logo || ''
-                });
+                if (!isCancelled) {
+                    setAppSettings({
+                        formTitle: data?.formTitle || '',
+                        address: data?.address || '',
+                        logo: data?.logo || ''
+                    });
+                }
             } catch (error) {
                 console.error('Settings fetching error:', error);
             }
         };
 
         fetchSettings();
+        return () => {
+            isCancelled = true;
+        };
     }, []);
 
     const customLogo = appSettings.logo;
@@ -106,12 +113,15 @@ export const FamilyForm = ({
         const yyyy = today.getFullYear();
         const dateStr = `${dd}/${mm}/${yyyy}`;
 
+        const nextCount = (records?.length || 0) + 1;
+        const paddedNo = String(nextCount).padStart(2, '0');
+
         return {
             id: `rec-${Date.now()}`,
             refNo: '',
             date: dateStr,
-            memberNo: '',
-            formNo: '',
+            memberNo: `OMSKP-${paddedNo}`,
+            formNo: paddedNo,
             headName: '',
             headGender: 'Male',
             headImage: '',
@@ -192,19 +202,6 @@ export const FamilyForm = ({
             ],
         };
     });
-
-    useEffect(() => {
-        if (!initialData && records) {
-            const nextCount = (records.length || 0) + 1;
-            const paddedNo = String(nextCount).padStart(2, '0');
-
-            setFormData(prev => ({
-                ...prev,
-                memberNo: prev.memberNo ? prev.memberNo : `OMSKP-${paddedNo}`,
-                formNo: prev.formNo ? prev.formNo : paddedNo
-            }));
-        }
-    }, [records, initialData]);
 
     const [sameAsPresent, setSameAsPresent] = useState(true);
     const [headBloodDateInput, setHeadBloodDateInput] = useState('');
@@ -669,7 +666,7 @@ export const FamilyForm = ({
         <div className="max-w-5xl mx-auto my-2 sm:my-6 px-1 sm:px-4">
             <form
                 onSubmit={handleSubmit}
-                className="bg-white text-[#0F2C59] p-3 sm:p-6 md:p-8 rounded-lg shadow-2xl border border-slate-200 md:border-2 md:border-[#0F2C59] relative overflow-hidden font-serif leading-snug"
+                className="bg-white text-[#0F2C59] p-3 sm:p-6 md:p-8 rounded-xl shadow-2xl border-2 border-[#0F2C59] relative overflow-hidden font-serif leading-snug"
             >
                 {/* Top Right Decorative Accent */}
                 <svg
@@ -686,6 +683,7 @@ export const FamilyForm = ({
                 <div className="flex flex-col md:flex-row items-center justify-between border-b-2 border-[#0F2C59] pb-4 mb-4 gap-3 relative z-20">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center border-2 border-[#0F2C59] rounded-full p-1 bg-white shadow-xs overflow-hidden">
                         {customLogo ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
                             <img src={customLogo} alt="Logo" className="w-full h-full object-cover rounded-full" />
                         ) : (
                             <div className="w-full h-full rounded-full border border-dashed border-[#1B8A44] flex flex-col items-center justify-center text-center p-0.5">
@@ -696,7 +694,7 @@ export const FamilyForm = ({
                     </div>
 
                     <div className="text-center flex-1 px-1 sm:px-2">
-                        <h1 className="text-xl sm:text-2xl md:text-4xl font-extrabold text-[#0F2C59] tracking-tight mb-1 font-serif">
+                        <h1 className="text-xl sm:text-2xl md:text-4xl font-black text-[#0F2C59] tracking-tight mb-1 font-serif">
                             {formTitle}
                         </h1>
                         <p className="text-[11px] sm:text-xs md:text-sm font-semibold text-black mb-1">
@@ -824,6 +822,7 @@ export const FamilyForm = ({
                                 <div className="relative flex-shrink-0">
                                     {formData.headImage ? (
                                         <div className="relative w-8 h-8 sm:w-10 sm:h-10 border border-black rounded overflow-hidden group">
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img src={formData.headImage} alt="Head Member" className="w-full h-full object-cover" />
                                             <button
                                                 type="button"
@@ -1259,6 +1258,7 @@ export const FamilyForm = ({
                                         <div className="relative flex-shrink-0">
                                             {member.image ? (
                                                 <div className="relative w-8 h-8 border border-black rounded overflow-hidden group">
+                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
                                                     <img src={member.image} alt={member.name || 'Member'} className="w-full h-full object-cover" />
                                                     <button
                                                         type="button"
@@ -1414,7 +1414,7 @@ export const FamilyForm = ({
                 <div className="hidden lg:block overflow-x-auto mb-4 border border-black rounded-lg bg-transparent">
                     <table className="w-full border-collapse text-center text-xs text-black">
                         <thead>
-                            <tr className="border-b border-black font-bold text-black bg-slate-50/50">
+                            <tr className="border-b border-black font-bold text-black bg-transparent">
                                 <th className="border border-black p-1.5 w-10">ক্রমিক নং</th>
                                 <th className="border border-black p-1.5 min-w-[180px] sm:min-w-[200px]">সদস্য/সদস্যা</th>
                                 <th className="border border-black p-1.5 w-28">লিঙ্গ</th>
@@ -1453,6 +1453,7 @@ export const FamilyForm = ({
                                             <div className="relative flex-shrink-0">
                                                 {member.image ? (
                                                     <div className="relative w-8 h-8 border border-black rounded overflow-hidden group">
+                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                                         <img src={member.image} alt={member.name || 'Member'} className="w-full h-full object-cover" />
                                                         <button
                                                             type="button"

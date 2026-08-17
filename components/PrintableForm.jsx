@@ -58,19 +58,19 @@ export const PrintableForm = ({ record, onClose }) => {
     const deathDateParts = parseDateBoxes(record.deathDate || record.passportNo);
 
     return (
-        <div className="printable-container bg-white text-black p-4 md:p-8 rounded-lg shadow-xl max-w-4xl mx-auto print:max-w-none print:shadow-none print:p-0 print:m-0 print:bg-white text-sm">
+        <div className="printable-container bg-slate-900/10 text-black p-2 sm:p-4 md:p-8 rounded-xl shadow-xl max-w-4xl mx-auto print:max-w-none print:shadow-none print:p-0 print:m-0 print:bg-[#F3F9EA] text-sm">
             <style type="text/css" media="print">
                 {`
           @page { 
             size: A4 portrait; 
-            margin: 8mm; 
+            margin: 6mm; 
           }
           html, body { 
             width: 100%; 
             height: auto !important; 
             margin: 0 !important; 
             padding: 0 !important; 
-            background: #fff !important;
+            background: #F3F9EA !important;
             -webkit-print-color-adjust: exact !important; 
             print-color-adjust: exact !important; 
           }
@@ -90,41 +90,43 @@ export const PrintableForm = ({ record, onClose }) => {
             padding: 0 !important;
             border: none !important;
             box-shadow: none !important;
+            background: #F3F9EA !important;
           }
           /* ২ পেজে ভেঙ্গে যাওয়া ঠেকানোর নির্দেশ */
           .print-frame {
             page-break-inside: avoid;
             break-inside: avoid;
+            background: #F3F9EA !important;
           }
         `}
             </style>
 
             {/* Print Trigger Button for Screen */}
-            <div className="flex justify-between items-center mb-6 print:hidden border-b pb-4">
+            <div className="flex justify-between items-center mb-6 print:hidden border-b border-slate-300 pb-4">
                 <div>
-                    <h2 className="text-xl font-bold text-black">অফিসিয়াল ফরম প্রিভিউ ও প্রিন্ট</h2>
-                    <p className="text-xs text-slate-500">মূল কাগজের ডুপ্লিকেট ডিজিটাল ফরম (A4 সাইজে প্রিন্ট উপযোগী)</p>
+                    <h2 className="text-xl font-bold text-slate-900">অফিসিয়াল ফরম প্রিভিউ ও প্রিন্ট</h2>
+                    <p className="text-xs text-slate-600">মূল কাগজের হুবহু ফরম্যাট ও আইভরি-গ্রিন শেড (A4 সাইজে প্রিন্ট উপযোগী)</p>
                 </div>
                 <div className="flex gap-2">
                     {onClose && (
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-md hover:bg-slate-100 text-slate-700 text-sm font-medium transition cursor-pointer"
+                            className="px-4 py-2 border border-slate-300 bg-white rounded-md hover:bg-slate-100 text-slate-700 text-sm font-medium transition cursor-pointer shadow-xs"
                         >
                             বন্ধ করুন
                         </button>
                     )}
                     <button
                         onClick={handlePrint}
-                        className="px-5 py-2 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-md text-sm font-semibold flex items-center gap-2 shadow transition cursor-pointer"
+                        className="px-5 py-2 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-md text-sm font-semibold flex items-center gap-2 shadow-md transition cursor-pointer"
                     >
                         <Printer size={18} /> প্রিন্ট / PDF সংরক্ষণ
                     </button>
                 </div>
             </div>
 
-            {/* Actual Paper Outer Frame */}
-            <div className="print-frame border-2 border-[#0F2C59] p-4 md:p-6 bg-white relative overflow-hidden font-serif print:border-2 print:border-[#0F2C59] print:p-4 print:bg-white text-[#0F2C59] leading-snug rounded-lg shadow-2xl print:shadow-none print:rounded-none print:w-full print:mx-auto print:box-border">
+            {/* Actual Paper Outer Frame with Authentic Form Background */}
+            <div className="print-frame border-2 border-[#0F2C59] p-4 md:p-6 bg-[#F3F9EA] relative overflow-hidden font-serif print:border-2 print:border-[#0F2C59] print:p-4 print:bg-[#F3F9EA] text-[#0F2C59] leading-snug rounded-lg shadow-2xl print:shadow-none print:rounded-none print:w-full print:mx-auto print:box-border">
                 {/* Top Right Decorative Diagonal Green Corner Accent */}
                 <svg
                     className="absolute top-0 right-0 w-64 sm:w-80 h-28 sm:h-32 pointer-events-none z-10 print:w-48 print:h-20"
@@ -141,6 +143,7 @@ export const PrintableForm = ({ record, onClose }) => {
                     {/* Logo Crest */}
                     <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center border-2 border-[#0F2C59] rounded-full p-1 bg-white shadow-xs overflow-hidden">
                         {customLogo ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
                             <img src={customLogo} alt="Logo" className="w-full h-full object-cover rounded-full" />
                         ) : (
                             <div className="w-full h-full rounded-full border border-dashed border-[#1B8A44] flex flex-col items-center justify-center text-center p-0.5">
@@ -152,7 +155,7 @@ export const PrintableForm = ({ record, onClose }) => {
 
                     {/* Main Title Banner */}
                     <div className="text-center flex-1 px-2">
-                        <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#0F2C59] tracking-tight mb-0.5 font-serif">
+                        <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-[#0F2C59] tracking-tight mb-0.5 font-serif">
                             {formTitle}
                         </h1>
                         <p className="text-[11px] sm:text-xs font-semibold text-black">
@@ -394,7 +397,7 @@ export const PrintableForm = ({ record, onClose }) => {
                 <div className="mb-3 border border-black rounded-sm bg-transparent overflow-hidden">
                     <table className="w-full border-collapse text-center text-[10px] text-black">
                         <thead>
-                            <tr className="border-b border-black font-bold text-black bg-slate-50">
+                            <tr className="border-b border-black font-bold text-black bg-[#E8F2DC]/80">
                                 <th className="border border-black p-0.5 w-6">ক্রম</th>
                                 <th className="border border-black p-0.5">সদস্য/সদস্যা</th>
                                 <th className="border border-black p-0.5 w-12">লিঙ্গ</th>
