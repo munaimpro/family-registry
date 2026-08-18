@@ -280,7 +280,7 @@ export default function HomePage() {
                                     {displayTemporaryMembers.total}
                                 </div>
                                 <div className="text-xs text-slate-200 font-medium mt-1 flex items-center justify-center gap-1">
-                                    <UserPlus size={13} className="text-amber-400" /> অস্থায়ী সদস্য
+                                    <UserPlus size={13} className="text-amber-400" /> অস্থায়ী/ভাড়াটিয়া সদস্য
                                 </div>
                             </div>
                             <div className="text-[10px] sm:text-[11px] text-amber-100/90 font-medium mt-2 pt-1.5 border-t border-white/10 flex items-center justify-center gap-1.5 flex-wrap">
@@ -297,7 +297,7 @@ export default function HomePage() {
                                     {displayDonerMembers.total}
                                 </div>
                                 <div className="text-xs text-slate-200 font-medium mt-1 flex items-center justify-center gap-1">
-                                    <Heart size={13} className="text-rose-400 fill-rose-400" /> রক্তদাতা সদস্য (মহল্লা + অস্থায়ী)
+                                    <Heart size={13} className="text-rose-400 fill-rose-400" /> অতিথি রক্তদাতা সদস্য
                                 </div>
                             </div>
                             <div className="text-[10px] sm:text-[11px] text-rose-100/90 font-medium mt-2 pt-1.5 border-t border-white/10 flex items-center justify-center gap-1.5 flex-wrap">
@@ -318,7 +318,7 @@ export default function HomePage() {
                                 </div>
                             </div>
                             <div className="text-[11px] text-emerald-100/70 font-medium mt-2 pt-1.5 border-t border-white/10">
-                                পরিবার প্রধান + সদস্য
+                                মহল্লা + অস্থায়ী/ভাড়াটিয়া + অতিথি রক্তদাতা
                             </div>
                         </div>
                     </div>
