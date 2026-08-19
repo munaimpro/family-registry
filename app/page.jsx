@@ -34,7 +34,7 @@ export default function HomePage() {
     // Dashboard Stats State
     const [stats, setStats] = useState({
         totalFamilies: 0,
-        totalMembers: 0,
+        totalMembersCount: { total: 0, male: 0, female: 0 },
         mohollaMember: { total: 0, male: 0, female: 0 },
         donerMember: { total: 0, male: 0, female: 0 },
         temporaryMember: { total: 0, male: 0, female: 0 }
@@ -68,7 +68,7 @@ export default function HomePage() {
                     const data = await response.json();
                     setStats({
                         totalFamilies: data.totalFamilies || 0,
-                        totalMembers: data.totalMembers || 0,
+                        totalMembersCount: data.totalMembersCount || { total: 0, male: 0, female: 0 },
                         mohollaMember: data.mohollaMember || { total: 0, male: 0, female: 0 },
                         donerMember: data.donerMember || { total: 0, male: 0, female: 0 },
                         temporaryMember: data.temporaryMember || { total: 0, male: 0, female: 0 }
@@ -95,13 +95,18 @@ export default function HomePage() {
     // Compute local fallback stats from records
     const localStats = React.useMemo(() => {
         let totalFamilies = records.length;
-        let totalMembers = 0;
+        const totalMembersCount = { total: 0, male: 0, female: 0 };
         const mohollaMember = { total: 0, male: 0, female: 0 };
         const donerMember = { total: 0, male: 0, female: 0 };
         const temporaryMember = { total: 0, male: 0, female: 0 };
 
         records.forEach(f => {
-            totalMembers += 1 + (f.members ? f.members.length : 0);
+            totalMembersCount.total++;
+            if (f.headGender === 'Female' || f.headGender === 'মহিলা' || f.headGender === 'নারী') {
+                totalMembersCount.female++;
+            } else {
+                totalMembersCount.male++;
+            }
 
             const isFemaleHead = f.headGender === 'Female' || f.headGender === 'মহিলা' || f.headGender === 'নারী';
 
@@ -147,7 +152,7 @@ export default function HomePage() {
 
         return {
             totalFamilies,
-            totalMembers,
+            totalMembersCount,
             mohollaMember,
             donerMember,
             temporaryMember
@@ -155,7 +160,7 @@ export default function HomePage() {
     }, [records]);
 
     const displayTotalFamilies = stats.totalFamilies || localStats.totalFamilies;
-    const displayTotalMembers = stats.totalMembers || localStats.totalMembers;
+    const displayTotalMembers = (stats.totalMembersCount && (stats.totalMembersCount.total > 0 || stats.totalMembersCount.male > 0 || stats.totalMembersCount.female > 0)) ? stats.totalMembersCount : localStats.totalMembersCount;
     const displayMohollaMembers = (stats.mohollaMember && (stats.mohollaMember.total > 0 || stats.mohollaMember.male > 0 || stats.mohollaMember.female > 0)) ? stats.mohollaMember : localStats.mohollaMember;
     const displayDonerMembers = (stats.donerMember && (stats.donerMember.total > 0 || stats.donerMember.male > 0 || stats.donerMember.female > 0)) ? stats.donerMember : localStats.donerMember;
     const displayTemporaryMembers = (stats.temporaryMember && (stats.temporaryMember.total > 0 || stats.temporaryMember.male > 0 || stats.temporaryMember.female > 0)) ? stats.temporaryMember : localStats.temporaryMember;
@@ -307,18 +312,20 @@ export default function HomePage() {
                             </div>
                         </div>
 
-                        {/* 5. সর্বমোট নাগরিক */}
+                        {/* 5. সর্বমোট সদস্য */}
                         <div className="p-3 text-center col-span-2 sm:col-span-1 flex flex-col justify-between">
                             <div>
                                 <div className="text-2xl sm:text-3xl md:text-4xl font-black text-emerald-300 font-mono">
-                                    {displayTotalMembers}
+                                    {displayTotalMembers.total}
                                 </div>
                                 <div className="text-xs text-slate-200 font-medium mt-1 flex items-center justify-center gap-1">
-                                    <Activity size={13} className="text-emerald-400" /> সর্বমোট নাগরিক
+                                    <Activity size={13} className="text-emerald-400" /> সর্বমোট সদস্য
                                 </div>
                             </div>
-                            <div className="text-[11px] text-emerald-100/70 font-medium mt-2 pt-1.5 border-t border-white/10">
-                                মহল্লা + অস্থায়ী/ভাড়াটিয়া + অতিথি রক্তদাতা
+                            <div className="text-[10px] sm:text-[11px] text-rose-100/90 font-medium mt-2 pt-1.5 border-t border-white/10 flex items-center justify-center gap-1.5 flex-wrap">
+                                <span>Male: <strong className="text-white font-mono">{displayTotalMembers.male}</strong> জন</span>
+                                <span className="text-white/40">•</span>
+                                <span>Female: <strong className="text-white font-mono">{displayTotalMembers.female}</strong> জন</span>
                             </div>
                         </div>
                     </div>
