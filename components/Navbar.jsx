@@ -19,7 +19,8 @@ import {
   Settings,
   LogOut,
   UserPlus,
-  Heart
+  Heart,
+  Filter
 } from 'lucide-react';
 
 export const Navbar = ({
@@ -195,6 +196,17 @@ export const Navbar = ({
                   >
                     <ShieldCheck size={15} />
                     <span>অ্যাডমিন ড্যাশবোর্ড</span>
+                  </Link>
+
+                  <Link
+                    href="admin/filter"
+                    className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition min-h-[38px] ${pathname === '/filter'
+                      ? 'bg-[#1B8A44] text-white shadow-md border border-[#62C255]/50'
+                      : 'text-emerald-100 hover:bg-white/10 hover:text-white'
+                      }`}
+                  >
+                    <Filter size={15} />
+                    <span>অ্যাডমিন ফিল্টার</span>
                   </Link>
 
                   <Link
