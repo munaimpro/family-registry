@@ -339,7 +339,7 @@ function FilterPageContent() {
     const endIndex = Math.min(startIndex + pageSize, totalCount);
     const paginatedList = activeDataList.slice(startIndex, endIndex);
 
-    const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+    const bloodGroups = ['N/A', 'A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
     // Print trigger
     const handlePrint = () => {
@@ -350,7 +350,7 @@ function FilterPageContent() {
         <div className="max-w-7xl mx-auto my-6 px-3 sm:px-6 lg:px-8">
             {/* Printable Header (Visible only when printed) */}
             <div className="hidden print:block mb-5 text-center border-b-2 border-black pb-3">
-                <h1 className="text-2xl font-black text-black">ওমসকপ মেম্বার ডাটা ব্যাংক</h1>
+                <h1 className="text-2xl font-black text-black">OMSKP মেম্বার ডাটা ব্যাংক</h1>
                 <h2 className="text-base font-bold text-gray-800 mt-1">
                     মেম্বার ফিল্টারিং ও তথ্য রিপোর্ট
                     {viewMode === 'individual' ? ' (ব্যক্তিভিত্তিক আলাদা আলাদা রো তালিকা)' : ' (পরিবারভিত্তিক তালিকা)'}

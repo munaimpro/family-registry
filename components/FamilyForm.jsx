@@ -59,7 +59,7 @@ export const FamilyForm = ({
 
     const customLogo = appSettings.logo;
     const formTitle = appSettings.formTitle || 'পরিবার শুমারি ও তথ্য নিবন্ধন ফরম';
-    const address = appSettings.address || 'উত্তর গোলিন্দর বীর, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম';
+    const address = appSettings.address || 'উত্তর গৌবিন্দরখীল, ৯নং ওয়ার্ড, পটিয়া, চট্টগ্রাম';
 
     const normalizeDates = (val) => {
         if (Array.isArray(val)) return val;
@@ -660,7 +660,7 @@ export const FamilyForm = ({
         toast.success('পারিবারিক তথ্য সফলভাবে সংরক্ষিত হয়েছে!');
     };
 
-    const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+    const bloodGroups = ['N/A', 'A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
     return (
         <div className="max-w-5xl mx-auto my-2 sm:my-6 px-1 sm:px-4">

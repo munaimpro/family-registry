@@ -214,7 +214,7 @@ export const FamilySearch = ({
     const endIndex = Math.min(startIndex + pageSize, totalRecords);
     const paginatedRecords = filteredRecords.slice(startIndex, endIndex);
 
-    const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+    const bloodGroups = ['N/A', 'A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
     const resetFilters = () => {
         setNameQuery('');
