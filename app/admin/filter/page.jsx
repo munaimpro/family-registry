@@ -770,8 +770,8 @@ function FilterPageContent() {
                                                     ) : (
                                                         <div>
                                                             {/* ব্যাক্তির নামের পাশে (সম্পর্ক) */}
-                                                            <div className="font-bold text-slate-900 text-sm font-serif group-hover:text-[#1B8A44] transition-colors leading-snug print:text-[11px] print:text-black">
-                                                                {person.name}{' '}
+                                                            <div className="font-bold text-slate-900 text-sm font-serif group-hover:text-[#1B8A44] transition-colors leading-snug print:text-[11px] print:text-black uppercase">
+                                                                {person.name.toUpperCase()}{' '}
                                                                 {person.relation && (
                                                                     <span className="text-slate-600 font-sans text-xs font-semibold print:text-black">
                                                                         ({person.relation})
@@ -1049,7 +1049,7 @@ function FilterPageContent() {
                                                                 key={memIdx}
                                                                 className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 text-slate-800 border border-slate-200 rounded-md text-[11px] leading-tight print:bg-transparent print:border print:border-black print:text-black"
                                                             >
-                                                                <strong className="text-slate-900 print:text-black">{mem.name}</strong>
+                                                                <strong className="text-slate-900 print:text-black uppercase">{mem.name.toUpperCase()}</strong>
                                                                 {mem.relation && <span className="text-slate-500 print:text-black">({mem.relation})</span>}
                                                                 {mem.bloodGroup && (
                                                                     <span className="text-rose-600 font-mono font-bold text-[10px] print:text-black">[{mem.bloodGroup}]</span>
