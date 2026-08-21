@@ -764,8 +764,8 @@ function FilterPageContent() {
                                             <td className="py-3 px-4 border-r border-slate-100 print:border-black">
                                                 <div>
                                                     {person.isHead ? (
-                                                        <div className="font-bold text-slate-900 text-sm font-serif group-hover:text-[#1B8A44] transition-colors leading-snug print:text-[11px] print:text-black">
-                                                            {person.name}
+                                                        <div className="font-bold text-slate-900 text-sm font-serif group-hover:text-[#1B8A44] transition-colors leading-snug print:text-[11px] print:text-black uppercase">
+                                                            {person.name.toUpperCase()}
                                                         </div>
                                                     ) : (
                                                         <div>
@@ -803,8 +803,8 @@ function FilterPageContent() {
 
                                             {/* 6. Father / Husband Name */}
                                             <td className="py-3 px-4 border-r border-slate-100 print:border-black">
-                                                <div className="text-slate-800 font-medium print:text-black">
-                                                    {person.fatherName}
+                                                <div className="text-slate-800 font-medium print:text-black uppercase">
+                                                    {person.fatherName.toUpperCase()}
                                                 </div>
                                             </td>
 
