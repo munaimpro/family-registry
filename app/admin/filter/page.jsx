@@ -781,7 +781,7 @@ function FilterPageContent() {
                                                             {/* নামের নিচে মূল সদস্য নাম */}
                                                             <div className="text-[11px] text-slate-500 font-medium mt-0.5 flex items-center gap-1 print:text-[10px] print:text-black">
                                                                 <span>মূল সদস্য:</span>
-                                                                <strong className="text-[#0F2C59] print:text-black">{person.headName}</strong>
+                                                                <strong className="text-[#0F2C59] print:text-black uppercase">{person.headName.toUpperCase()}</strong>
                                                             </div>
                                                         </div>
                                                     )}
