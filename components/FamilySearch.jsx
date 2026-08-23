@@ -658,8 +658,8 @@ export const FamilySearch = ({
                                                                     : 'bg-slate-100/90 text-slate-800 border-slate-200'
                                                                     }`}
                                                             >
-                                                                <span className="truncate">
-                                                                    <strong>{m.name}</strong> <span className="text-slate-500">({m.relation})</span>
+                                                                <span className="truncate uppercase">
+                                                                    <strong>{m.name.toUpperCase()}</strong> <span className="text-slate-500">({m.relation.toUpperCase()})</span>
                                                                 </span>
                                                                 {memberAgeFormatted ? (
                                                                     <span className="text-[10px] text-slate-700 bg-slate-200/80 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap">

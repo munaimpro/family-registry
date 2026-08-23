@@ -581,8 +581,8 @@ export const AdminDashboard = ({
                       </td>
 
                       <td className="p-3">
-                        <span className="font-bold text-slate-900 block">{rec.headName || '—'}</span>
-                        <span className="text-[11px] text-slate-500">{rec.headOccupation || '—'}</span>
+                        <span className="font-bold text-slate-900 block uppercase">{rec.headName.toUpperCase() || '—'}</span>
+                        <span className="text-[11px] text-slate-500 uppercase">{rec.headOccupation.toUpperCase() || '—'}</span>
                       </td>
 
                       <td className="p-3 font-mono text-[#1B8A44] font-bold">
