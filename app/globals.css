@@ -66,39 +66,39 @@ body {
 
 /* blood-doner-button */
 .blood-doner-button {
-  background-color: rgb(225, 29, 72);
+  background-color: rgb(225, 29, 72) !important;
 }
 
 .blood-doner-button:hover {
-  background-color: rgb(190, 24, 74);
+  background-color: rgb(190, 24, 74) !important;
 }
 
 .member-search-button {
-  background-color: #1B8A44;
+  background-color: #1B8A44 !important;
 }
 
 .member-search-button:hover {
-  background-color: #156d35;
+  background-color: #156d35 !important;
 }
 
 .quick-search-item {
-  background-color: rgb(255, 250, 250);
+  background-color: rgb(255, 250, 250) !important;
 }
 
 .quick-search-item:hover {
-  background-color: rgb(254, 248, 255);
+  background-color: rgb(254, 248, 255) !important;
 }
 
 .doner-group-button {
-  background-color: oklch(96.9% .015 12.422);
+  background-color: oklch(96.9% .015 12.422) !important;
 }
 
 .doner-group-button:hover {
-  background-color: oklch(58.6% .253 17.585);
+  background-color: oklch(58.6% .253 17.585) !important;
 }
 
 .blood-group-text {
-  color: oklch(51.4% .222 16.935);
+  color: oklch(51.4% .222 16.935) !important;
 }
 
 .doner-group-button:hover .blood-group-text {
@@ -106,11 +106,11 @@ body {
 }
 
 .Quran-Ayat {
-  background-image: linear-gradient(to right, #022c22, #0F2C59);
+  background-image: linear-gradient(to right, #022c22, #0F2C59) !important;
 }
 
 .cta-section {
-  background-image: linear-gradient(to right, #0F2C59, #153D7A, #0A1D3B);
+  background-image: linear-gradient(to right, #0F2C59, #153D7A, #0A1D3B) !important;
 }
 
 /* Allow text selection inside input fields and textareas so form filling works */
