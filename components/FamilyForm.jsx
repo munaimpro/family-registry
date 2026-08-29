@@ -1219,7 +1219,7 @@ export const FamilyForm = ({
                                             onChange={(e) => handleMemberChange(idx, 'isDeceased', e.target.checked)}
                                             className="w-3.5 h-3.5 text-rose-600 rounded border-slate-400 focus:ring-rose-500 cursor-pointer"
                                         />
-                                        মরহুম?
+                                        স্ত্রী মরহুম?
                                     </label>
                                     <button
                                         type="button"
@@ -1238,7 +1238,7 @@ export const FamilyForm = ({
                                             onChange={(e) => handleMemberChange(idx, 'isMarried', e.target.checked)}
                                             className="w-3.5 h-3.5 text-rose-600 rounded border-slate-400 focus:ring-rose-500 cursor-pointer"
                                         />
-                                        বিবাহিত?
+                                        কন্যা বিবাহিত?
                                     </label>
                                     <button
                                         type="button"
@@ -1418,8 +1418,8 @@ export const FamilyForm = ({
                                 <th className="border border-black p-1.5 w-10">ক্রমিক নং</th>
                                 <th className="border border-black p-1.5 min-w-[180px] sm:min-w-[200px]">সদস্য/সদস্যা</th>
                                 <th className="border border-black p-1.5 w-28">লিঙ্গ</th>
-                                <th className="border border-black p-1.5 w-16">মরহুম?</th>
-                                <th className="border border-black p-1.5 w-16">বিবাহিত?</th>
+                                <th className="border border-black p-1.5 w-16">স্ত্রী মরহুম?</th>
+                                <th className="border border-black p-1.5 w-16">কন্যা বিবাহিত?</th>
                                 <th className="border border-black p-1.5 w-28">জন্ম তারিখ/বয়স<br /><span className="text-[9px] font-normal">(দিন/মাস/বছর)</span></th>
                                 <th className="border border-black p-1.5 w-20">রক্তের গ্রুপ</th>
                                 <th className="border border-black p-1.5 min-w-[160px]">রক্তদানের তারিখ<br /><span className="text-[9px] font-normal">(একাধিক তারিখ)</span></th>

@@ -599,7 +599,7 @@ export const FamilySearch = ({
                                                 {rec.fatherOrHusbandName && (
                                                     <p className="text-xs text-slate-600 font-medium mt-0.5 flex items-center gap-1">
                                                         <User size={13} className="text-[#1B8A44] flex-shrink-0" />
-                                                        <span>পিতার নাম: <strong className="text-slate-800 font-semibold">{rec.fatherOrHusbandName.toUpperCase()}</strong></span>
+                                                        <span>পিতা/স্বামীর নাম: <strong className="text-slate-800 font-semibold">{rec.fatherOrHusbandName.toUpperCase()}</strong></span>
                                                     </p>
                                                 )}
                                             </div>
