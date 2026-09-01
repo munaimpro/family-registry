@@ -65,43 +65,43 @@ body {
 }
 
 /* blood-doner-button */
-.blood-doner-button {
+#blood-doner-button {
   background-color: rgb(225, 29, 72) !important;
 }
 
-.blood-doner-button:hover {
+#blood-doner-button:hover {
   background-color: rgb(190, 24, 74) !important;
 }
 
-.member-search-button {
+#member-search-button {
   background-color: #1B8A44 !important;
 }
 
-.member-search-button:hover {
+#member-search-button:hover {
   background-color: #156d35 !important;
 }
 
-.quick-search-item {
+#quick-search-item {
   background-color: rgb(255, 250, 250) !important;
 }
 
-.quick-search-item:hover {
+#quick-search-item:hover {
   background-color: rgb(254, 248, 255) !important;
 }
 
-.doner-group-button {
+#doner-group-button {
   background-color: oklch(96.9% .015 12.422) !important;
 }
 
-.doner-group-button:hover {
+#doner-group-button:hover {
   background-color: oklch(58.6% .253 17.585) !important;
 }
 
-.blood-group-text {
+#blood-group-text {
   color: oklch(51.4% .222 16.935) !important;
 }
 
-.doner-group-button:hover .blood-group-text {
+#doner-group-button:hover #blood-group-text {
   color: #ffffff !important;
 }
 

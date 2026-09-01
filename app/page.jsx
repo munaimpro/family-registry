@@ -220,7 +220,7 @@ export default function HomePage() {
                     <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
                         <Link
                             href="/member"
-                            className="member-search-button px-6 py-3.5 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer border border-emerald-400/40"
+                            id="member-search-button" className="px-6 py-3.5 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer border border-emerald-400/40"
                         >
                             <Search size={18} />
                             <span>সদস্য অনুসন্ধান ও তালিকা</span>
@@ -229,7 +229,7 @@ export default function HomePage() {
 
                         <Link
                             href="/member"
-                            className="blood-doner-button px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer border border-rose-400/40"
+                            id="blood-doner-button" className="px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer border border-rose-400/40"
                         >
                             <Heart size={18} className="fill-white" />
                             <span>রক্তদাতা খুঁজুন (Blood Donors)</span>
@@ -363,9 +363,10 @@ export default function HomePage() {
                             <button
                                 key={bg}
                                 onClick={() => handleBloodGroupClick(bg)}
-                                className="doner-group-button group relative bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 p-3 rounded-xl text-center transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md"
+                                id="doner-group-button"
+                                className="group relative bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 p-3 rounded-xl text-center transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md"
                             >
-                                <span className="blood-group-text block text-lg font-black text-rose-700 group-hover:text-white font-mono">
+                                <span id="blood-group-text" className="block text-lg font-black group-hover:text-white font-mono">
                                     {bg}
                                 </span>
                                 <span className="block text-[11px] font-bold text-slate-600 group-hover:text-rose-100 mt-0.5">
