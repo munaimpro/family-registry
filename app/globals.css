@@ -90,15 +90,15 @@ body {
 }
 
 #doner-group-button {
-  background-color: oklch(96.9% .015 12.422) !important;
+  background-color: rgb(255, 241, 242) !important;
 }
 
 #doner-group-button:hover {
-  background-color: oklch(58.6% .253 17.585) !important;
+  background-color: rgb(236, 0, 63) !important;
 }
 
 #blood-group-text {
-  color: oklch(51.4% .222 16.935) !important;
+  color: rgb(199, 0, 54) !important;
 }
 
 #doner-group-button:hover #blood-group-text {
@@ -111,6 +111,18 @@ body {
 
 .cta-section {
   background-image: linear-gradient(to right, #0F2C59, #153D7A, #0A1D3B) !important;
+}
+
+#heart {
+  color: rgb(236, 0, 63);
+}
+
+#bg-rose-50 {
+  background-color: rgb(255, 241, 242);
+}
+
+#textRose700 {
+  color: rgb(199, 0, 54);
 }
 
 /* Allow text selection inside input fields and textareas so form filling works */

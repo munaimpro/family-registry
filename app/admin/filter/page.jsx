@@ -490,6 +490,7 @@ function FilterPageContent() {
                             value={selectedBloodGroup}
                             onChange={(e) => { setSelectedBloodGroup(e.target.value); setCurrentPage(1); }}
                             className="w-full px-2.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-rose-700 font-bold focus:ring-2 focus:ring-[#1B8A44] focus:outline-hidden h-[36px] cursor-pointer"
+                            id='textRose700'
                         >
                             <option value="">সকল রক্তের গ্রুপ</option>
                             {bloodGroups.map(bg => (
@@ -787,7 +788,7 @@ function FilterPageContent() {
                                                     )}
 
                                                     {person.bloodGroup && (
-                                                        <span className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.2 bg-rose-50 text-rose-700 border border-rose-200 rounded text-[10px] font-bold font-mono print:border print:border-black print:bg-transparent print:text-black">
+                                                        <span id='textRose700' className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.2 bg-rose-50 text-rose-700 border border-rose-200 rounded text-[10px] font-bold font-mono print:border print:border-black print:bg-transparent print:text-black">
                                                             <Heart size={10} fill="currentColor" className="print:hidden" /> {person.bloodGroup}
                                                         </span>
                                                     )}
@@ -993,7 +994,7 @@ function FilterPageContent() {
                                                     {family.headName}
                                                 </div>
                                                 {family.bloodGroup && (
-                                                    <span className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.2 bg-rose-50 text-rose-700 border border-rose-200 rounded text-[10px] font-bold font-mono print:border print:border-black print:bg-transparent print:text-black">
+                                                    <span id='textRose700' className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.2 bg-rose-50 text-rose-700 border border-rose-200 rounded text-[10px] font-bold font-mono print:border print:border-black print:bg-transparent print:text-black">
                                                         <Heart size={10} fill="currentColor" className="print:hidden" /> {family.bloodGroup}
                                                     </span>
                                                 )}

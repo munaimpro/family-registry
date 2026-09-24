@@ -192,7 +192,7 @@ export default function AdminSettingsPage() {
 
           <div className="p-6 sm:p-8 space-y-6">
             {error && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
+              <div id='textRose700' className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
                 {error}
               </div>
             )}

@@ -242,7 +242,7 @@ export default function HomePage() {
                 onClick={() => handleBloodGroupClick(bg)}
                 className="doner-group-button group relative bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 p-3 rounded-xl text-center transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md"
               >
-                <span className="blood-group-text block text-lg font-black text-rose-700 group-hover:text-white font-mono">
+                <span id='textRose700' className="blood-group-text block text-lg font-black text-rose-700 group-hover:text-white font-mono">
                   {bg}
                 </span>
                 <span className="block text-[11px] font-bold text-slate-600 group-hover:text-rose-100 mt-0.5">
@@ -258,7 +258,7 @@ export default function HomePage() {
       <section className="py-16 px-4 max-w-6xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-1.5 bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full mb-3">
-            <Heart size={14} className="fill-rose-600 text-rose-600" />
+            <Heart size={14} id="heart" className="fill-rose-600 text-rose-600" />
             <span>মানবসেবা ও স্বাস্থ্য সুরক্ষা</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0F2C59] font-serif leading-tight">

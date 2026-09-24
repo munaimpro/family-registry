@@ -364,7 +364,7 @@ export default function HomePage() {
                                 key={bg}
                                 onClick={() => handleBloodGroupClick(bg)}
                                 id="doner-group-button"
-                                className="group relative bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 p-3 rounded-xl text-center transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md"
+                                className="group relative border border-rose-200 hover:border-rose-600 p-3 rounded-xl text-center transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md"
                             >
                                 <span id="blood-group-text" className="block text-lg font-black group-hover:text-white font-mono">
                                     {bg}
