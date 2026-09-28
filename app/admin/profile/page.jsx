@@ -172,14 +172,14 @@ export default function AdminProfilePage() {
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-[#1B8A44] transition bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-xs"
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-[#1B8A44] transition bg-white px-3 py-2 rounded-xl border borderSlate200 border-slate-200 shadow-xs"
           >
             <ArrowLeft size={16} /> হোম পেজে ফিরে যান
           </Link>
           <div className="flex items-center gap-2">
             <Link
               href="/admin/settings"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F2C59] hover:text-[#1B8A44] bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-xs transition"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F2C59] hover:text-[#1B8A44] bg-white px-3 py-2 rounded-xl border borderSlate200 border-slate-200 shadow-xs transition"
             >
               <Settings size={15} /> সেটিংস
             </Link>
@@ -193,7 +193,7 @@ export default function AdminProfilePage() {
         </div>
 
         {/* Profile Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-xl border  borderSlate200 overflow-hidden">
           <div className="bg-[#0F2C59] p-6 text-white flex flex-col sm:flex-row items-center gap-5">
             <div className="relative group">
               <div className="w-24 h-24 bg-emerald-500/25 border-4 border-emerald-400 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-md overflow-hidden">

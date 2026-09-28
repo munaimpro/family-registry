@@ -405,7 +405,7 @@ function FilterPageContent() {
                 </div>
 
                 {/* Multi-criteria Filter Inputs */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 mt-5 pt-4 border-t border-slate-200">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 mt-5 pt-4 border-t borderSlate200 border-slate-200">
                     {/* 1. Name Input */}
                     <div>
                         <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1">
@@ -625,7 +625,7 @@ function FilterPageContent() {
             </div>
 
             {/* Filter Summary & Stats Banner (Always visible in UI & Print) */}
-            <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 sm:p-5 shadow-xs mb-6 print:border print:border-black print:rounded-none print:p-2 print:mb-3">
+            <div className="bg-white border-2 border-slate-200 borderSlate200 rounded-2xl p-4 sm:p-5 shadow-xs mb-6 print:border print:border-black print:rounded-none print:p-2 print:mb-3">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                     <div>
                         <div className="flex items-center gap-2 flex-wrap">
@@ -675,13 +675,13 @@ function FilterPageContent() {
 
             {/* Main Results Table */}
             {isLoading ? (
-                <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-600">
+                <div className="bg-white border border-slate-200 borderSlate200 borderSlate200 rounded-2xl p-12 text-center text-slate-600">
                     <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#1B8A44] mx-auto mb-3"></div>
                     <h3 className="text-base font-bold text-slate-800">ডাটা লোড হচ্ছে...</h3>
                     <p className="text-xs text-slate-500 mt-1">অনুগ্রহ করে অপেক্ষা করুন, সার্ভার থেকে তথ্য নিয়ে আসা হচ্ছে।</p>
                 </div>
             ) : paginatedList.length === 0 ? (
-                <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
+                <div className="bg-white border-2 border-slate-200 borderSlate200 borderSlate200 rounded-2xl p-12 text-center text-slate-600">
                     <FileText size={48} className="mx-auto text-slate-400 mb-3" />
                     <h3 className="text-lg font-bold text-slate-800">কোন ফলাফল পাওয়া যায়নি</h3>
                     <p className="text-xs text-slate-500 mt-1">
@@ -698,7 +698,7 @@ function FilterPageContent() {
                 /* ------------------------------------------------------------- */
                 /* 1. INDIVIDUAL MEMBERS TABLE (ব্যক্তিভিত্তিক আলাদা আলাদা রো)   */
                 /* ------------------------------------------------------------- */
-                <div className="bg-white border-2 border-slate-200 rounded-2xl shadow-sm overflow-hidden mb-6 print:border print:border-black print:rounded-none print:shadow-none">
+                <div className="bg-white border-2 border-slate-200 borderSlate200 rounded-2xl shadow-sm overflow-hidden mb-6 print:border print:border-black print:rounded-none print:shadow-none">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-xs border-collapse print:text-[10px]">
                             <thead>
@@ -854,7 +854,7 @@ function FilterPageContent() {
 
                     {/* Pagination Bar */}
                     {totalPages > 1 && (
-                        <div className="bg-slate-50 p-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 print:hidden">
+                        <div className="bg-slate-50 p-4 border-t border-slate-200 borderSlate200 flex flex-col sm:flex-row items-center justify-between gap-3 print:hidden">
                             <div className="text-xs text-slate-600 font-medium">
                                 দেখাচ্ছে <strong className="text-[#0F2C59] font-mono">{startIndex + 1}</strong> হতে{' '}
                                 <strong className="text-[#0F2C59] font-mono">{endIndex}</strong> (সর্বমোট{' '}
@@ -922,7 +922,7 @@ function FilterPageContent() {
                 /* ------------------------------------------------------------- */
                 /* 2. FAMILY GROUP TABLE (পরিবারভিত্তিক রো)                     */
                 /* ------------------------------------------------------------- */
-                <div className="bg-white border-2 border-slate-200 rounded-2xl shadow-sm overflow-hidden mb-6 print:border print:border-black print:rounded-none print:shadow-none">
+                <div className="bg-white border-2 border-slate-200 borderSlate200 rounded-2xl shadow-sm overflow-hidden mb-6 print:border print:border-black print:rounded-none print:shadow-none">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-xs border-collapse print:text-[10px]">
                             <thead>
@@ -981,7 +981,7 @@ function FilterPageContent() {
                                                         </span>
                                                     )}
                                                     {!family.isMohollaMember && !family.isBloodDonorMember && !family.isTemporaryMember && (
-                                                        <span className="px-2 py-0.5 text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 rounded text-center whitespace-nowrap print:border print:border-black print:bg-transparent print:text-black">
+                                                        <span className="px-2 py-0.5 text-[10px] font-bold bg-slate-100 text-slate-700 border borderSlate200 border-slate-200 rounded text-center whitespace-nowrap print:border print:border-black print:bg-transparent print:text-black">
                                                             নিয়মিত সদস্য
                                                         </span>
                                                     )}
@@ -1048,7 +1048,7 @@ function FilterPageContent() {
                                                         {heirs.map((mem, memIdx) => (
                                                             <span
                                                                 key={memIdx}
-                                                                className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 text-slate-800 border border-slate-200 rounded-md text-[11px] leading-tight print:bg-transparent print:border print:border-black print:text-black"
+                                                                className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 text-slate-800 border borderSlate200 border-slate-200 rounded-md text-[11px] leading-tight print:bg-transparent print:border print:border-black print:text-black"
                                                             >
                                                                 <strong className="text-slate-900 print:text-black uppercase">{mem.name.toUpperCase()}</strong>
                                                                 {mem.relation && <span className="text-slate-500 print:text-black">({mem.relation})</span>}
@@ -1081,7 +1081,7 @@ function FilterPageContent() {
 
                     {/* Pagination Bar */}
                     {totalPages > 1 && (
-                        <div className="bg-slate-50 p-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 print:hidden">
+                        <div className="bg-slate-50 p-4 border-t border-slate-200 borderSlate200 flex flex-col sm:flex-row items-center justify-between gap-3 print:hidden">
                             <div className="text-xs text-slate-600 font-medium">
                                 দেখাচ্ছে <strong className="text-[#0F2C59] font-mono">{startIndex + 1}</strong> হতে{' '}
                                 <strong className="text-[#0F2C59] font-mono">{endIndex}</strong> (সর্বমোট{' '}

@@ -166,13 +166,13 @@ export default function AdminSettingsPage() {
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-[#1B8A44] transition bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-xs"
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-[#1B8A44] transition bg-white px-3 py-2 rounded-xl border borderSlate200 border-slate-200 shadow-xs"
           >
             <ArrowLeft size={16} /> হোম পেজে ফিরে যান
           </Link>
           <Link
             href="/admin/profile"
-            className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-[#1B8A44] transition bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-xs"
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-[#1B8A44] transition bg-white px-3 py-2 rounded-xl border borderSlate200 border-slate-200 shadow-xs"
           >
             অ্যাডমিন প্রোফাইল
           </Link>

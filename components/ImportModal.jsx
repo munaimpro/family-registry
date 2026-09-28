@@ -71,9 +71,9 @@ export const ImportModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-xs p-4">
       <div className="bg-white border-2 border-[#0F2C59]/30 rounded-2xl p-6 max-w-xl w-full shadow-2xl space-y-4">
-        
+
         {/* Modal Header */}
-        <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+        <div className="flex justify-between items-center border-b borderSlate200 border-slate-200 pb-3">
           <h3 className="text-lg font-bold text-[#0F2C59] flex items-center gap-2 font-serif">
             <Upload size={20} className="text-[#1B8A44]" /> ব্যাকআপ ডেটাবেজ ইমপোর্ট (JSON)
           </h3>
@@ -113,7 +113,7 @@ export const ImportModal = ({
         </div>
 
         {/* Import Mode Options */}
-        <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+        <div className="bg-slate-50 p-3 rounded-xl border borderSlate200 border-slate-200 text-xs">
           <span className="font-bold text-slate-800 block mb-1">ইমপোর্ট মোড নির্বাচন করুন:</span>
           <div className="flex gap-4">
             <label className="flex items-center gap-1.5 cursor-pointer text-slate-700 font-medium">
@@ -140,7 +140,7 @@ export const ImportModal = ({
         </div>
 
         {/* Actions */}
-        <div className="flex justify-end gap-2 pt-2 border-t border-slate-200">
+        <div className="flex justify-end gap-2 pt-2 border-t borderSlate200 border-slate-200">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl cursor-pointer"

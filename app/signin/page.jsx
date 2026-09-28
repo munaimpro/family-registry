@@ -80,7 +80,7 @@ export default function SigninPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border borderSlate200 border-slate-200 p-8">
         <div className="text-center mb-6">
           <div className="w-14 h-14 bg-emerald-50 text-[#1B8A44] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-emerald-100">
             <ShieldCheck size={30} />

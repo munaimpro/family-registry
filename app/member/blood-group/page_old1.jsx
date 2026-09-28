@@ -174,7 +174,7 @@ function BloodGroupAndAgeContent() {
   return (
     <div className="max-w-7xl mx-auto my-6 px-4 min-h-[60vh]">
       {/* Header Info Panel */}
-      <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+      <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl shadow-sm border borderSlate200 border-slate-200">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#0F2C59] font-serif flex items-center gap-2">
@@ -212,18 +212,18 @@ function BloodGroupAndAgeContent() {
       </div>
 
       {isLoading ? (
-        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-500">
+        <div className="bg-white border border-slate-200 borderSlate200 rounded-2xl p-12 text-center text-slate-500">
           <div className="animate-spin w-8 h-8 border-4 border-[#1B8A44] border-t-transparent rounded-full mx-auto mb-3"></div>
           <p className="font-semibold text-sm">সদস্য তথ্য লোড হচ্ছে...</p>
         </div>
       ) : (!bloodGroup && minAgeNum === null && maxAgeNum === null) ? (
-        <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
+        <div className="bg-white border-2 border-slate-200 borderSlate200 rounded-2xl p-12 text-center text-slate-600">
           <Filter size={48} className="mx-auto text-slate-400 mb-3" />
           <h3 className="text-lg font-bold text-slate-800">কোন ব্লাড গ্রুপ বা বয়স সীমা নির্বাচন করা হয়নি</h3>
           <p className="text-xs text-slate-500 mt-1">অনুগ্রহ করে মেম্বার পেজ থেকে বয়স সীমা অথবা রক্তের গ্রুপ নির্বাচন করুন।</p>
         </div>
       ) : members.length === 0 ? (
-        <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
+        <div className="bg-white border-2 border-slate-200 borderSlate200 rounded-2xl p-12 text-center text-slate-600">
           <User size={48} className="mx-auto text-slate-300 mb-3" />
           <h3 className="text-xl font-bold text-slate-800">কোন সদস্যের তথ্য পাওয়া যায়নি</h3>
           <p className="text-sm text-slate-500 mt-2">এই ফিল্টার শর্তের সাথে মিল রয়েছে এমন কোনো সদস্য বর্তমানে ডাটাবেজে নেই।</p>
@@ -239,7 +239,7 @@ function BloodGroupAndAgeContent() {
           {members.map((member) => (
             <div
               key={member.id}
-              className="bg-white border-2 border-slate-200 hover:border-[#1B8A44]/60 rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+              className="bg-white border-2  borderSlate200 hover:border-[#1B8A44]/60 rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
             >
               <div>
                 {/* Card Header: Form No, Badges & Blood/Age */}

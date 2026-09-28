@@ -281,7 +281,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white border-2 border-slate-200 hover:border-rose-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
+          <div className="bg-white border-2 border-slate-200 borderSlate200 hover:border-rose-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4 group-hover:bg-rose-600 group-hover:text-white transition">
               <Activity size={24} />
             </div>
@@ -293,7 +293,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-white border-2 border-slate-200 hover:border-emerald-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
+          <div className="bg-white border-2 border-slate-200 borderSlate200 hover:border-emerald-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4 group-hover:bg-[#1B8A44] group-hover:text-white transition">
               <Sparkles size={24} />
             </div>
@@ -305,7 +305,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-white border-2 border-slate-200 hover:border-blue-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
+          <div className="bg-white border-2 border-slate-200 borderSlate200 hover:border-blue-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition">
               <CheckCircle2 size={24} />
             </div>
@@ -317,7 +317,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-white border-2 border-slate-200 hover:border-amber-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
+          <div className="bg-white border-2 border-slate-200 borderSlate200 hover:border-amber-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4 group-hover:bg-amber-600 group-hover:text-white transition">
               <Award size={24} />
             </div>
@@ -329,7 +329,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-white border-2 border-slate-200 hover:border-[#1B8A44] p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
+          <div className="bg-white border-2 border-slate-200 borderSlate200 hover:border-[#1B8A44] p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-[#1B8A44] flex items-center justify-center mb-4 group-hover:bg-[#1B8A44] group-hover:text-white transition">
               <HeartHandshake size={24} />
             </div>
@@ -341,7 +341,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-white border-2 border-slate-200 hover:border-indigo-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
+          <div className="bg-white border-2 border-slate-200 borderSlate200 hover:border-indigo-400 p-6 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 group">
             <div className="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition">
               <ShieldCheck size={24} />
             </div>
@@ -356,7 +356,7 @@ export default function HomePage() {
       </section>
 
       {/* 5. DIGITAL DIRECTORY SERVICES SECTION */}
-      <section className="bg-white py-16 px-4 border-t border-b border-slate-200">
+      <section className="bg-white py-16 px-4 border-t border-b borderSlate200 border-slate-200">
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-bold text-[#1B8A44] uppercase tracking-wider bg-emerald-100 px-3 py-1 rounded-full">
@@ -368,7 +368,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-3">
+            <div className="p-6 bg-slate-50 border border-slate-200 borderSlate200 rounded-2xl text-center space-y-3">
               <div className="w-14 h-14 bg-[#0F2C59] text-white rounded-2xl flex items-center justify-center mx-auto shadow-md">
                 <Users size={28} />
               </div>
@@ -380,7 +380,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-3">
+            <div className="p-6 bg-slate-50 border border-slate-200 borderSlate200 rounded-2xl text-center space-y-3">
               <div className="w-14 h-14 bg-[#1B8A44] text-white rounded-2xl flex items-center justify-center mx-auto shadow-md">
                 <Heart size={28} className="fill-white" />
               </div>
@@ -392,7 +392,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-3">
+            <div className="p-6 bg-slate-50 border border-slate-200 borderSlate200 borderSlate200 rounded-2xl text-center space-y-3">
               <div className="w-14 h-14 bg-amber-600 text-white rounded-2xl flex items-center justify-center mx-auto shadow-md">
                 <UserPlus size={28} />
               </div>

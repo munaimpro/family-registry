@@ -356,7 +356,7 @@ export const FamilySearch = ({
                 </div>
 
                 {/* External Member Filter Tabs */}
-                <div className="mt-4 pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                <div className="mt-4 pt-3 border-t borderSlate200 border-slate-200 flex flex-wrap items-center justify-between gap-3">
                     <div className="flex flex-col lg:flex-row items-center gap-2">
                         <span className="text-xs font-bold text-slate-700 flex items-center gap-1">
                             <UserCheck size={14} className="text-[#1B8A44]" /> মেম্বার টাইপ
@@ -428,7 +428,7 @@ export const FamilySearch = ({
 
             {/* Grid of Family Cards */}
             {isLoading ? (
-                <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
+                <div className="bg-white border-2  borderSlate200 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1B8A44] mx-auto mb-3"></div>
                     <h3 className="text-lg font-bold text-slate-800">তথ্য লোড হচ্ছে...</h3>
                     <p className="text-xs text-slate-500 mt-1">
@@ -436,7 +436,7 @@ export const FamilySearch = ({
                     </p>
                 </div>
             ) : filteredRecords.length === 0 ? (
-                <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
+                <div className="bg-white border-2  borderSlate200 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
                     <FileText size={48} className="mx-auto text-slate-400 mb-3" />
                     <h3 className="text-lg font-bold text-slate-800">কোন পরিবারের তথ্য পাওয়া যায়নি</h3>
                     <p className="text-xs text-slate-500 mt-1">
@@ -483,7 +483,7 @@ export const FamilySearch = ({
                             return (
                                 <div
                                     key={rec._id}
-                                    className="bg-white border-2 border-slate-200 hover:border-[#1B8A44] rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between group"
+                                    className="bg-white border-2  borderSlate200 border-slate-200 hover:border-[#1B8A44] rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between group"
                                 >
                                     <div>
                                         {/* Top Header Card Info */}
@@ -548,7 +548,7 @@ export const FamilySearch = ({
                                         )}
 
                                         {/* Body Meta Details */}
-                                        <div className="space-y-2 text-xs text-slate-700 mb-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                        <div className="space-y-2 text-xs text-slate-700 mb-4 bg-slate-50 p-3 rounded-xl border  borderSlate200 border-slate-200">
                                             <div className="flex items-center gap-2">
                                                 <Phone size={14} className="text-[#1B8A44] flex-shrink-0" />
                                                 <span className="font-mono text-[#1B8A44] font-bold">{rec.mobileNumber || 'মোবাইল অপ্রাপ্য'}</span>
@@ -576,7 +576,7 @@ export const FamilySearch = ({
                                                                 key={idx}
                                                                 className={`px-2.5 py-1 text-[11px] rounded-lg border font-medium flex items-center justify-between gap-1.5 flex-wrap ${isThisMatched
                                                                     ? 'bg-emerald-100 text-emerald-950 border-emerald-400 font-bold'
-                                                                    : 'bg-slate-100/90 text-slate-800 border-slate-200'
+                                                                    : 'bg-slate-100/90 text-slate-800  borderSlate200 border-slate-200'
                                                                     }`}
                                                             >
                                                                 <span className="truncate">

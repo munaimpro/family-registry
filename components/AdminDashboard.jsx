@@ -329,7 +329,7 @@ export const AdminDashboard = ({
       {/* Analytics Summary Stats Widgets */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Total Families Card */}
-        <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
+        <div className="bg-white border-2 borderSlate200  borderSlate200 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
             <span className="text-xs text-slate-500 block mb-1 font-bold">নিবন্ধিত মোট পরিবার</span>
             <span className="text-3xl font-black text-[#1B8A44] font-mono">{displayTotalFamilies}</span>
@@ -341,7 +341,7 @@ export const AdminDashboard = ({
         </div>
 
         {/* Total Population Card */}
-        <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
+        <div className="bg-white border-2 borderSlate200  borderSlate200 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
             <span className="text-xs text-slate-500 block mb-1 font-bold">মোট জনসংখ্যা / ওয়ারিশ</span>
             <span className="text-3xl font-black text-[#0F2C59] font-mono">{displayTotalMembers}</span>
@@ -353,7 +353,7 @@ export const AdminDashboard = ({
         </div>
 
         {/* Temporary Members Card */}
-        <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
+        <div className="bg-white border-2  borderSlate200 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
             <span className="text-xs text-slate-500 block mb-1 font-bold">অস্থায়ী / ভাড়াটিয়া সদস্য</span>
             <span className="text-3xl font-black text-amber-600 font-mono">{displayTemporaryMembers.total}</span>
@@ -371,7 +371,7 @@ export const AdminDashboard = ({
         </div>
 
         {/* Moholla Members Card */}
-        <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
+        <div className="bg-white border-2  borderSlate200 border-slate-200 p-5 rounded-2xl shadow-sm flex items-center justify-between">
           <div>
             <span className="text-xs text-slate-500 block mb-1 font-bold">মহল্লা সদস্য</span>
             <span className="text-3xl font-black text-indigo-600 font-mono">{displayMohollaMembers.total}</span>
@@ -391,7 +391,7 @@ export const AdminDashboard = ({
       </div>
 
       {/* Doner Member Breakdown */}
-      <div className="bg-[#FAFBF9] border-2 border-slate-200 p-5 rounded-2xl shadow-sm">
+      <div className="bg-[#FAFBF9] border-2  borderSlate200 border-slate-200 p-5 rounded-2xl shadow-sm">
         <h3 className="text-sm font-bold text-[#0F2C59] mb-3 flex items-center gap-2">
           <Heart size={16} className="text-rose-600" /> রক্তদাতা সদস্য (ডোনার মেম্বার) — ব্লাড গ্রুপ আছে এমন
         </h3>
@@ -422,7 +422,7 @@ export const AdminDashboard = ({
 
       {/* Village Member Breakdown */}
       {/* {displayVillageMember.length > 0 && (
-        <div className="bg-[#FAFBF9] border-2 border-slate-200 p-5 rounded-2xl shadow-sm">
+        <div className="bg-[#FAFBF9] border-2  borderSlate200 border-slate-200 p-5 rounded-2xl shadow-sm">
           <h3 className="text-sm font-bold text-[#0F2C59] mb-3 flex items-center gap-2">
             <Users size={16} className="text-[#1B8A44]" /> গ্রাম / এলাকা ভিত্তিক সদস্য তালিকা
           </h3>
@@ -468,13 +468,13 @@ export const AdminDashboard = ({
       )} */}
 
       {/* Blood Donors Breakdown Grid */}
-      <div className="bg-[#FAFBF9] border-2 border-slate-200 p-5 rounded-2xl shadow-sm">
+      <div className="bg-[#FAFBF9] border-2  borderSlate200 border-slate-200 p-5 rounded-2xl shadow-sm">
         <h3 className="text-sm font-bold text-[#0F2C59] mb-3 flex items-center gap-2">
           <Heart size={16} className="text-rose-600" /> রক্তের গ্রুপ ভিত্তিক মোট ব্যক্তির তালিকা:
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
           {bloodGroups.map(bg => (
-            <div key={bg} className="bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-center">
+            <div key={bg} className="bg-slate-50 p-2.5 rounded-xl border  borderSlate200 border-slate-200 text-center">
               <span className="text-xs font-bold text-rose-600 block">{bg}</span>
               <span className="text-lg font-black text-[#0F2C59] font-mono">{bloodGroupCounts[bg] || 0}</span>
               <span className="text-[10px] text-slate-500 block">জন</span>
@@ -484,9 +484,9 @@ export const AdminDashboard = ({
       </div>
 
       {/* Records Management Data Table */}
-      <div className="bg-white border-2 border-slate-200 rounded-2xl shadow-md overflow-hidden">
+      <div className="bg-white border-2  borderSlate200 border-slate-200 rounded-2xl shadow-md overflow-hidden">
         {/* Table Toolbar */}
-        <div className="p-4 border-b border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-slate-50">
+        <div className="p-4 border-b  borderSlate200 border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-slate-50">
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
             <div className="relative w-full sm:w-64">
               <Search size={16} className="absolute left-3 top-2.5 text-slate-400" />
@@ -549,7 +549,7 @@ export const AdminDashboard = ({
         {/* Main Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-800">
-            <thead className="bg-[#EBF5EE] text-[#0F2C59] font-bold uppercase tracking-wider border-b border-slate-200">
+            <thead className="bg-[#EBF5EE] text-[#0F2C59] font-bold uppercase tracking-wider border-b  borderSlate200 border-slate-200">
               <tr>
                 <th className="p-3 w-12 text-center">#</th>
                 <th className="p-3">ফরম ও সদস্য নং</th>

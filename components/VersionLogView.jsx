@@ -55,7 +55,7 @@ export const VersionLogView = ({ logs }) => {
 
                 {/* Top Header Card */}
                 <div className="bg-white border-2 border-[#0F2C59]/30 rounded-2xl p-6 sm:p-8 shadow-md mb-8">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6 mb-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b borderSlate200 border-slate-200 pb-6 mb-6">
                         <div>
                             <div className="flex items-center gap-2 mb-2">
                                 <Link
@@ -115,7 +115,7 @@ export const VersionLogView = ({ logs }) => {
                                     onClick={() => setSelectedTag(tag)}
                                     className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer border ${selectedTag === tag
                                         ? 'bg-[#0F2C59] text-white border-[#0F2C59] shadow-2xs'
-                                        : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
+                                        : 'bg-slate-100 text-slate-600 borderSlate200 border-slate-200 hover:bg-slate-200'
                                         }`}
                                 >
                                     {tag === 'all' ? 'সকল আপডেট' : tag}
@@ -128,7 +128,7 @@ export const VersionLogView = ({ logs }) => {
                 {/* Timeline Version Cards */}
                 <div className="space-y-6 relative before:absolute before:inset-0 before:left-4 sm:before:left-8 before:w-0.5 before:bg-slate-200 before:pointer-events-none">
                     {filteredLogs.length === 0 ? (
-                        <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-500">
+                        <div className="bg-white p-8 rounded-2xl border borderSlate200 border-slate-200 text-center text-slate-500">
                             <History size={40} className="mx-auto text-slate-300 mb-2" />
                             <p className="font-bold text-slate-700">কোন ভার্সন বা আপডেট লগ পাওয়া যায়নি</p>
                             <button
@@ -149,7 +149,7 @@ export const VersionLogView = ({ logs }) => {
                                     }`} />
 
                                 {/* Content Box */}
-                                <div className={`bg-white rounded-2xl border-2 transition-all p-5 sm:p-7 shadow-xs hover:shadow-md ${index === 0 ? 'border-[#1B8A44]/50' : 'border-slate-200 hover:border-slate-300'
+                                <div className={`bg-white rounded-2xl border-2 transition-all p-5 sm:p-7 shadow-xs hover:shadow-md ${index === 0 ? 'border-[#1B8A44]/50' : 'borderSlate200 border-slate-200 hover:border-slate-300'
                                     }`}>
 
                                     {/* Card Header */}
@@ -179,7 +179,7 @@ export const VersionLogView = ({ logs }) => {
                                         <h3 className="text-base sm:text-lg font-bold text-[#0F2C59] font-serif mb-1.5">
                                             {log.title}
                                         </h3>
-                                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border borderSlate200 border-slate-200">
                                             {log.summary}
                                         </p>
                                     </div>
@@ -210,7 +210,7 @@ export const VersionLogView = ({ logs }) => {
                 </div>
 
                 {/* Footer info note */}
-                <div className="mt-12 text-center text-xs text-slate-500 border-t border-slate-200 pt-6">
+                <div className="mt-12 text-center text-xs text-slate-500 border-t borderSlate200 border-slate-200 pt-6">
                     <p>
                         সফটওয়্যারের প্রতিটি নতুন আপডেট এবং পরিবর্তনগুলো এই পেজে নিয়মিত সংরক্ষণ ও প্রদর্শন করা হবে।
                     </p>

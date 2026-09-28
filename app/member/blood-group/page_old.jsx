@@ -60,7 +60,7 @@ function BloodGroupContent() {
 
   return (
     <div className="max-w-7xl mx-auto my-8 px-4 min-h-[60vh]">
-      <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+      <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl shadow-sm border borderSlate200 border-slate-200">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#0F2C59] font-serif flex items-center gap-2">
             <Heart className="text-rose-600 fill-rose-600" size={28} />
@@ -79,11 +79,11 @@ function BloodGroupContent() {
       </div>
 
       {!bloodGroup ? (
-        <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
+        <div className="bg-white border-2 border-slate-200 borderSlate200 borderSlate200 rounded-2xl p-12 text-center text-slate-600">
           <h3 className="text-lg font-bold text-slate-800">কোন ব্লাড গ্রুপ নির্বাচন করা হয়নি</h3>
         </div>
       ) : members.length === 0 ? (
-        <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center text-slate-600">
+        <div className="bg-white border-2 border-slate-200 borderSlate200 borderSlate200 rounded-2xl p-12 text-center text-slate-600">
           <Heart size={48} className="mx-auto text-rose-300 mb-3" />
           <h3 className="text-xl font-bold text-slate-800">কোন রক্তদাতার তথ্য পাওয়া যায়নি</h3>
           <p className="text-sm text-slate-500 mt-2">এই গ্রুপের রক্তদাতা বর্তমানে আমাদের ডাটাবেজে নেই।</p>
@@ -91,7 +91,7 @@ function BloodGroupContent() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {members.map((member) => (
-            <div key={member.id} className="bg-white border-2 border-slate-200 hover:border-rose-400 rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+            <div key={member.id} className="bg-white border-2 border-slate-200 borderSlate200 hover:border-rose-400 rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div>
                 <div className="flex justify-between items-start mb-4 gap-2">
                   <div className="flex flex-col items-start gap-1.5 flex-wrap mb-1">

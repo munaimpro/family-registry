@@ -125,6 +125,10 @@ body {
   color: rgb(199, 0, 54);
 }
 
+.borderSlate200 {
+  border-color: rgb(226, 232, 240);
+}
+
 /* Allow text selection inside input fields and textareas so form filling works */
 input,
 textarea,

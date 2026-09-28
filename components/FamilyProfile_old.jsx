@@ -77,7 +77,7 @@ export const FamilyProfile = ({
       {/* VIEW 2: Interactive Member Roster Grid */}
       {activeView === 'members' && (
         <div className="bg-white border-2 border-[#0F2C59]/30 p-6 rounded-2xl shadow-lg">
-          <div className="mb-6 flex justify-between items-center border-b border-slate-200 pb-4">
+          <div className="mb-6 flex justify-between items-center border-b  borderSlate200 border-slate-200 pb-4">
             <div>
               <h2 className="text-xl font-bold text-[#0F2C59] font-serif flex items-center gap-2">
                 <Users size={20} /> {record.headName}-এর পরিবার ও ওয়ারিশগণের তথ্য
@@ -185,7 +185,7 @@ export const FamilyProfile = ({
                     </div>
                   )}
                   {mem.bloodDonationDates && (Array.isArray(mem.bloodDonationDates) ? mem.bloodDonationDates.length > 0 : Boolean(mem.bloodDonationDates)) && (
-                    <div className="mt-2 pt-2 border-t border-slate-200">
+                    <div className="mt-2 pt-2 border-t  borderSlate200 border-slate-200">
                       <span className="text-slate-500 text-[11px] font-bold block mb-1 flex items-center gap-1">
                         <Heart size={12} className="text-rose-600 fill-rose-600" /> রক্তদানের তারিখ:
                       </span>
@@ -264,7 +264,7 @@ export const FamilyProfile = ({
           <div className="p-6 md:p-8 space-y-6 text-sm text-slate-800">
             {/* Contact & Blood Info Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-center gap-3">
+              <div className="bg-slate-50 border  borderSlate200 border-slate-200 p-4 rounded-xl flex items-center gap-3">
                 <div className="p-3 bg-[#EBF5EE] text-[#1B8A44] rounded-lg">
                   <Phone size={20} />
                 </div>
@@ -276,7 +276,7 @@ export const FamilyProfile = ({
                 </div>
               </div>
 
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-center gap-3">
+              <div className="bg-slate-50 border  borderSlate200 border-slate-200 p-4 rounded-xl flex items-center gap-3">
                 <div className="p-3 bg-rose-50 text-rose-600 rounded-lg">
                   <Heart size={20} />
                 </div>
@@ -288,7 +288,7 @@ export const FamilyProfile = ({
                 </div>
               </div>
 
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-center gap-3">
+              <div className="bg-slate-50 border  borderSlate200 border-slate-200 p-4 rounded-xl flex items-center gap-3">
                 <div className="p-3 bg-amber-50 text-amber-700 rounded-lg">
                   <Users size={20} />
                 </div>
@@ -302,9 +302,9 @@ export const FamilyProfile = ({
             </div>
 
             {/* Personal Details List */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t  borderSlate200 border-slate-200">
               <div className="space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#0F2C59] border-b border-slate-200 pb-1">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#0F2C59] border-b  borderSlate200 border-slate-200 pb-1">
                   ব্যক্তিগত পরিচয়
                 </h3>
                 <div className="space-y-2 text-xs">
@@ -332,7 +332,7 @@ export const FamilyProfile = ({
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#0F2C59] border-b border-slate-200 pb-1">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#0F2C59] border-b  borderSlate200 border-slate-200 pb-1">
                   সামাজিক ও শিক্ষাগত তথ্য
                 </h3>
                 <div className="space-y-2 text-xs">
@@ -361,7 +361,7 @@ export const FamilyProfile = ({
             </div>
 
             {/* Bottom Actions */}
-            <div className="pt-6 border-t border-slate-200 flex justify-between items-center">
+            <div className="pt-6 border-t  borderSlate200 border-slate-200 flex justify-between items-center">
               <button
                 onClick={() => setActiveView('printable')}
                 className="px-6 py-2.5 bg-[#1B8A44] hover:bg-[#156d35] text-white rounded-xl text-sm font-bold flex items-center gap-2 shadow-md transition cursor-pointer"

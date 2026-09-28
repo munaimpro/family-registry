@@ -54,7 +54,7 @@ export default function MemberProfilePage() {
 
   if (!record) {
     return (
-      <div className="max-w-2xl mx-auto my-16 bg-white border border-slate-200 rounded-2xl p-8 text-center shadow-sm">
+      <div className="max-w-2xl mx-auto my-16 bg-white border borderSlate200 border-slate-200 rounded-2xl p-8 text-center shadow-sm">
         <FileText size={48} className="mx-auto text-slate-400 mb-3" />
         <h2 className="text-xl font-bold text-slate-800 mb-2">সদস্যের তথ্য পাওয়া যায়নি</h2>
         <p className="text-sm text-slate-500 mb-6">অনুরোধকৃত প্রোফাইলটি ডাটাবেজে খুঁজে পাওয়া যায়নি।</p>
