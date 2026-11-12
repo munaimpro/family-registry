@@ -156,7 +156,7 @@ export const FamilyProfile = ({
                 <div className="bg-white border-2 border-[#0F2C59]/30 p-6 rounded-2xl shadow-lg">
                     <div className="mb-6 flex justify-between items-center border-b  borderSlate200 border-slate-200 pb-4">
                         <div>
-                            <h2 className="text-xl font-bold text-[#0F2C59] font-serif flex items-center gap-2">
+                            <h2 className="text-xl font-bold text-[#0F2C59] font-serif flex items-center gap-2 uppercase">
                                 <Users size={20} /> {record.headName}-এর পরিবার ও ওয়ারিশগণের তথ্য
                             </h2>
                             <p className="text-xs text-slate-600 mt-0.5">
@@ -175,12 +175,12 @@ export const FamilyProfile = ({
                                 পরিবারের প্রধান
                             </span>
                             <div className="flex items-start gap-3">
-                                <div className="w-12 h-12 rounded-full bg-[#0F2C59] text-white flex items-center justify-center font-bold text-lg font-serif shadow">
+                                <div className="w-12 h-12 rounded-full bg-[#0F2C59] text-white flex items-center justify-center font-bold text-lg font-serif shadow uppercase">
                                     {record.headName[0] || 'প'}
                                 </div>
                                 <div>
                                     <div className="flex items-center gap-1.5 flex-wrap">
-                                        <h3 className="text-base font-bold text-[#0F2C59]">{record.headName}</h3>
+                                        <h3 className="text-base font-bold text-[#0F2C59] uppercase">{record.headName}</h3>
                                         {record.isMohollaMember && (
                                             <span className="px-1.5 py-0.5 bg-emerald-500 text-white text-[9px] font-mono font-bold rounded uppercase">
                                                 মহল্লা সদস্য
@@ -197,8 +197,8 @@ export const FamilyProfile = ({
                                             </span>
                                         )}
                                     </div>
-                                    <p className="text-xs text-[#1B8A44] font-bold">{record.headOccupation || 'পেশা উল্লেখ নেই'}</p>
-                                    <p className="text-xs text-slate-600 mt-1">পিতা/স্বামী: {record.fatherOrHusbandName}</p>
+                                    <p className="text-xs text-[#1B8A44] font-bold uppercase">{record.headOccupation || 'পেশা উল্লেখ নেই'}</p>
+                                    <p className="text-xs text-slate-600 mt-1 uppercase">পিতা/স্বামী: {record.fatherOrHusbandName}</p>
                                     {headAge && (
                                         <div className="mt-1.5">
                                             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 rounded text-xs font-bold shadow-2xs">
@@ -212,7 +212,7 @@ export const FamilyProfile = ({
                             <div className="mt-4 pt-3 border-t border-[#1B8A44]/20 grid grid-cols-2 gap-2 text-xs">
                                 <div>
                                     <span className="text-slate-500 block text-[10px]">রক্তের গ্রুপ:</span>
-                                    <span className="text-rose-600 font-bold text-sm">{record.bloodGroup || 'অজানা'}</span>
+                                    <span className="text-rose-600 font-bold text-sm uppercase">{record.bloodGroup || 'অজানা'}</span>
                                 </div>
                                 <div>
                                     <span className="text-slate-500 block text-[10px]">মোবাইল:</span>
@@ -224,7 +224,7 @@ export const FamilyProfile = ({
                                     <span className="text-slate-600 font-bold text-[11px] flex items-center gap-1 mb-1">
                                         <Heart size={12} className="text-rose-600 fill-rose-600" /> রক্তদানের তারিখসমূহ:
                                     </span>
-                                    <div className="flex flex-wrap gap-1">
+                                    <div className="flex flex-wrap gap-1 uppercase">
                                         {(Array.isArray(record.bloodDonationDates) ? record.bloodDonationDates : [record.bloodDonationDates]).map((d, i) => (
                                             <span key={i} className="px-2 py-0.5 bg-rose-50 text-rose-800 border border-rose-200 rounded text-[11px] font-mono font-bold">
                                                 {d}
@@ -258,7 +258,7 @@ export const FamilyProfile = ({
                                             </div>
                                         </div>
                                         {mem.bloodGroup && (
-                                            <span className="px-2 py-0.5 bg-rose-50 text-rose-700 border border-rose-200 rounded text-xs font-bold">
+                                            <span className="uppercase px-2 py-0.5 bg-rose-50 text-rose-700 border border-rose-200 rounded text-xs font-bold">
                                                 {mem.bloodGroup}
                                             </span>
                                         )}
@@ -267,7 +267,7 @@ export const FamilyProfile = ({
                                     <div className="mt-3 space-y-1 text-xs text-slate-700">
                                         <div className="flex justify-between items-center">
                                             <span className="text-slate-500">লিঙ্গ ও জন্ম/বয়স:</span>
-                                            <span className="font-medium">{mem.gender} • {mem.dobOrAge || '—'}</span>
+                                            <span className="font-medium uppercase">{mem.gender} • {mem.dobOrAge || '—'}</span>
                                         </div>
                                         {memberAge && (
                                             <div className="flex justify-between items-center bg-amber-50 px-2 py-1 rounded border border-amber-200 text-amber-950 font-medium">
@@ -277,10 +277,10 @@ export const FamilyProfile = ({
                                         )}
                                         <div className="flex justify-between">
                                             <span className="text-slate-500">শিক্ষা/পেশা:</span>
-                                            <span className="text-slate-800 font-medium">{mem.instituteOrOccupation || '—'}</span>
+                                            <span className="text-slate-800 font-medium uppercase">{mem.instituteOrOccupation || '—'}</span>
                                         </div>
                                         {mem.specialInfo && (
-                                            <div className="mt-2 p-1.5 bg-amber-50 border border-amber-200 rounded text-amber-800 text-[11px] font-medium">
+                                            <div className="mt-2 p-1.5 bg-amber-50 border border-amber-200 rounded text-amber-800 text-[11px] font-medium uppercase">
                                                 বিশেষ: {mem.specialInfo}
                                             </div>
                                         )}
@@ -318,7 +318,7 @@ export const FamilyProfile = ({
                                 </div>
                                 <div>
                                     <div className="flex items-center gap-2 flex-wrap">
-                                        <h1 className="text-2xl md:text-3xl font-black text-white font-serif">{record.headName}</h1>
+                                        <h1 className="text-2xl md:text-3xl font-black text-white font-serif uppercase">{record.headName}</h1>
                                         {record.isMohollaMember && (
                                             <span className="px-2.5 py-0.5 bg-emerald-500 text-white border border-emerald-300 rounded-md text-xs font-mono font-extrabold tracking-wider uppercase shadow-2xs">
                                                 মহল্লা সদস্য
@@ -336,10 +336,10 @@ export const FamilyProfile = ({
                                         )}
 
                                     </div>
-                                    <p className="text-sm text-emerald-200 font-bold mt-1 flex items-center gap-2">
+                                    <p className="text-sm text-emerald-200 font-bold mt-1 flex items-center gap-2 uppercase">
                                         <Briefcase size={14} /> {record.headOccupation || 'পেশা প্রদান করা হয়নি'}
                                     </p>
-                                    <p className="text-xs text-slate-300 mt-1 flex items-center gap-1">
+                                    <p className="text-xs text-slate-300 mt-1 flex items-center gap-1 uppercase">
                                         <MapPin size={14} className="text-[#62C255]" /> {record.presentAddress.village}, {record.presentAddress.road}, পটিয়া
                                     </p>
                                 </div>
@@ -382,7 +382,7 @@ export const FamilyProfile = ({
                                     <Heart size={20} />
                                 </div>
                                 <div>
-                                    <span className="text-xs text-slate-500 block font-semibold">রক্তের গ্রুপ</span>
+                                    <span className="text-xs text-slate-500 block font-semibold uppercase">রক্তের গ্রুপ</span>
                                     <span className="text-base font-bold text-rose-600">
                                         {record.bloodGroup || 'অজানা'}
                                     </span>
@@ -411,11 +411,11 @@ export const FamilyProfile = ({
                                 <div className="space-y-2 text-xs">
                                     <div className="flex justify-between border-b border-slate-100 pb-1">
                                         <span className="text-slate-500">পিতা/স্বামীর নাম:</span>
-                                        <span className="font-semibold text-slate-900">{record.fatherOrHusbandName}</span>
+                                        <span className="font-semibold text-slate-900 uppercase">{record.fatherOrHusbandName}</span>
                                     </div>
                                     <div className="flex justify-between border-b border-slate-100 pb-1">
                                         <span className="text-slate-500">মাতার নাম:</span>
-                                        <span className="font-semibold text-slate-900">{record.motherName}</span>
+                                        <span className="font-semibold text-slate-900 uppercase">{record.motherName}</span>
                                     </div>
                                     <div className="flex justify-between border-b border-slate-100 pb-1">
                                         <span className="text-slate-500">জন্ম তারিখ:</span>
@@ -429,7 +429,7 @@ export const FamilyProfile = ({
                                     )}
                                     <div className="flex justify-between border-b border-slate-100 pb-1">
                                         <span className="text-slate-500">জাতীয়তা ও ধর্ম:</span>
-                                        <span className="text-slate-900">{record.nationality} • {record.religion}</span>
+                                        <span className="text-slate-900 uppercase">{record.nationality} • {record.religion}</span>
                                     </div>
                                     <div className="flex justify-between border-b border-slate-100 pb-1">
                                         <span className="text-slate-500">জাতীয় পরিচয়পত্র (NID):</span>
@@ -445,23 +445,23 @@ export const FamilyProfile = ({
                                 <div className="space-y-2 text-xs">
                                     <div className="flex justify-between border-b border-slate-100 pb-1">
                                         <span className="text-slate-500">শিক্ষাগত যোগ্যতা:</span>
-                                        <span className="font-semibold text-slate-900">{record.educationalQualification || '—'}</span>
+                                        <span className="font-semibold text-slate-900 uppercase">{record.educationalQualification || '—'}</span>
                                     </div>
                                     <div className="flex justify-between border-b border-slate-100 pb-1">
                                         <span className="text-slate-500">সামাজিক/ধার্মিক পরিচয়:</span>
-                                        <span className="text-slate-900">{record.socialOrReligiousIdentity || '—'}</span>
+                                        <span className="text-slate-900 uppercase">{record.socialOrReligiousIdentity || '—'}</span>
                                     </div>
                                     <div className="flex justify-between border-b border-slate-100 pb-1">
                                         <span className="text-slate-500">পরিষদে ভূমিকা:</span>
-                                        <span className="text-[#1B8A44] font-bold">{record.relationWithOrganization}</span>
+                                        <span className="text-[#1B8A44] font-bold uppercase">{record.relationWithOrganization}</span>
                                     </div>
                                     <div className="flex justify-between border-b border-slate-100 pb-1">
                                         <span className="text-slate-500">কর্মস্থলের ঠিকানা:</span>
-                                        <span className="text-slate-900">{record.workplaceAddress || '—'}</span>
+                                        <span className="text-slate-900 uppercase">{record.workplaceAddress || '—'}</span>
                                     </div>
                                     <div className="flex justify-between border-b border-slate-100 pb-1">
                                         <span className="text-slate-500">তথ্য সংগ্রহকারী:</span>
-                                        <span className="text-slate-900">{record.collectorSignatureName || '—'}</span>
+                                        <span className="text-slate-900 uppercase">{record.collectorSignatureName || '—'}</span>
                                     </div>
                                 </div>
                             </div>
