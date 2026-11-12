@@ -246,7 +246,7 @@ export const FamilyProfile = ({
                                                 {idx + 1}
                                             </div>
                                             <div>
-                                                <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2 flex-wrap">
+                                                <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2 flex-wrap uppercase">
                                                     <span>{mem.name || 'সদস্য'}</span>
                                                     {memberAge && (
                                                         <span className="text-[11px] px-2 py-0.5 bg-amber-100/90 text-amber-900 border border-amber-300 rounded font-bold">
